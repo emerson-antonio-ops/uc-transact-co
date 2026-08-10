@@ -78,15 +78,38 @@ extension during setup.
 One direction only: analytical work leaves the operational source; instructor
 truth does not.
 
-```text
-  POSTGRES
-  ├── public.customers ─┐
-  ├── public.products  ─┤
-  ├── public.orders    ─┼── make land ── read-only ATTACH ──▶ warehouse.duckdb
-  └── public.payments  ─┘                                  ├── raw.*        ready
-                                                           ├── staging      build
-  └── _control.* ── sealed ── ✕ never crosses              ├── intermediate build
-                                                           └── marts        build
+```mermaid
+flowchart LR
+  subgraph PG["Operational source · Postgres"]
+    ROLE["analytics_ro<br/>read-only role"]
+    PUBLIC[("public.*<br/>customers · products · orders · payments")]
+    CONTROL[("_control.*<br/>sealed instructor truth")]
+  end
+
+  LAND["make land<br/>read-only ATTACH"]
+
+  subgraph DUCK["Analytical copy · DuckDB"]
+    RAW[("raw.*<br/>faithful mirror")]
+    STAGING["staging<br/>cleaning"]
+    INTERMEDIATE["intermediate<br/>business rules"]
+    MARTS["marts<br/>trusted outputs"]
+  end
+
+  ROLE -->|"SELECT only"| PUBLIC
+  ROLE -. "permission denied" .-> CONTROL
+  PUBLIC --> LAND --> RAW
+  RAW --> STAGING --> INTERMEDIATE --> MARTS
+
+  classDef source fill:#78350F,stroke:#F59E0B,color:#FFF7ED,stroke-width:2px;
+  classDef restricted fill:#881337,stroke:#FB7185,color:#FFF1F2,stroke-width:2px;
+  classDef transfer fill:#312E81,stroke:#A78BFA,color:#F5F3FF,stroke-width:2px;
+  classDef analytical fill:#164E63,stroke:#22D3EE,color:#ECFEFF,stroke-width:2px;
+  class ROLE,PUBLIC source;
+  class CONTROL restricted;
+  class LAND transfer;
+  class RAW,STAGING,INTERMEDIATE,MARTS analytical;
+  style PG fill:#1C1917,stroke:#F59E0B,stroke-width:2px,color:#FFF7ED
+  style DUCK fill:#082F49,stroke:#22D3EE,stroke-width:2px,color:#ECFEFF
 ```
 
 The raw layer is a faithful mirror. If a source defect renames a column, the
@@ -95,6 +118,43 @@ evidence the investigation is meant to find.
 
 The analytical connection uses `analytics_ro`, which can read `public.*`, cannot
 write to the source, and has no access to `_control`.
+
+### Build and proof lifecycle
+
+The foundation is not considered ready because it starts. It is ready only after
+its contracts, isolation, and analytical path have been proved.
+
+```mermaid
+flowchart TB
+  subgraph FOUNDATION["Foundation gate"]
+    direction LR
+    BOOT["make bootstrap"] --> DOCTOR["doctor<br/>environment + access"]
+    DOCTOR --> SEED["seed<br/>clean source baseline"]
+    SEED --> LAND["land<br/>source to raw"]
+    LAND --> VERIFY["verify<br/>contracts + parity"]
+    VERIFY --> READY["foundation ready"]
+  end
+
+  subgraph INVESTIGATION["Analytical investigation"]
+    direction LR
+    MODEL["build dbt layers"] --> DETECT["implement detector"]
+    DETECT --> SCORE["score findings"]
+    SCORE --> PROOF["precision · recall · evidence"]
+  end
+
+  READY --> MODEL
+
+  classDef operator fill:#78350F,stroke:#F59E0B,color:#FFF7ED,stroke-width:2px;
+  classDef data fill:#164E63,stroke:#22D3EE,color:#ECFEFF,stroke-width:2px;
+  classDef participant fill:#4C1D95,stroke:#A78BFA,color:#F5F3FF,stroke-width:2px;
+  classDef proof fill:#14532D,stroke:#4ADE80,color:#F0FDF4,stroke-width:2px;
+  class BOOT,DOCTOR,SEED operator;
+  class LAND,VERIFY data;
+  class MODEL,DETECT,SCORE participant;
+  class READY,PROOF proof;
+  style FOUNDATION fill:#1C1917,stroke:#F59E0B,stroke-width:2px,color:#FFF7ED
+  style INVESTIGATION fill:#172554,stroke:#818CF8,stroke-width:2px,color:#EEF2FF
+```
 
 ## ▦ System model
 
@@ -182,6 +242,44 @@ denied before copying the four allowlisted source tables.
 This is a workflow and analytical-path seal—not an adversarial security boundary
 against the owner of the laptop. A genuinely private holdout requires an
 instructor-controlled environment or an equivalent context boundary.
+
+```mermaid
+flowchart LR
+  subgraph INSTRUCTOR["Instructor-controlled truth"]
+    INJECT["defect injector"]
+    ORACLE[("_control.injected_incidents<br/>answer key")]
+    SCORER["scorer"]
+  end
+
+  subgraph PARTICIPANT["Participant analytical path"]
+    SOURCE[("public.*<br/>affected source rows")]
+    RAW[("raw.*<br/>landed evidence")]
+    DETECTOR["participant detector"]
+    FINDINGS[("analytics.detections")]
+  end
+
+  INJECT -->|"mutates"| SOURCE
+  INJECT -->|"records truth"| ORACLE
+  SOURCE -->|"analytics_ro + make land"| RAW
+  RAW --> DETECTOR --> FINDINGS
+  FINDINGS --> SCORER
+  ORACLE --> SCORER
+  SCORER --> VERDICT["precision · recall · F1"]
+  DETECTOR -. "no access" .-> ORACLE
+
+  classDef source fill:#78350F,stroke:#F59E0B,color:#FFF7ED,stroke-width:2px;
+  classDef restricted fill:#881337,stroke:#FB7185,color:#FFF1F2,stroke-width:2px;
+  classDef analytical fill:#164E63,stroke:#22D3EE,color:#ECFEFF,stroke-width:2px;
+  classDef participant fill:#4C1D95,stroke:#A78BFA,color:#F5F3FF,stroke-width:2px;
+  classDef proof fill:#14532D,stroke:#4ADE80,color:#F0FDF4,stroke-width:2px;
+  class INJECT,ORACLE,SCORER restricted;
+  class SOURCE source;
+  class RAW,FINDINGS analytical;
+  class DETECTOR participant;
+  class VERDICT proof;
+  style INSTRUCTOR fill:#4C0519,stroke:#FB7185,stroke-width:2px,color:#FFF1F2
+  style PARTICIPANT fill:#172554,stroke:#818CF8,stroke-width:2px,color:#EEF2FF
+```
 
 ## ⌘ Command surface
 
