@@ -1041,7 +1041,7 @@ Now construct the investigation contract:
 | Data guide |  |  |  |  |
 | Operational DDL |  |  |  |  |
 | Representative queries |  |  |  |  |
-| Foundation context-pack README |  |  |  |  |
+| Foundation context pack (A1) |  |  |  |  |
 
 Context is selected, not dumped. Exclude a source when it does not help answer
 the mission, when its authority is unclear, or when it would reveal later-module
