@@ -12,3 +12,6 @@ dbt/logs/
 dbt/dbt_packages/
 dbt/.user.yml
 tmp/
+
+# session output — regenerated each run, must never be mixed with live evidence
+storage/specs/*.md
