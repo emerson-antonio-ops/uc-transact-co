@@ -1,54 +1,57 @@
-# 08 — Reflection and Close
+# 08 — Distill the Practice
 
-Time: 21:55–22:00 · Mode: artifacts → learning loop
+## Session
 
-## Reflect from evidence
+**No agent.** Reflect from artifacts with the group.
 
-Use the claim ledger, ontology, trace, technical brief, and skill package. Do
-not answer from memory alone.
+## Why this step
 
-Ask:
+Reflection turns evidence into a reusable behavior. The team should leave with
+a practice it can apply to another brownfield system, not only a memory of the
+TransactCo example.
 
-1. What did we learn?
-2. Why does it matter?
-3. What decision follows?
-4. What breaks downstream if that decision is wrong?
-5. What remains manual and who owns it?
+## Structure
 
-## Expected synthesis
+```mermaid
+flowchart LR
+    A[Artifact] --> B[Lesson]
+    B --> C[Reusable practice]
+    C --> D[Owned next action]
 
-- A prompt establishes a work contract; it does not supply the world.
-- Context is selected evidence with provenance, freshness, and authority.
-- Postgres answers physical questions; ontology governs declared meaning.
-- Agentic Development is bounded tool use plus observation, verification, and
-  human gates.
-- Self-reported telemetry improves inspectability but is not independent proof.
-- The skill automates the investigation method, not the business decision.
-
-## Personal takeaway
-
-Each participant completes:
-
-```text
-The practice I can reuse is:
-I would use it when:
-The artifact it should produce is:
-The evidence I would require is:
-The human decision it cannot make is:
+    classDef evidence fill:#DCFCE7,stroke:#16A34A,color:#14532D
+    classDef meaning fill:#EDE9FE,stroke:#7C3AED,color:#3B0764
+    classDef action fill:#DBEAFE,stroke:#2563EB,color:#172554
+    class A evidence
+    class B,C meaning
+    class D action
 ```
 
-## Final gate
+Explain briefly:
 
-- [ ] The group can explain the difference between physical data and semantic meaning.
-- [ ] At least one assumption was rejected with evidence.
-- [ ] At least one question was escalated to an owner.
-- [ ] The technical brief remains honest about unresolved meaning.
-- [ ] The reusable skill was validated.
+- Prompt establishes the contract.
+- Context and tools produce evidence.
+- Ontology and humans govern meaning.
+- Telemetry, briefs, and skills preserve the method.
 
-## Close
+## Ask the room
 
-> Today we learned to interview the system before changing it. Next, we use
-> that grounded understanding to construct controlled analytical work.
+1. What evidence changed our understanding?
+2. What decision remains human, and who owns it?
+3. Which part of this method will you reuse next?
 
-Return to the [canonical Day 1 runbook](README.md#final-completion-gate) and
-confirm every completion item.
+Each participant completes only:
+
+```text
+A prática que vou reutilizar é:
+A evidência que vou exigir é:
+A decisão que o agente não pode tomar é:
+```
+
+## Gate
+
+The group can name one evidence-backed lesson, one unresolved owner, and one
+reusable practice.
+
+Close with:
+
+> We interviewed the system before changing it. Now we can build from evidence.

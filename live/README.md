@@ -1,49 +1,53 @@
 # Live Session Guides
 
-This folder is the executable teaching surface for Semana. Facilitator and
-participants use the same files: every checkpoint states what we are trying to
-learn, what the agent may do, what to run, what evidence to inspect, and what
-must be true before continuing.
+This folder is the executable teaching surface for Semana. The deck introduces
+one idea; the repository tests it; the evidence decides whether the sequence
+can continue.
 
-## Start here
+Start with [`d1/README.md`](d1/README.md).
 
-- [`d1/README.md`](d1/README.md) — canonical three-hour Day 1 sequence
-- [`d1/00-setup.md`](d1/00-setup.md) — preflight and environment gate
-- [`d1/01-weak-prompt.md`](d1/01-weak-prompt.md) — experience the prompt failure
-- [`d1/02-investigation-contract.md`](d1/02-investigation-contract.md) — bound the work
-- [`d1/03-context-inventory.md`](d1/03-context-inventory.md) — select context and provenance
-- [`d1/04-ontology.md`](d1/04-ontology.md) — Postgres versus ontology reveal
-- [`d1/05-agentic-investigation.md`](d1/05-agentic-investigation.md) — controlled work and trace
-- [`d1/06-technical-brief.md`](d1/06-technical-brief.md) — durable evidence package
-- [`d1/07-skill-reveal.md`](d1/07-skill-reveal.md) — automate the practiced method
-- [`d1/08-reflection.md`](d1/08-reflection.md) — close the learning loop
+## Teaching loop
 
-## The teaching loop
+```mermaid
+flowchart LR
+    A[Explain one concept] --> B[Run one bounded action]
+    B --> C[Show selected evidence]
+    C --> D{Gate passes?}
+    D -->|Yes| E[Name the learning]
+    D -->|No| F[Keep failure visible]
 
-```text
-DECK: create one question
-  -> DEMO: test it against TransactCo
-  -> EVIDENCE: inspect the result or visible failure
-  -> DECK: name the canonical concept
-  -> ARTIFACT: preserve what became true
-  -> REFLECTION: state what remains unresolved
+    classDef concept fill:#EDE9FE,stroke:#7C3AED,color:#3B0764
+    classDef action fill:#DBEAFE,stroke:#2563EB,color:#172554
+    classDef evidence fill:#DCFCE7,stroke:#16A34A,color:#14532D
+    classDef gate fill:#FEF3C7,stroke:#D97706,color:#78350F
+    classDef stop fill:#FEE2E2,stroke:#DC2626,color:#7F1D1D
+    class A,E concept
+    class B action
+    class C evidence
+    class D gate
+    class F stop
 ```
 
-Use these transition lines consistently:
+## Presentation rule
 
-- Into the demo: **“We could debate this, but let’s test it.”**
-- Back to the concept: **“Now let’s separate what looked impressive from what became provably true.”**
-- Into the skill reveal: **“We have practiced the method manually. Now let’s encode the method.”**
+- Explain the diagram and at most three points.
+- Paste one prompt or run one command group.
+- Show only the evidence named by the checkpoint.
+- Do not read complete agent responses aloud.
+- Advance only after the gate is visible.
 
-## Non-negotiable safety boundary
+## Safety boundary
 
-- Day 1 investigation is read-only against Postgres and DuckDB.
-- Agent writes are limited to `tmp/foundation-investigation/`.
-- Do not run `make inject`, `make inject-quiet`, `make reveal`, `make score`,
-  or inspect instructor-control implementation during Day 1.
-- Do not place secrets, connection strings, personal data, or complete rows in
-  prompts, traces, or documentation.
-- Prepared fallback outputs must always be labeled **prepared**, never live.
+- Operational investigation is read-only.
+- Durable documents go only to the explicitly authorized file under
+  `storage/specs/`.
+- Temporary telemetry and skill packages stay under
+  `tmp/foundation-investigation/`.
+- Do not inspect instructor-control surfaces or run injection, reveal, scoring,
+  reset, or source mutations during the live sequence.
+- Never put secrets, connection strings, personal data, or complete rows in
+  prompts or artifacts.
+- Label fallbacks **prepared**.
 
-The planning source is [`../plan/semana.md`](../plan/semana.md). The live Day 1
-runbook is the operational source for what to do on screen.
+The planning source is [`../plan/semana.md`](../plan/semana.md); the Day 1
+runbook is the operational source for what happens on screen.

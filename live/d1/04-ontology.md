@@ -1,138 +1,104 @@
-# 04 — Postgres Versus Ontology
+# 04 — Separate Data from Meaning
 
-Time: 20:25–21:00 · Slides 8–9 · Mode: Postgres → ontology CLI → agent
+## Session
 
-## Question
+**CONTINUE — Session C.** Do not start a new session.
 
-Can the database return a precise result while the system still lacks a
-defensible answer?
+## Why this step
 
-## Authority boundary
+Postgres can calculate precise physical aggregates. Ontology records whether
+the organization has authorized their meaning, which decisions are missing,
+and who owns them.
 
-- Read-only Postgres queries.
-- Physical evidence first; ontology is revealed second.
-- No business policy may be invented.
-- Candidate relationships remain inferred when constraints or authoritative
-  declarations are absent.
+## Structure
 
-## Part A — Ask Postgres
+```mermaid
+flowchart LR
+    A[Postgres measurement] --> B[Candidate value]
+    B --> C[Ontology meaning and provenance]
+    C --> D{Policy complete?}
+    D -->|No| E[Finance-owned decision]
 
-Paste into the agent:
-
-```text
-Using only the confirmed contract, approved physical context, and read-only
-Postgres access, investigate yesterday’s candidate payment amount in UTC.
-First inspect the available payment statuses. Then return the aggregate count
-and sum by status for the previous completed UTC calendar day. Show the exact
-query and evidence. Separate the physical result from every assumption needed
-to call it Revenue. Do not inspect the ontology yet and do not choose a revenue
-policy.
+    classDef system fill:#DBEAFE,stroke:#2563EB,color:#172554
+    classDef evidence fill:#DCFCE7,stroke:#16A34A,color:#14532D
+    classDef meaning fill:#EDE9FE,stroke:#7C3AED,color:#3B0764
+    classDef human fill:#FEF3C7,stroke:#D97706,color:#78350F
+    class A system
+    class B evidence
+    class C meaning
+    class D,E human
 ```
 
-Terminal fallback:
+Explain briefly:
 
-```bash
-make psql-ro
-```
+- The database answers what is stored.
+- The ontology records what a concept means, its provenance, and its owner.
+- A controlled refusal is safer than silently selecting a metric.
 
-```sql
-\pset pager off
-\timing on
-BEGIN TRANSACTION READ ONLY;
+## Show the physical answer first
 
-SELECT status, count(*) AS payment_rows, sum(amount) AS amount_sum
-FROM public.payments
-GROUP BY status
-ORDER BY status;
+Open only the one-screen summary and reconciliation from `1-context.md`. Ask:
 
-WITH bounds AS (
-  SELECT
-    (date_trunc('day', now() AT TIME ZONE 'UTC') - interval '1 day')
-      AT TIME ZONE 'UTC' AS start_utc,
-    date_trunc('day', now() AT TIME ZONE 'UTC')
-      AT TIME ZONE 'UTC' AS end_utc
-)
-SELECT
-  p.status,
-  count(*) AS payment_rows,
-  sum(p.amount) AS amount_sum
-FROM public.payments AS p
-CROSS JOIN bounds AS b
-WHERE p.paid_at >= b.start_utc
-  AND p.paid_at < b.end_utc
-GROUP BY p.status
-ORDER BY p.status;
+> Which additional business decision would let us call one candidate Revenue?
 
-SELECT count(*) AS declared_foreign_keys
-FROM pg_constraint
-WHERE connamespace = 'public'::regnamespace
-  AND contype = 'f';
+Do not run more exploratory SQL. Checkpoint 03 already preserved the physical
+evidence.
 
-COMMIT;
-\q
-```
-
-Ask the room why none of these are yet authorized:
-
-- captured amount equals Revenue;
-- captured minus refunded equals Revenue;
-- `paid_at` is the recognition timestamp;
-- UTC is the Finance reporting timezone;
-- a column join is a guaranteed business relationship.
-
-## Part B — Ask the ontology
-
-Explain the vocabulary:
-
-- Entity — something with identity.
-- Event — something that happened at a business time.
-- Relationship — a typed connection.
-- Rule — a declared constraint or invariant.
-- Concept — shared business meaning.
-- Provenance — evidence supporting an assertion.
-- Owner — authority to decide unresolved meaning.
-
-Run:
+## Reveal the ontology
 
 ```bash
 uv run transactco ontology validate
-uv run transactco ontology list
 uv run transactco ontology explain Revenue
-uv run transactco ontology explain Revenue --json
 ```
 
-Then paste:
+Show only four lines from the explanation:
+
+- status;
+- answer;
+- owner;
+- required decisions.
+
+## Paste
 
 ```text
-You may now inspect src/transactco/domain/transactco.ontology.json and the
-output of `uv run transactco ontology explain Revenue --json`. Re-answer the
-CFO’s question using both the physical query evidence and the ontology.
-Separate: what the database proves, what the ontology currently declares,
-which candidate inputs exist, which business decisions block a defensible
-Revenue metric, and who owns those decisions. A controlled refusal is valid.
-Do not invent a policy to make the answer complete.
+Agora inspecione `src/transactco/domain/transactco.ontology.json` e a saída de
+`transactco ontology explain Revenue`. Compare com
+`storage/specs/1-context.md` sem executar novas consultas.
+
+Escreva somente `storage/specs/2-ontology.md`, com no máximo 700 palavras e
+quatro seções: Physical evidence, Ontology declaration, Missing decisions,
+Human gate. Inclua uma tabela de no máximo 6 linhas separando: banco comprova,
+ontologia declara, decisão ausente e responsável.
+
+Mantenha Revenue como `unresolved` e o documento como `pending human review`.
+Não invente políticas. Responda em português do Brasil com no máximo 100
+palavras.
 ```
 
-## Aha moment
+## Show the evidence
 
-> Postgres gave us more data. Ontology gave us a safer answer.
-
-`blocked_by_business_decisions` is the expected high-quality result. Finance
-owns recognition, statuses, adjustments, currency, and timezone policy.
-
-Ask the agent to preserve the observation:
-
-```text
-Write the ontology observations, evidence references, and owned unresolved
-questions to tmp/foundation-investigation/manual/ontology-notes.md. Keep the
-status pending human review.
+```bash
+sed -n '/^## Physical evidence/,/^## Ontology declaration/p' \
+  storage/specs/2-ontology.md | sed -n '1,40p'
+rg -n '^## |unresolved|BLOCKED|Finance|pending human review|banco comprova|ontologia declara|decisão ausente|responsável' \
+  storage/specs/2-ontology.md | sed -n '1,24p'
 ```
 
-## Proof that counts
+Ask only:
 
-- The physical aggregate is visible and reproducible.
-- The assumptions needed to label it Revenue are explicit.
-- Ontology entities and relationships have provenance and status.
-- `Payment may_contribute_to Revenue` remains unresolved with a Finance owner.
+1. What did Postgres prove?
+2. What did ontology add?
+3. Who can unblock the concept?
+
+Say:
+
+> Postgres gave us a measurement. Ontology showed why it is not yet Revenue.
+
+## Gate
+
+- The physical candidate still points to reproducible evidence.
+- Ontology is `unresolved` and names the Finance owner.
+- No missing policy was invented.
+- `2-ontology.md` stays within its output budget.
 
 Next: [`05-agentic-investigation.md`](05-agentic-investigation.md).

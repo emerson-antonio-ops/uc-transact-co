@@ -1,69 +1,89 @@
-# 02 — Investigation Contract
+# 02 — Turn the Prompt into a Contract
 
-Time: 19:30–19:50 · Slide 5 · Mode: group → agent
+## Session
 
-## Question
+**NEW — Session B, contract design.** Stop this session after confirmation.
 
-What must be agreed before an agent is allowed to interview an existing
-system?
+## Why this step
 
-## Explain why
+The investigation contract turns an open-ended request into agreed work. It
+defines outcome, authority, evidence, artifacts, and the point where a human
+must decide.
 
-| Contract element | Failure it prevents |
-| --- | --- |
-| Objective and outcome | Impressive work that solves the wrong problem |
-| Scope and exclusions | Silent expansion into unrelated or sensitive systems |
-| Allowed tools | Tool use without authority |
-| Prohibited actions | Accidental mutation or spoiler exposure |
-| Required evidence | Unsupported claims presented as truth |
-| Output artifacts | Knowledge trapped in chat history |
-| Stop conditions | The agent inventing decisions it cannot own |
+## Structure
 
-## Grill the frontier
+```mermaid
+flowchart LR
+    A[Business question] --> B[Investigation contract]
+    B --> C{Human confirms?}
+    C -->|Yes| D[Tools may be used later]
+    C -->|No| E[Revise or stop]
+
+    classDef prompt fill:#EDE9FE,stroke:#7C3AED,color:#3B0764
+    classDef contract fill:#DBEAFE,stroke:#2563EB,color:#172554
+    classDef human fill:#FEF3C7,stroke:#D97706,color:#78350F
+    classDef stop fill:#FEE2E2,stroke:#DC2626,color:#7F1D1D
+    class A prompt
+    class B contract
+    class C,D human
+    class E stop
+```
+
+Explain briefly:
+
+- Tools discover physical facts; humans authorize business meaning.
+- Confirmation is a gate, not a polite summary.
+- The same structure works whenever a team enters an unfamiliar system.
 
 Ask the room:
 
-1. What exact outcome does the CFO need?
-2. Which systems and time window are in scope?
-3. What may the agent inspect or write?
-4. What evidence would support or falsify a claim?
-5. Which decisions need a business owner?
-6. What ends or pauses the investigation?
+1. What outcome is needed?
+2. What may the agent inspect or change?
+3. What evidence would make a claim defensible?
+4. Which ambiguity requires an owner?
 
-## Paste
+## Propose the contract
 
 ```text
-Do not investigate yet. Draft an investigation contract for this question:
-“How much revenue did TransactCo make yesterday, and why should the CFO trust
-that number?”
+Ainda não investigue. Para a pergunta “Qual foi a Receita da TransactCo ontem e
+por que o CFO deveria confiar nesse número?”, proponha um contrato compacto.
 
-The contract must contain: objective, expected outcome, in-scope systems and
-time window, explicit exclusions, allowed tools, prohibited actions, evidence
-required, output artifacts, and stop or escalation conditions. Use these
-defaults unless the facilitator changes them:
+Use uma única tabela com no máximo 8 linhas: objetivo, resultado, escopo,
+exclusões, autoridade de ferramentas, evidência, artefatos e condição de parada.
+Considere Postgres `public.*` como fonte primária, somente leitura; exclua
+DuckDB, dbt, analytics, ontologia, `_control`, injection, scoring e superfícies
+do instrutor. Nenhuma escrita ou ferramenta antes da confirmação.
 
-- inspect only the approved repository paths and local teaching databases;
-- run read-only queries only;
-- write artifacts only under tmp/foundation-investigation/manual/;
-- do not inspect _control, injection, scoring, or instructor-only surfaces;
-- do not modify source code, schemas, operational data, or infrastructure;
-- label material claims as fact, inference, decision, or question;
-- stop when business meaning requires an accountable owner.
-
-Return the proposed contract and wait for explicit confirmation before using
-tools.
+Use no máximo 300 palavras, responda em português do Brasil e aguarde.
 ```
 
-Review it with the room. Change missing or incorrect clauses. Then paste:
+Review one row at a time. Then confirm:
 
 ```text
-Contract confirmed. Do not widen it without asking.
+Contrato confirmado com quatro esclarecimentos:
+
+1. “Ontem” é inicialmente o último dia-calendário UTC completo, apenas como
+   janela técnica; o dia de negócio permanece uma questão.
+2. Na primeira bifurcação sobre Receita, registre candidatos físicos, não
+   escolha nenhum e escale ao responsável financeiro.
+3. Cada checkpoint autorizará explicitamente seus próprios artefatos.
+4. Nenhuma ampliação de escopo é permitida sem confirmação humana.
+
+Responda com um checklist de no máximo 6 linhas confirmando o entendimento.
+Não use ferramentas, não escreva arquivos e pare.
 ```
 
-## Proof that counts
+## Show the evidence
 
-- No investigative tool was used before confirmation.
-- The contract names objective, authority, evidence, output, and stops.
-- Participants can name the failure prevented by each clause.
+Point to four contract rows only: scope, authority, evidence, and stop. Ask:
+
+> What failure from checkpoint 01 does each row prevent?
+
+## Gate
+
+- The agent used no tool and wrote no file.
+- The human explicitly confirmed the contract.
+- Postgres is physical authority; Finance remains semantic authority.
+- Session B is stopped.
 
 Next: [`03-context-inventory.md`](03-context-inventory.md).

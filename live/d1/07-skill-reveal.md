@@ -1,98 +1,93 @@
-# 07 — Reveal `interview-the-system`
+# 07 — Encode the Method as a Skill
 
-Time: 21:38–21:55 · Mode: manual method → reusable automation
+## Session
 
-## Question
+**NEW — Session D, skill validation.** Do not reuse Session C.
 
-We practiced the method manually. Can we make the next investigation start
-with the same boundaries, evidence discipline, ontology, and human gate?
+## Why this step
 
-## Say
+The aha moment is not that a skill finds a magical answer. It packages the
+questions, boundaries, evidence contract, validation, and human stop that the
+room has already practiced.
 
-> We have practiced the method manually: grill, contract, context, physical
-> evidence, ontology, trace, and human review. Now let’s encode the method.
+## Structure
 
-Open [`../../skills/interview-the-system/SKILL.md`](../../skills/interview-the-system/SKILL.md)
-and show the workflow headings.
+```mermaid
+flowchart LR
+    A[Manual practice] --> B[Reusable skill]
+    B --> C[Structural validator]
+    C --> D{Semantic review}
+    D --> E[Human owner]
 
-Name the six capabilities the room has already practiced: prompt contracting,
-context selection, system interviewing, ontology modeling, trajectory
-inspection, and technical briefing. They now compose into one skill rather than
-six disconnected prompt snippets.
-
-## Paste — repository-readable form
-
-```text
-Read skills/interview-the-system/SKILL.md and apply it to this request:
-“Investigate how TransactCo can answer how much Revenue it made yesterday and
-why that answer should be trusted.”
-
-Use the already approved Day 1 context and evidence, re-run only the read-only
-checks needed for freshness, and write the complete evidence package under
-tmp/foundation-investigation/skill/. Begin with the frontier grill and proposed
-investigation contract. Wait for my confirmation before investigative tool use.
+    classDef practice fill:#EDE9FE,stroke:#7C3AED,color:#3B0764
+    classDef artifact fill:#DBEAFE,stroke:#2563EB,color:#172554
+    classDef evidence fill:#DCFCE7,stroke:#16A34A,color:#14532D
+    classDef human fill:#FEF3C7,stroke:#D97706,color:#78350F
+    class A practice
+    class B artifact
+    class C evidence
+    class D,E human
 ```
 
-## Paste — installed-skill form
+Explain briefly:
 
-```text
-$interview-the-system Investigate how TransactCo can answer how much Revenue it
-made yesterday and why that answer should be trusted. Write the evidence
-package under tmp/foundation-investigation/skill/.
+- Automation preserves a practiced method; it does not create authority.
+- Structural validation checks completeness, not business correctness.
+- A fresh session proves the workflow is carried by artifacts and skill
+  instructions rather than hidden chat memory.
+
+Show only the workflow headings:
+
+```bash
+rg -n '^## ' skills/interview-the-system/SKILL.md
 ```
 
-Confirm the contract only after comparing it with the room’s decisions.
-
-Expected package:
+## Start the skill
 
 ```text
-tmp/foundation-investigation/skill/
-├── investigation.json
-├── technical-brief.md
-└── trace.jsonl
+Leia `skills/interview-the-system/SKILL.md` e aplique a skill para investigar
+como a TransactCo pode responder qual foi sua Receita ontem e por que o CFO
+deveria confiar na resposta.
+
+Use `storage/specs/1-context.md`, `storage/specs/2-ontology.md` e
+`storage/specs/3-technical-brief.md` como contexto aprovado. Apresente o grill
+e o contrato proposto em uma única tabela de no máximo 8 linhas e 250 palavras.
+Aguarde confirmação antes de usar ferramentas ou escrever arquivos. Responda
+em português do Brasil.
 ```
 
-The trace is optional. If present, it remains self-reported unless an
-independent collector produced it.
+After comparing the proposed contract with the manual method, confirm:
 
-## Validate
+```text
+Contrato confirmado. Execute somente as verificações de leitura necessárias
+para confirmar atualidade e escreva o pacote em
+`tmp/foundation-investigation/skill/`. Preserve Revenue como decisão humana
+não resolvida. No chat, responda com no máximo 6 bullets e 150 palavras.
+```
 
-With a trace:
+## Validate and show
 
 ```bash
 python3 skills/interview-the-system/scripts/validate_investigation.py \
   tmp/foundation-investigation/skill/investigation.json \
   tmp/foundation-investigation/skill/technical-brief.md \
   tmp/foundation-investigation/skill/trace.jsonl
+
+find tmp/foundation-investigation/skill -maxdepth 1 -type f -print | sort
 ```
 
-Without a trace:
+Show only `CHECK_INVESTIGATION=PASS`, the three package files, and one open
+Finance-owned decision.
 
-```bash
-python3 skills/interview-the-system/scripts/validate_investigation.py \
-  tmp/foundation-investigation/skill/investigation.json \
-  tmp/foundation-investigation/skill/technical-brief.md
-```
+Say:
 
-Inspect both manual and automated artifacts:
+> The skill automates the discipline. A human still owns the meaning.
 
-```bash
-find tmp/foundation-investigation -maxdepth 2 -type f -print | sort
-```
+## Gate
 
-## Aha moment
-
-> The skill is not a magical answer. It is the practiced method packaged with
-> boundaries, artifacts, validation, and a human stop.
-
-`CHECK_INVESTIGATION=PASS` proves structural completeness only. It does not
-approve a Revenue definition or replace Finance.
-
-## Proof that counts
-
-- The skill begins with a frontier grill and waits for confirmation.
-- The evidence package is structurally valid.
-- Facts have evidence; questions and decisions have owners.
-- `Revenue` remains unresolved until human semantic review.
+- The skill waited for confirmation.
+- Validation passes structurally.
+- Facts have evidence and open decisions have owners.
+- The fresh session reaches the same human stop.
 
 Next: [`08-reflection.md`](08-reflection.md).

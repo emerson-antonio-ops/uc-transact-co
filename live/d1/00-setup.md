@@ -1,72 +1,78 @@
-# 00 — Environment and Business Tension
+# 00 — Establish the Baseline
 
-Time: 19:00–19:15 · Slides 1–3 · Mode: deck → repository
+## Session
 
-## Question
+**No agent.** Use the terminal only.
 
-> How much revenue did TransactCo make yesterday, and why should the CFO trust
-> that number?
+## Why this step
 
-Before answering, prove that the inherited system is healthy, inspectable, and
-safe to investigate.
+Before asking the system a business question, prove that the environment is
+available and record the revision being investigated. Health is necessary, but
+health does not define Revenue.
 
-## Authority boundary
+## Structure
 
-- Shell and repository inspection only; no agent investigation yet.
-- Read-only inspection of the clean teaching environment.
-- Do not run injection, reveal, scoring, reset, or source mutations.
+```mermaid
+flowchart LR
+    A[Healthy system] --> B[Data is available]
+    B --> C{Meaning defined?}
+    C -->|Not yet| D[Revenue remains unresolved]
 
-## Facilitator preflight
+    classDef system fill:#DBEAFE,stroke:#2563EB,color:#172554
+    classDef evidence fill:#DCFCE7,stroke:#16A34A,color:#14532D
+    classDef stop fill:#FEE2E2,stroke:#DC2626,color:#7F1D1D
+    class A system
+    class B evidence
+    class C,D stop
+```
 
-Run before participants join:
+Explain briefly:
+
+- `doctor` proves connectivity and safety checks.
+- `status` proves that the four operational entities contain data.
+- Neither command supplies a Finance-owned definition.
+
+## Backstage preflight
+
+Run once before the audience joins. `make bootstrap` rebuilds generated data,
+so use it only with a disposable teaching environment.
 
 ```bash
-cd /Users/luanmorenomaciel/GitHub/uc-transact-co
 git status --short
 git rev-parse --short HEAD
 make bootstrap
-make status
 uv run transactco ontology validate
 python3 /Users/luanmorenomaciel/.codex/skills/.system/skill-creator/scripts/quick_validate.py skills/interview-the-system
+mkdir -p storage/specs
 mkdir -p tmp/foundation-investigation/manual
 mkdir -p tmp/foundation-investigation/skill
 ```
 
-`make bootstrap` replaces the generated warehouse. Use it only for the clean
-teaching baseline, never over work that must be preserved.
-
-## Run live
+## Do live
 
 ```bash
-pwd
 git rev-parse --short HEAD
 make doctor
 make status
 ```
 
-Show only the repository’s top-level structure and the four source entities.
-Do not explain their full relationships yet.
+Show only:
 
-## Say
+1. the recorded revision;
+2. `ready` from the environment;
+3. Customers, Products, Orders, and Payments;
+4. the fact that row counts are evidence of availability, not meaning.
 
-> The first half of the CFO’s question asks for SQL. The second asks for
-> semantics, evidence, system boundaries, and operational safety.
+Say:
 
-## Follow along
+> The system is healthy. The business answer is still undefined.
 
-Record:
+## Gate
 
-1. The four source entities.
-2. The operational and analytical systems.
-3. One reason a precise result could still be wrong.
-4. One reason analytics could harm the operational store.
-
-## Proof that counts
-
-- `make doctor` reports the environment ready.
-- `make status` shows Customers, Products, Orders, and Payments.
-- Participants can explain that availability and row counts do not establish
-  a Revenue definition.
+- Environment is ready.
+- The four entities are visible.
+- No defect was injected or instructor surface inspected.
+- The room can explain why health is not semantic trust.
 
 ## Recovery
 
@@ -75,7 +81,6 @@ make up
 make doctor
 ```
 
-For a disposable local teaching volume only, use the destructive recovery in
-the [canonical runbook](README.md#recovery-matrix).
+Use `make reset` only for a disposable local volume; it destroys the database.
 
 Next: [`01-weak-prompt.md`](01-weak-prompt.md).
