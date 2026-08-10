@@ -1,0 +1,9 @@
+# The warehouse is the single file at the repo root. dbt runs from this
+# directory, so the path is relative to dbt/, not to the repo root.
+transactco:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: ../warehouse.duckdb
+      threads: 4

@@ -1,0 +1,24 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: transactco-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-transactco}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-transactco}
+      POSTGRES_DB: ${POSTGRES_DB:-transactco}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - ./infra/postgres/init:/docker-entrypoint-initdb.d:ro
+      - transactco_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U ${POSTGRES_USER:-transactco} -d ${POSTGRES_DB:-transactco}
+      interval: 3s
+      timeout: 3s
+      retries: 30
+
+volumes:
+  transactco_pgdata:

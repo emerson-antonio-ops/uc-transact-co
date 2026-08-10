@@ -1,0 +1,25 @@
+# Plumbing only. No models ship with this repo -- staging, intermediate and
+# marts are built live during the week.
+name: transactco
+version: 0.1.0
+config-version: 2
+
+profile: transactco
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+test-paths: ["tests"]
+
+clean-targets:
+  - target
+  - dbt_packages
+
+models:
+  transactco:
+    staging:
+      +materialized: view
+    intermediate:
+      +materialized: view
+    marts:
+      +materialized: table
