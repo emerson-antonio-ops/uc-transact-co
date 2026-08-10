@@ -45,14 +45,14 @@ green by association.
 | Promised capability | Repository evidence | Validation gate | Current status |
 | --- | --- | --- | --- |
 | Postgres starts with the source schema applied | `docker-compose.yml`; `infra/postgres/init/01_schema.sql` | Fresh-volume `make up`; `make doctor` | **VALIDATED** |
-| Correlated business data can be generated from a clean baseline | `src/transactco/seed.py` | `make seed`; baseline assertions; row-count inspection | **VALIDATED** |
-| All 14 designed defect types can be injected | `src/transactco/defects.py` | Every injector run independently; `SCENARIO=all` produced 14 incident records | **VALIDATED** |
+| Correlated business data can be generated from a clean baseline | `src/transactco/operational/seed.py` | `make seed`; baseline assertions; row-count inspection | **VALIDATED** |
+| All 14 designed defect types can be injected | `src/transactco/control/evaluation/injection.py` | Every injector run independently; `SCENARIO=all` produced 14 incident records | **VALIDATED** |
 | Instructor truth is recorded in `_control.injected_incidents` | `infra/postgres/init/02_control.sql`; injection code | `make inject`; control-table inspection | **VALIDATED** |
 | The analytical role cannot read the oracle or write to the source | `infra/postgres/init/03_roles.sql` | Explicit denied read and denied write checks | **VALIDATED** |
-| `make land` carries `public.*` from Postgres to DuckDB through a read-only attachment | `src/transactco/land.py` | Four-table Postgres/DuckDB count parity | **VALIDATED** |
-| Oracle data is not copied into DuckDB | landing allowlist; `src/transactco/verify.py` | `make verify` oracle-inventory check | **VALIDATED** |
+| `make land` carries `public.*` from Postgres to DuckDB through a read-only attachment | `src/transactco/analytical/landing.py` | Four-table Postgres/DuckDB count parity | **VALIDATED** |
+| Oracle data is not copied into DuckDB | landing allowlist; `src/transactco/control/verification.py` | `make verify` oracle-inventory check | **VALIDATED** |
 | The raw layer is ready while student-built layers remain absent | `warehouse.duckdb` raw schema; empty dbt model tree | `dbt parse`; warehouse inventory | **VALIDATED** |
-| The scoring contract can evaluate a detector without supplying one | `src/transactco/score.py` | Perfect-fixture score returned precision, recall, and F1 of 1.0 | **VALIDATED** |
+| The scoring contract can evaluate a detector without supplying one | `src/transactco/control/evaluation/scoring.py` | Perfect-fixture score returned precision, recall, and F1 of 1.0 | **VALIDATED** |
 | A clean machine has one documented construction-and-proof path | `make bootstrap` | Setup, health, clean warehouse, seed, land, tests, dbt shell, and verification complete; detector count is zero | **VALIDATED** |
 
 Conclusion: the **released base-project functional contract is complete,

@@ -17,13 +17,27 @@ from rich.padding import Padding
 from rich.panel import Panel
 from rich.table import Table
 
+from .analytical.landing import run_land, verify_seal
 from .config import load_settings
-from .db import SOURCE_TABLES, admin_connection, column_exists, fetch_all, fetch_one, wait_for_postgres
-from .defects import ALL_DEFECTS, DEFECT_REGISTRY, SCENARIOS, clear_answer_key, load_answer_key, run_injection
-from .land import run_land, verify_seal
-from .score import DetectionsMissing, run_score
-from .seed import assert_baseline_is_clean, run_seed
-from .verify import run_verification
+from .control.evaluation.injection import (
+    ALL_DEFECTS,
+    DEFECT_REGISTRY,
+    SCENARIOS,
+    clear_answer_key,
+    load_answer_key,
+    run_injection,
+)
+from .control.evaluation.scoring import DetectionsMissing, run_score
+from .control.verification import run_verification
+from .operational.postgres import (
+    SOURCE_TABLES,
+    admin_connection,
+    column_exists,
+    fetch_all,
+    fetch_one,
+    wait_for_postgres,
+)
+from .operational.seed import assert_baseline_is_clean, run_seed
 
 console = Console()
 

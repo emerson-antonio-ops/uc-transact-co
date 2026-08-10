@@ -6,10 +6,10 @@ from dataclasses import dataclass
 
 import duckdb
 
-from .config import Settings
-from .db import SOURCE_TABLES, admin_connection, fetch_one
-from .land import verify_seal
-from .seed import assert_baseline_is_clean
+from ..analytical.landing import verify_seal
+from ..config import Settings
+from ..operational.postgres import SOURCE_TABLES, admin_connection, fetch_one
+from ..operational.seed import assert_baseline_is_clean
 
 
 @dataclass(frozen=True)

@@ -35,8 +35,15 @@ from typing import Callable
 
 import psycopg
 
-from .config import Settings
-from .db import admin_connection, column_exists, execute, fetch_all, fetch_column, fetch_one
+from ...config import Settings
+from ...operational.postgres import (
+    admin_connection,
+    column_exists,
+    execute,
+    fetch_all,
+    fetch_column,
+    fetch_one,
+)
 
 GHOST_ID_OFFSET = 500_000
 ID_BLOCK = 1_000_000

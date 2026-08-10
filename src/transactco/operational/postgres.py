@@ -7,7 +7,7 @@ from typing import Any, Iterator
 
 import psycopg
 
-from .config import Settings
+from ..config import Settings
 
 SOURCE_TABLES = ("customers", "products", "orders", "payments")
 

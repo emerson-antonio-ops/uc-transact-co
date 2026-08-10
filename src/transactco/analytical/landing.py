@@ -28,8 +28,8 @@ from datetime import datetime, timezone
 import duckdb
 import psycopg
 
-from .config import Settings
-from .db import SOURCE_TABLES, readonly_connection
+from ..config import Settings
+from ..operational.postgres import SOURCE_TABLES, readonly_connection
 
 RAW_SCHEMA = "raw"
 ANALYTICS_SCHEMA = "analytics"

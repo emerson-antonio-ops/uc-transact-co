@@ -4,8 +4,8 @@ import unittest
 from datetime import datetime, timedelta, timezone
 
 from transactco.cli import _format_utc
-from transactco.defects import ALL_DEFECTS, DEFECT_REGISTRY, SCENARIOS
-from transactco.score import _family
+from transactco.control.evaluation.injection import ALL_DEFECTS, DEFECT_REGISTRY, SCENARIOS
+from transactco.control.evaluation.scoring import _family
 
 
 class DefectContractTests(unittest.TestCase):

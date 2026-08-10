@@ -28,8 +28,8 @@ from itertools import accumulate
 
 import psycopg
 
-from .config import Settings
-from .db import admin_connection, column_exists, execute, fetch_one
+from ..config import Settings
+from .postgres import admin_connection, column_exists, execute, fetch_one
 
 CENT = Decimal("0.01")
 

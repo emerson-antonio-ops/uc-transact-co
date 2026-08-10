@@ -309,7 +309,10 @@ at a non-disposable database.
 | Surface | Audience | Purpose |
 | --- | --- | --- |
 | [`infra/postgres/init/`](infra/postgres/init/) | Builders | Executable schema, control plane, and role boundaries |
-| [`src/transactco/`](src/transactco/) | Builders | Seeder, landing, failure generator, scorer, CLI, and verification |
+| [`src/transactco/domain/`](src/transactco/domain/) | Builders | Package boundary for entities, relationships, and invariants |
+| [`src/transactco/operational/`](src/transactco/operational/) | Builders | Postgres access and deterministic source generation |
+| [`src/transactco/analytical/`](src/transactco/analytical/) | Builders | Read-only source crossing and DuckDB landing |
+| [`src/transactco/control/`](src/transactco/control/) | Builders | Verification, evaluation, scoring, and future telemetry |
 | [`plan/semana.md`](plan/semana.md) | Facilitators | Storytelling, session design, delivery gates, context pack, and runbook |
 
 Session material — the participant context pack, the facilitation runbook, and

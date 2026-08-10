@@ -36,8 +36,8 @@ from datetime import datetime, timezone
 import duckdb
 from psycopg.types.json import Jsonb
 
-from .config import Settings
-from .db import admin_connection, execute, fetch_all
+from ...config import Settings
+from ...operational.postgres import admin_connection, execute, fetch_all
 
 
 def _family(defect_type: str) -> str:
