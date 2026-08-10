@@ -1,0 +1,4 @@
+interface:
+  display_name: "Interview the System"
+  short_description: "Turn unclear questions into grounded investigations"
+  default_prompt: "Use $interview-the-system to turn this system question into a bounded, evidence-backed investigation."

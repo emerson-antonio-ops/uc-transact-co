@@ -1,0 +1,189 @@
+{
+  "name": "TransactCo",
+  "version": "0.1.0",
+  "status": "pending human review",
+  "description": "A small semantic bridge over the TransactCo operational model. Physical structures are cited; business meaning remains unresolved where the system cannot decide it.",
+  "evidence_sources": [
+    {
+      "id": "operational-schema",
+      "location": "infra/postgres/init/01_schema.sql",
+      "authority": "Current physical Postgres tables, columns, indexes, comments, and deliberately absent constraints."
+    },
+    {
+      "id": "seed-behavior",
+      "location": "src/transactco/operational/seed.py",
+      "authority": "Current synthetic-data generation behavior and clean-baseline checks."
+    }
+  ],
+  "entities": [
+    {
+      "name": "Customer",
+      "status": "evidenced",
+      "source": "public.customers",
+      "identifier": "customer_id",
+      "description": "A customer record in the operational store.",
+      "evidence_references": ["operational-schema"]
+    },
+    {
+      "name": "Product",
+      "status": "evidenced",
+      "source": "public.products",
+      "identifier": "product_id",
+      "description": "A product record whose price is current rather than historical.",
+      "evidence_references": ["operational-schema"]
+    },
+    {
+      "name": "Order",
+      "status": "evidenced",
+      "source": "public.orders",
+      "identifier": "order_id",
+      "description": "A denormalized operational order-line record.",
+      "evidence_references": ["operational-schema"]
+    },
+    {
+      "name": "Payment",
+      "status": "evidenced",
+      "source": "public.payments",
+      "identifier": "payment_id",
+      "description": "A payment attempt or capture received from a PSP webhook.",
+      "evidence_references": ["operational-schema"]
+    }
+  ],
+  "concepts": [
+    {
+      "name": "OrderValue",
+      "status": "inferred",
+      "description": "The amount stored on an order line after the generated discount calculation.",
+      "candidate_inputs": ["Order.total_amount"],
+      "evidence_references": ["operational-schema", "seed-behavior"]
+    },
+    {
+      "name": "Revenue",
+      "status": "unresolved",
+      "description": "A business metric that cannot be defined safely from physical table and column names alone.",
+      "owner": "Finance owner",
+      "candidate_inputs": [
+        "Payment.amount",
+        "Payment.status",
+        "Payment.paid_at",
+        "Order.total_amount",
+        "Order.status",
+        "Order.ordered_at"
+      ],
+      "questions": [
+        {
+          "question": "Which payment and order statuses contribute to revenue?",
+          "owner": "Finance owner"
+        },
+        {
+          "question": "Is revenue recognized at order, payment, settlement, fulfillment, or another event?",
+          "owner": "Finance owner"
+        },
+        {
+          "question": "How are refunds, returns, cancellations, discounts, fees, and taxes treated?",
+          "owner": "Finance owner"
+        },
+        {
+          "question": "Which currency and business-timezone policies govern aggregation?",
+          "owner": "Finance owner"
+        }
+      ],
+      "evidence_references": ["operational-schema", "seed-behavior"]
+    }
+  ],
+  "events": [
+    {
+      "name": "OrderRecorded",
+      "status": "inferred",
+      "entity": "Order",
+      "timestamp": "ordered_at",
+      "evidence_references": ["operational-schema"]
+    },
+    {
+      "name": "PaymentCaptured",
+      "status": "inferred",
+      "entity": "Payment",
+      "timestamp": "paid_at",
+      "condition": "status = 'captured'",
+      "evidence_references": ["operational-schema", "seed-behavior"]
+    },
+    {
+      "name": "PaymentRefunded",
+      "status": "inferred",
+      "entity": "Payment",
+      "timestamp": "paid_at",
+      "condition": "status = 'refunded'",
+      "evidence_references": ["operational-schema", "seed-behavior"]
+    }
+  ],
+  "relationships": [
+    {
+      "subject": "Customer",
+      "predicate": "places",
+      "object": "Order",
+      "status": "inferred",
+      "physical_join": "public.orders.customer_id = public.customers.customer_id",
+      "evidence_references": ["operational-schema", "seed-behavior"],
+      "note": "The join path and generator behavior exist, but Postgres does not enforce a foreign key."
+    },
+    {
+      "subject": "Order",
+      "predicate": "contains",
+      "object": "Product",
+      "status": "inferred",
+      "physical_join": "public.orders.product_id = public.products.product_id",
+      "evidence_references": ["operational-schema", "seed-behavior"],
+      "note": "The join path and generator behavior exist, but Postgres does not enforce a foreign key."
+    },
+    {
+      "subject": "Order",
+      "predicate": "has_payment_record",
+      "object": "Payment",
+      "status": "inferred",
+      "physical_join": "public.orders.order_id = public.payments.order_id",
+      "evidence_references": ["operational-schema", "seed-behavior"],
+      "note": "This establishes a physical association, not settlement or revenue recognition."
+    },
+    {
+      "subject": "Order",
+      "predicate": "has_candidate_value",
+      "object": "OrderValue",
+      "status": "inferred",
+      "evidence_references": ["operational-schema", "seed-behavior"]
+    },
+    {
+      "subject": "Payment",
+      "predicate": "may_contribute_to",
+      "object": "Revenue",
+      "status": "unresolved",
+      "owner": "Finance owner",
+      "questions": [
+        "Which statuses and recognition event define inclusion?",
+        "How must reversals and commercial adjustments be applied?"
+      ],
+      "evidence_references": ["operational-schema", "seed-behavior"],
+      "note": "Candidate data exists; the business contract does not."
+    }
+  ],
+  "rules": [
+    {
+      "name": "NoDeclaredForeignKeys",
+      "status": "evidenced",
+      "description": "The operational schema deliberately omits foreign-key constraints.",
+      "evidence_references": ["operational-schema"]
+    },
+    {
+      "name": "CleanBaselinePaymentParity",
+      "status": "evidenced",
+      "description": "On the generated clean baseline, payment amount is expected to equal order total amount to the cent.",
+      "applies_when": "Before a defect is injected",
+      "evidence_references": ["seed-behavior"]
+    },
+    {
+      "name": "BusinessTimeDiffersFromIngestionTime",
+      "status": "evidenced",
+      "description": "Business timestamps and ingestion timestamps represent different moments and must not be silently substituted.",
+      "evidence_references": ["operational-schema"]
+    }
+  ]
+}

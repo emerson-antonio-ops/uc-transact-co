@@ -1,47 +1,69 @@
-# 02 - Investigation Contract (Checkpoint B: Prompt contrast)
+# 02 — Investigation Contract
 
-Act 2 - Why prompts matter (19:15-19:40)
+Time: 19:30–19:50 · Slide 5 · Mode: group → agent
 
 ## Question
 
-If a prompt is a contract for the next piece of work, what does the contract
-for this investigation need to say?
+What must be agreed before an agent is allowed to interview an existing
+system?
 
-## Authority boundary
+## Explain why
 
-- Read-only repository and database access.
-- The agent must not modify the database or application code.
-- The agent must stop and ask when a conclusion requires business authority.
+| Contract element | Failure it prevents |
+| --- | --- |
+| Objective and outcome | Impressive work that solves the wrong problem |
+| Scope and exclusions | Silent expansion into unrelated or sensitive systems |
+| Allowed tools | Tool use without authority |
+| Prohibited actions | Accidental mutation or spoiler exposure |
+| Required evidence | Unsupported claims presented as truth |
+| Output artifacts | Knowledge trapped in chat history |
+| Stop conditions | The agent inventing decisions it cannot own |
 
-## Run this
+## Grill the frontier
 
-Build it with the audience clause by clause (objective, context, questions,
-tools, authority, evidence, output, stopping), then paste:
+Ask the room:
+
+1. What exact outcome does the CFO need?
+2. Which systems and time window are in scope?
+3. What may the agent inspect or write?
+4. What evidence would support or falsify a claim?
+5. Which decisions need a business owner?
+6. What ends or pauses the investigation?
+
+## Paste
 
 ```text
-Investigate how TransactCo represents revenue. Use the approved repository
-context and read-only database access. Identify the relevant entities,
-relationships, business invariants, operational risks, and unresolved business
-questions. Support every important claim with a repository path, schema object,
-or query. Clearly label facts, inferences, decisions, and open questions. Do not
-modify the database or application code. Stop and ask when a conclusion requires
-business authority rather than technical evidence.
+Do not investigate yet. Draft an investigation contract for this question:
+“How much revenue did TransactCo make yesterday, and why should the CFO trust
+that number?”
+
+The contract must contain: objective, expected outcome, in-scope systems and
+time window, explicit exclusions, allowed tools, prohibited actions, evidence
+required, output artifacts, and stop or escalation conditions. Use these
+defaults unless the facilitator changes them:
+
+- inspect only the approved repository paths and local teaching databases;
+- run read-only queries only;
+- write artifacts only under tmp/foundation-investigation/manual/;
+- do not inspect _control, injection, scoring, or instructor-only surfaces;
+- do not modify source code, schemas, operational data, or infrastructure;
+- label material claims as fact, inference, decision, or question;
+- stop when business meaning requires an accountable owner.
+
+Return the proposed contract and wait for explicit confirmation before using
+tools.
+```
+
+Review it with the room. Change missing or incorrect clauses. Then paste:
+
+```text
+Contract confirmed. Do not widen it without asking.
 ```
 
 ## Proof that counts
 
-- The room can explain why each clause exists and predict the failure it
-  prevents, by contrast with the weak-prompt run.
-- Artifact produced: Investigation Prompt v1 (this file's prompt, plus any
-  clause the room added live).
+- No investigative tool was used before confirmation.
+- The contract names objective, authority, evidence, output, and stops.
+- Participants can name the failure prevented by each clause.
 
-## If it fails
-
-Use the saved structured-prompt output from the speaker notes for the
-comparison, labeled as prepared.
-
-## Skill distilled
-
-Complete
-[`../../skills/d1/S1-prompt-as-contract.md`](../../skills/d1/S1-prompt-as-contract.md)
-using the weak-versus-structured contrast as evidence.
+Next: [`03-context-inventory.md`](03-context-inventory.md).

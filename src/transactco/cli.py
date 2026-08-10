@@ -9,6 +9,7 @@ opens the oracle.
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from datetime import timezone
 
@@ -29,6 +30,7 @@ from .control.evaluation.injection import (
 )
 from .control.evaluation.scoring import DetectionsMissing, run_score
 from .control.verification import run_verification
+from .domain import OntologyError, explain_concept, list_nodes, load_ontology
 from .operational.postgres import (
     SOURCE_TABLES,
     admin_connection,
@@ -416,6 +418,85 @@ def cmd_clear(args) -> int:
     return 0
 
 
+def _ontology_from_args(args):
+    try:
+        return load_ontology(args.path)
+    except OntologyError as exc:
+        console.print(f"[red]{exc}[/red]")
+        return None
+
+
+def cmd_ontology_validate(args) -> int:
+    ontology = _ontology_from_args(args)
+    if ontology is None:
+        console.print("ONTOLOGY=INVALID")
+        return 1
+    console.print(
+        f"[green]valid structure[/green] — {ontology['name']} {ontology['version']} "
+        f"· [yellow]{ontology['status']}[/yellow]"
+    )
+    console.print("[dim]Structural validity does not replace semantic human review.[/dim]")
+    console.print("ONTOLOGY=VALID")
+    return 0
+
+
+def cmd_ontology_list(args) -> int:
+    ontology = _ontology_from_args(args)
+    if ontology is None:
+        return 1
+    table = Table(show_header=True, header_style="bold")
+    table.add_column("type")
+    table.add_column("name")
+    table.add_column("status")
+    table.add_column("source / candidate inputs")
+    table.add_column("owner")
+    for node in list_nodes(ontology):
+        status = node["status"]
+        rendered_status = f"[yellow]{status}[/yellow]" if status == "unresolved" else status
+        table.add_row(node["type"], node["name"], rendered_status, node["source"], node["owner"])
+    console.print(table)
+    return 0
+
+
+def cmd_ontology_explain(args) -> int:
+    ontology = _ontology_from_args(args)
+    if ontology is None:
+        return 1
+    try:
+        result = explain_concept(ontology, args.concept)
+    except OntologyError as exc:
+        console.print(f"[red]{exc}[/red]")
+        return 1
+
+    if args.as_json:
+        print(json.dumps(result, indent=2, ensure_ascii=False))
+        return 0
+
+    blocked = result["answerability"] == "blocked_by_business_decisions"
+    boundary = (
+        "[yellow]BLOCKED BY BUSINESS DECISIONS[/yellow]"
+        if blocked
+        else f"[green]{result['answerability']}[/green]"
+    )
+    console.print(Panel.fit(f"TransactCo ontology · {result['name']}", style="bold magenta"))
+    console.print(f"  status       [bold]{result['status']}[/bold]")
+    console.print(f"  answer       {boundary}")
+    console.print(f"  owner        {result['owner']}")
+    console.print(f"  meaning      {result['description']}")
+    console.print("\n  [bold]candidate physical inputs[/bold]")
+    for candidate in result["candidate_inputs"]:
+        console.print(f"    · {candidate}")
+    console.print("\n  [bold]required decisions[/bold]")
+    for decision in result["required_decisions"]:
+        console.print(f"    · {decision['question']} [dim]— {decision['owner']}[/dim]")
+    if blocked:
+        console.print(
+            "\n  [yellow]The database can return a number; the ontology refuses to call it "
+            "Revenue until these decisions are owned.[/yellow]"
+        )
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="transactco", description="TransactCo brownfield base")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -455,6 +536,29 @@ def build_parser() -> argparse.ArgumentParser:
 
     clear = sub.add_parser("clear-key", help="empty the answer key without touching public.*")
     clear.set_defaults(func=cmd_clear)
+
+    ontology = sub.add_parser(
+        "ontology", help="inspect the semantic boundary above the physical database"
+    )
+    ontology_sub = ontology.add_subparsers(dest="ontology_command", required=True)
+
+    ontology_validate = ontology_sub.add_parser(
+        "validate", help="validate structure without claiming semantic approval"
+    )
+    ontology_validate.add_argument("--path", help="use a different ontology JSON file")
+    ontology_validate.set_defaults(func=cmd_ontology_validate)
+
+    ontology_list = ontology_sub.add_parser("list", help="list ontology entities and concepts")
+    ontology_list.add_argument("--path", help="use a different ontology JSON file")
+    ontology_list.set_defaults(func=cmd_ontology_list)
+
+    ontology_explain = ontology_sub.add_parser(
+        "explain", help="explain a concept and expose required business decisions"
+    )
+    ontology_explain.add_argument("concept", help="concept name, for example Revenue")
+    ontology_explain.add_argument("--path", help="use a different ontology JSON file")
+    ontology_explain.add_argument("--json", action="store_true", dest="as_json")
+    ontology_explain.set_defaults(func=cmd_ontology_explain)
 
     return parser
 

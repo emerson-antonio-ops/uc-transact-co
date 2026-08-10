@@ -1,64 +1,83 @@
-# 05 - Agentic Investigation (Checkpoint E: Agentic investigation)
+# 05 — Agentic Investigation and Telemetry
 
-Act 5 - Why Agentic Development and telemetry matter (21:00-21:35)
+Time: 21:00–21:22 · Slides 10–11 · Mode: deck → agent → trace
 
 ## Question
 
-The final answer cannot prove how the work was done. Can we make the
-investigation itself inspectable?
+The final response cannot prove how the work was performed. Can we inspect the
+trajectory from objective to evidence to human gate?
+
+## Explain why
+
+```text
+objective -> context -> tool -> observation -> claim -> verification
+          -> human decision -> durable artifact
+```
+
+Agentic Development is controlled tool-mediated work, not a longer chat.
 
 ## Authority boundary
 
-The minimum Foundation Investigation authority:
+- Read approved repository sources.
+- Run approved read-only queries.
+- Write only under `tmp/foundation-investigation/manual/`.
+- Do not modify operational data, schema, source code, or infrastructure.
+- Do not make business decisions.
+- Escalate ambiguity to its named owner.
 
-- read repository files from the approved context;
-- run approved read-only queries;
-- write the Foundation Investigation documentation artifacts;
-- do not modify operational data;
-- do not make business decisions;
-- escalate ambiguity to the facilitator or named owner.
+## Telemetry truth boundary
 
-Honesty rule: until a live emitter is implemented and rehearsed, this is a
-manual demonstration of the telemetry contract. Say so. Do not present it as
-automated instrumentation.
+This trace is emitted by the investigating agent. It is **self-reported
+telemetry**, useful for inspection but not independent proof. Say this aloud.
 
-## Run this
+## Paste
 
 ```text
-Run the revenue investigation under the investigation contract, with this
-addition: emit a JSONL telemetry event for every significant action, following
-the investigation telemetry contract. Allowed event types: session_started,
-phase_started, context_loaded, repository_inspected, query_executed,
-claim_proposed, claim_verified, claim_rejected, question_opened,
-artifact_updated, gate_evaluated, session_completed. Each event must carry:
-timestamp, run_id, actor, phase, action, ontology_entity (nullable),
-evidence_reference, outcome, duration_ms. Never record passwords, connection
-strings, personal data, or complete database rows - use query identifiers,
-aggregate counts, and file paths. When a claim fails verification, emit
-claim_rejected and keep the rejection visible. When a conclusion requires
-business authority, emit question_opened and escalate instead of deciding.
-At the end, emit session_completed and print a summary: context sources used,
-queries executed, claims verified and rejected, questions escalated, and
-artifacts updated.
+Continue the confirmed revenue investigation. Perform controlled, read-only
+work and emit one JSON object per significant action to:
+tmp/foundation-investigation/manual/trace.jsonl
+
+Each event must contain: timestamp, run_id, actor, phase, action, target,
+ontology_entity (nullable), evidence_references (array), outcome, and
+duration_ms. Emit events for context loading, repository inspection, query
+execution, claim proposal, verification, rejection, question escalation,
+artifact update, gate evaluation, and completion.
+
+Never record secrets, connection strings, personal data, complete rows, or
+secret-bearing prompts. Include at least one assumption that is tested and
+rejected, plus at least one question escalated to its human owner. Keep all
+database actions read-only and all writes under
+tmp/foundation-investigation/manual/.
+
+At completion, summarize sources used, queries executed, claims verified,
+claims rejected, questions escalated, and artifacts written. Clearly label the
+trace as self-reported telemetry.
 ```
+
+## Inspect
+
+```bash
+wc -l tmp/foundation-investigation/manual/trace.jsonl
+sed -n '1,8p' tmp/foundation-investigation/manual/trace.jsonl
+rg -n 'rejected|question|escalat|gate' tmp/foundation-investigation/manual/trace.jsonl
+```
+
+## Follow along
+
+Locate one tool use, verified claim, rejected claim, escalated question, and
+human gate.
 
 ## Proof that counts
 
-- The event stream shows tools, claims, evidence, and escalations.
-- At least one rejected assumption is visible in the trace.
-- At least one escalation to human authority is visible in the trace.
-- The facilitator can reconstruct from the trace which sources and decisions
-  produced the conclusions.
-- Artifact produced: Foundation Investigation Trace.
+- The trajectory connects actions to evidence.
+- A rejected assumption remains visible.
+- A missing business decision is escalated rather than invented.
+- Nobody claims independent telemetry collection.
 
-## If it fails
+## Recovery
 
-Use the recorded JSONL trace, labeled as prepared, and walk the same
-reconstruction exercise.
+Inspect a rehearsed JSONL trace labeled **prepared**. A malformed live trace is
+also useful evidence: keep the failure visible and explain the contract it
+violated.
 
-## Skill distilled
-
-Fill
-[`../../skills/d1/S3-system-interviewing.md`](../../skills/d1/S3-system-interviewing.md)
-and
-[`../../skills/d1/S5-trajectory-inspection.md`](../../skills/d1/S5-trajectory-inspection.md).
+Next: [`06-technical-brief.md`](06-technical-brief.md).

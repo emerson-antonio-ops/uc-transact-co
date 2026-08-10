@@ -1,48 +1,71 @@
-# 03 - Context Inventory (Checkpoint C: Context inventory)
+# 03 — Deliberate Context and Claim Ledger
 
-Act 3 - Why context matters (19:40-20:15)
+Time: 19:50–20:15 · Slides 6–7 · Mode: repository → agent
 
 ## Question
 
-The model knows what an order usually means. How does it learn what
-TransactCo means by revenue - and how do we know which source taught it?
+The model knows what an order usually means. Which evidence teaches it what
+TransactCo actually stores, and which source is authorized to define meaning?
 
-## Authority boundary
+## Explain why
 
-- The agent receives only the distributed context pack (business brief, data
-  guide, operational DDL, read-only access instructions) - selected, in a
-  deliberate order, not the whole repository.
-- Read-only queries only.
+The prompt defines the work. Context supplies the world. Context engineering is
+selection, ordering, provenance, freshness, and authority—not dumping the whole
+repository into the model.
 
-## Run this
+## Approved context for this phase
 
-First inventory the sources with the room: for each one, why is it included,
-what can it answer, what can it not answer. Then paste:
+| Order | Source | Can support | Cannot decide |
+| ---: | --- | --- | --- |
+| 1 | `README.md` | Business tension and published system boundary | Revenue policy |
+| 2 | `infra/postgres/init/01_schema.sql` | Current physical schema | Business meaning of column names |
+| 3 | `src/transactco/operational/seed.py` | Generated baseline behavior | Production policy |
+| 4 | `src/transactco/operational/postgres.py` | Current source access implementation | Finance decisions |
+| 5 | Read-only Postgres queries | Runtime physical evidence | Semantic authorization |
+
+Do not approve `src/transactco/domain/` yet. It is revealed after the physical
+query.
+
+## Paste
 
 ```text
-You have been given, in order: the TransactCo business brief, the data guide,
-the operational DDL at infra/postgres/init/01_schema.sql, and read-only
-database access. Using only these sources, build an evidence ledger for the
-revenue investigation. For each entry record: an ID, the statement, its status
-(fact, inference, decision, or question), the exact source that supports it
-(file path, schema object, or query), and the next action. Before using any
-source, state which source you are opening and why. Do not use knowledge that
-is not grounded in a listed source. If two sources disagree, record the
-disagreement as a question instead of resolving it yourself.
+The investigation contract is confirmed. Before answering the CFO, build a
+deliberate context inventory using only these approved sources, in this order:
+
+1. README.md
+2. infra/postgres/init/01_schema.sql
+3. src/transactco/operational/seed.py
+4. src/transactco/operational/postgres.py
+5. approved read-only Postgres queries
+
+Do not inspect src/transactco/domain/, _control, injection, scoring, or any
+instructor-only surface yet.
+
+For each context source record its location, purpose, kind (current, proposed,
+derived, or external), freshness, authority, and what it cannot decide. Then
+build a claim ledger. For every material statement record an ID, statement,
+classification (fact, inference, decision, or question), evidence reference,
+owner when required, and next action. Do not answer the revenue question yet.
+Write the result to:
+tmp/foundation-investigation/manual/context-and-claims.md
 ```
+
+## Inspect
+
+```bash
+sed -n '1,260p' tmp/foundation-investigation/manual/context-and-claims.md
+```
+
+## Follow along
+
+Pick one fact and one inference. For each, identify its source, authority,
+freshness, and falsification test.
 
 ## Proof that counts
 
-- Every claim in the ledger points to a named source.
-- The room can point to the context source that changed or supported at least
-  one specific conclusion.
-- Artifact produced: Context Inventory and Evidence Ledger.
+- Every fact points to reproducible evidence.
+- Inferences remain labeled.
+- Business decisions have owners.
+- Revenue semantics remain unresolved.
 
-## If it fails
-
-Switch to the prepared context-inventory snapshot and review it live.
-
-## Skill distilled
-
-Fill
-[`../../skills/d1/S2-context-selection.md`](../../skills/d1/S2-context-selection.md).
+Next: take the break, then open [`04-ontology.md`](04-ontology.md).

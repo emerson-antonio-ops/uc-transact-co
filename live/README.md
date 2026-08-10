@@ -1,60 +1,49 @@
-# Live - Follow-Along Process
+# Live Session Guides
 
-This folder is the live spine of each session, one file per demo checkpoint.
-Each file bundles everything one checkpoint needs: the slide question, the
-authority boundary, the exact prompt or commands, and the proof that counts.
-The deck creates a question, a checkpoint file tests it, and a skill card in
-[`../skills/`](../skills/) records what became reusable.
+This folder is the executable teaching surface for Semana. Facilitator and
+participants use the same files: every checkpoint states what we are trying to
+learn, what the agent may do, what to run, what evidence to inspect, and what
+must be true before continuing.
 
-## The loop, every act
+## Start here
+
+- [`d1/README.md`](d1/README.md) — canonical three-hour Day 1 sequence
+- [`d1/00-setup.md`](d1/00-setup.md) — preflight and environment gate
+- [`d1/01-weak-prompt.md`](d1/01-weak-prompt.md) — experience the prompt failure
+- [`d1/02-investigation-contract.md`](d1/02-investigation-contract.md) — bound the work
+- [`d1/03-context-inventory.md`](d1/03-context-inventory.md) — select context and provenance
+- [`d1/04-ontology.md`](d1/04-ontology.md) — Postgres versus ontology reveal
+- [`d1/05-agentic-investigation.md`](d1/05-agentic-investigation.md) — controlled work and trace
+- [`d1/06-technical-brief.md`](d1/06-technical-brief.md) — durable evidence package
+- [`d1/07-skill-reveal.md`](d1/07-skill-reveal.md) — automate the practiced method
+- [`d1/08-reflection.md`](d1/08-reflection.md) — close the learning loop
+
+## The teaching loop
 
 ```text
-Slide ends with a question
-  -> Open the numbered checkpoint file for the current checkpoint
-  -> Read the header aloud: question, authority boundary, proof that counts
-  -> Paste the prompt into the agent (or run the commands) live
-  -> Inspect the evidence produced
-  -> Return to the deck and name the concept
-  -> Fill the matching skill card in ../skills/
+DECK: create one question
+  -> DEMO: test it against TransactCo
+  -> EVIDENCE: inspect the result or visible failure
+  -> DECK: name the canonical concept
+  -> ARTIFACT: preserve what became true
+  -> REFLECTION: state what remains unresolved
 ```
 
-Transition into a file: "We could debate this, but let's test it."
-Transition back to the deck: "Now let's separate what looked impressive from
-what became provably true."
+Use these transition lines consistently:
 
-## File anatomy
+- Into the demo: **“We could debate this, but let’s test it.”**
+- Back to the concept: **“Now let’s separate what looked impressive from what became provably true.”**
+- Into the skill reveal: **“We have practiced the method manually. Now let’s encode the method.”**
 
-Every checkpoint file has the same four sections, in this order:
+## Non-negotiable safety boundary
 
-1. **Question** - what the slide just asked. State it before switching apps.
-2. **Authority boundary** - what the agent may and may not do in this step.
-3. **Run this** - the exact prompt to paste, or the exact commands to run.
-4. **Proof that counts** - the evidence that closes the checkpoint. If the
-   live run fails, keep the failure visible; do not present a prepared
-   artifact as live output.
+- Day 1 investigation is read-only against Postgres and DuckDB.
+- Agent writes are limited to `tmp/foundation-investigation/`.
+- Do not run `make inject`, `make inject-quiet`, `make reveal`, `make score`,
+  or inspect instructor-control implementation during Day 1.
+- Do not place secrets, connection strings, personal data, or complete rows in
+  prompts, traces, or documentation.
+- Prepared fallback outputs must always be labeled **prepared**, never live.
 
-## Rules for every day
-
-- Investigation steps are read-only. Never run `make inject`, `make reveal`,
-  or `make score` during a foundation session.
-- Every important claim needs a repository path, schema object, or query.
-- The agent receives the distributed context pack, not this folder. These
-  files are for the humans following along.
-- Each act ends by distilling one skill card. Participants leave with the
-  full set for the day, not one summary card.
-
-## Day 1 - Foundation Investigation
-
-| Order | File | Checkpoint | Skill distilled |
-| --- | --- | --- | --- |
-| 0 | [`d1/00-setup.md`](d1/00-setup.md) | A - Environment | - |
-| 1 | [`d1/01-weak-prompt.md`](d1/01-weak-prompt.md) | B - Prompt contrast | [`S1`](../skills/d1/S1-prompt-as-contract.md) |
-| 2 | [`d1/02-investigation-contract.md`](d1/02-investigation-contract.md) | B - Prompt contrast | [`S1`](../skills/d1/S1-prompt-as-contract.md) |
-| 3 | [`d1/03-context-inventory.md`](d1/03-context-inventory.md) | C - Context inventory | [`S2`](../skills/d1/S2-context-selection.md) |
-| 4 | [`d1/04-ontology.md`](d1/04-ontology.md) | D - Ontology | [`S4`](../skills/d1/S4-ontology-modeling.md) |
-| 5 | [`d1/05-agentic-investigation.md`](d1/05-agentic-investigation.md) | E - Agentic investigation | [`S3`](../skills/d1/S3-system-interviewing.md), [`S5`](../skills/d1/S5-trajectory-inspection.md) |
-| 6 | [`d1/06-technical-brief.md`](d1/06-technical-brief.md) | F - Technical brief | [`S6`](../skills/d1/S6-technical-brief.md) |
-
-The canonical facilitation plan remains
-[`../plan/semana.md`](../plan/semana.md). If a prompt here and the plan
-disagree, fix the disagreement; do not improvise a third version live.
+The planning source is [`../plan/semana.md`](../plan/semana.md). The live Day 1
+runbook is the operational source for what to do on screen.
