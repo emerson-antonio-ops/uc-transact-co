@@ -1,13 +1,15 @@
 # Semana Engenharia Agentica - Facilitation and Delivery Plan
 
 - Status: living facilitator plan
-- Session: Day 1, 19:00-22:00, America/Sao_Paulo
+- Session: Foundation Investigation, 19:00-22:00, America/Sao_Paulo
 - Case: TransactCo - "the analytics are killing the store"
-Primary source: [`docs/semana-agentic-uc-transact-co-v2.pdf`](../docs/semana-agentic-uc-transact-co-v2.pdf)
+
+Historical source, preserved verbatim:
+[`docs/semana-agentic-uc-transact-co-v2.pdf`](../docs/semana-agentic-uc-transact-co-v2.pdf)
 
 ## 1. Purpose
 
-Day 1 must give participants enough concepts, data, and language to investigate
+Foundation Investigation must give participants enough concepts, data, and language to investigate
 an unfamiliar system before asking them to build anything on top of it.
 
 The teaching rule is:
@@ -27,20 +29,20 @@ prompt, select useful context, model the first business ontology, inspect the
 agent's trajectory through telemetry, and produce a technical brief for human
 review.
 
-Day 1 is successful when understanding becomes an inspectable engineering
+Foundation Investigation is successful when understanding becomes an inspectable engineering
 artifact. It is not measured by code volume.
 
 ## 1A. Base-project delivery contract and live alignment
 
 This section is the release gate between "Claude implemented it" and "we can
 teach from it." It separates the base project promised by the released Semana
-material from the additional assets required to facilitate Day 1. A green base
+material from the additional assets required to facilitate Foundation Investigation. A green base
 project does not make an unfinished presentation or unimplemented telemetry
 green by association.
 
 ### Released Semana base project
 
-| Promised capability | Repository evidence | Validation gate | Status on 2026-08-10 |
+| Promised capability | Repository evidence | Validation gate | Current status |
 | --- | --- | --- | --- |
 | Postgres starts with the source schema applied | `docker-compose.yml`; `infra/postgres/init/01_schema.sql` | Fresh-volume `make up`; `make doctor` | **VALIDATED** |
 | Correlated business data can be generated from a clean baseline | `src/transactco/seed.py` | `make seed`; baseline assertions; row-count inspection | **VALIDATED** |
@@ -53,32 +55,32 @@ green by association.
 | The scoring contract can evaluate a detector without supplying one | `src/transactco/score.py` | Perfect-fixture score returned precision, recall, and F1 of 1.0 | **VALIDATED** |
 | A clean machine has one documented construction-and-proof path | `make bootstrap` | Setup, health, clean warehouse, seed, land, tests, dbt shell, and verification complete; detector count is zero | **VALIDATED** |
 
-Conclusion: the **released base-project functional contract is complete and
-validated locally**. The code base may be used as the brownfield starting point
-for Day 1 after the facilitator reruns `make bootstrap` on the presentation
-machine. This does not yet mean that the baseline is versioned or published.
+Conclusion: the **released base-project functional contract is complete,
+validated locally, and versioned on `main`**. The code base may be used as the
+brownfield starting point for the Foundation Investigation after the facilitator
+reruns `make bootstrap` on the presentation machine.
 
-### Day 1 facilitation readiness
+### Foundation Investigation facilitation readiness
 
 These items are not part of the released data-platform base, but they are part
-of the Day 1 experience we have now chosen to deliver.
+of the Foundation Investigation experience we have now chosen to deliver.
 
-| Day 1 asset or capability | Current evidence | Gate before 19:00 | Status |
+| Foundation Investigation asset or capability | Current evidence | Gate before 19:00 | Status |
 | --- | --- | --- | --- |
-| Business, data, investigation, ontology, telemetry, brief, and reflection context | `docs/day-01/` | Facilitator content review and link check | **VALIDATED** |
+| Business, data, investigation, ontology, telemetry, brief, and reflection context | Appendix A of this plan | Facilitator content review and distribution check | **VALIDATED** |
 | Safe student investigation paths | `make psql-ro`; `make query-ro` | Prove reads succeed and writes fail | **VALIDATED** |
-| Recoverable versioned baseline | Current Git worktree contains untracked base-project files | Review intended file set, commit deliberately, and record the revision used for class | **NOT VERSIONED** |
+| Recoverable versioned baseline | Base project is committed to `main` | Record the exact revision used for the presentation | **VALIDATED** |
 | Minimal 12-slide story | Section 6 of this plan | Editable deck opens and rendered slides are inspected | **CONTENT READY; DECK NOT BUILT** |
-| Live telemetry | `docs/day-01/telemetry-contract.md` defines the contract | A real emitter produces a rehearsed trace, or the session explicitly teaches only the manual contract | **CONTRACT ONLY; NOT IMPLEMENTED** |
+| Live telemetry | Appendix A5 of this plan defines the contract | A real emitter produces a rehearsed trace, or the session explicitly teaches only the manual contract | **CONTRACT ONLY; NOT IMPLEMENTED** |
 | Weak-versus-structured prompt comparison | Planned in Acts 2 and 5 | Rehearse both paths; save known-good outputs | **REHEARSAL REQUIRED** |
 | Ontology v1 and technical-brief fallbacks | Templates and expected structures exist | Save presenter fallback artifacts | **FALLBACKS REQUIRED** |
-| Presentation-machine recovery | `docs/facilitator/day-01-runbook.md` | Cold rehearsal plus recovery rehearsal | **RUNBOOK READY; REHEARSAL REQUIRED** |
+| Presentation-machine recovery | Appendix B of this plan | Cold rehearsal plus recovery rehearsal | **RUNBOOK READY; REHEARSAL REQUIRED** |
 
-Therefore, do not call the **entire Day 1 delivery** 100% ready yet. It becomes
+Therefore, do not call the **entire Foundation Investigation delivery** 100% ready yet. It becomes
 ready only when one of these telemetry decisions is made and recorded:
 
 1. Implement and validate a live telemetry emitter before the session; or
-2. Deliberately scope Day 1 to constructing and inspecting the telemetry
+2. Deliberately scope Foundation Investigation to constructing and inspecting the telemetry
    contract manually, and remove any wording that claims live collection.
 
 The versioned snapshot, PowerPoint, fallback artifacts, and rehearsal gates must
@@ -87,22 +89,22 @@ base-project implementation gaps.
 
 ### Intentional adaptations from the released wording
 
-- The released Day 1 description mentions reading foreign keys. The source
+- The released Foundation Investigation description mentions reading foreign keys. The source
   database intentionally has no foreign-key or check constraints because the
   teaching fixture must admit invalid states. Participants will infer and test
   **candidate logical relationships** from names, values, cardinalities, and
   samples. We must not claim that physical foreign keys exist.
 - "Sealed oracle" means isolated from the `analytics_ro` role and excluded from
   DuckDB. It is not secret from the owner or administrator of the laptop. A
-  genuinely private Day 4 holdout requires a separate instructor-controlled
+  genuinely private Incident Exercise holdout requires a separate instructor-controlled
   environment or context boundary.
 - The released outline leans toward roughly 20% theory and 80% construction.
-  This plan deliberately uses about 45-50 minutes of framing because the Day 1
+  This plan deliberately uses about 45-50 minutes of framing because the Foundation Investigation
   brief added prompts, context, ontology, telemetry, and Agentic Development.
   The deck remains braided into live work rather than delivered as a one-hour
   lecture.
 
-### Scope that must remain absent before Day 1
+### Scope that must remain absent before Foundation Investigation
 
 Do not "complete" the project by adding the work participants are meant to
 construct: dbt staging/intermediate/mart models, the agent harness, detector,
@@ -118,9 +120,9 @@ condition, not a defect.
 | Converge Bootcamp | Compose the skills into an end-to-end operating method | "I can build and operate the machine." |
 
 The Semana teaches the generic practices underneath Converge without exposing
-the protected machinery during Days 1-4. Use verbs such as understand, ground,
+the protected machinery during the opening modules. Use verbs such as understand, ground,
 model, specify, decide, decompose, verify, execute, and learn. Do not teach pass
-counts or internal names on Day 1.
+counts or internal names during the Foundation Investigation.
 
 Presenter-only mapping:
 
@@ -135,19 +137,20 @@ Presenter-only mapping:
 | Capture telemetry | Execution evidence |
 | Reflect and distill | Learning loop |
 
-Day 1 may identify ADR candidates. It must not silently manufacture canonical
+Foundation Investigation may identify ADR candidates. It must not silently manufacture canonical
 ADRs. A decision becomes an ADR only when the choice, alternatives, trade-offs,
 evidence, and accountable owner are explicit.
 
 ## 3. Curriculum and reveal boundaries
 
-### Available on Day 1
+### Available on Foundation Investigation
 
 - The TransactCo business problem.
-- Approved repository paths and operational source code: `docs/day-01/`,
-  `infra/postgres/init/01_schema.sql`, and read-only inspection surfaces. Add
-  other paths only when the facilitator has confirmed they do not reveal
-  later-day material.
+- The context pack from Appendix A, distributed by the facilitator rather than
+  read from a repository path.
+- Approved operational source code: `infra/postgres/init/01_schema.sql` and
+  read-only inspection surfaces. Add other paths only when the facilitator has
+  confirmed they do not reveal later-module material.
 - The clean Postgres baseline.
 - The four-table data model.
 - Read-only investigation access.
@@ -157,7 +160,7 @@ evidence, and accountable owner are explicit.
 - The telemetry contract.
 - The technical-brief template.
 
-### Deliberately not taught or revealed on Day 1
+### Deliberately not taught or revealed on Foundation Investigation
 
 - Injected incidents or their exact mechanics.
 - The oracle reveal.
@@ -479,11 +482,11 @@ Objective
   -> Durable artifact
 ```
 
-The minimum Day 1 authority is:
+The minimum Foundation Investigation authority is:
 
 - read repository files;
 - run approved read-only queries;
-- write the Day 1 documentation artifacts;
+- write the Foundation Investigation documentation artifacts;
 - do not modify operational data;
 - do not make business decisions;
 - escalate ambiguity to the facilitator or named owner.
@@ -535,7 +538,7 @@ database rows, or secret-bearing prompts.
 
 ### Artifact
 
-Day 1 Investigation Trace.
+Foundation Investigation Trace.
 
 ### Proof
 
@@ -548,8 +551,8 @@ Time: 21:35-22:00
 
 ### Why
 
-Knowledge that exists only in a chat session cannot reliably guide tomorrow's
-engineering. Documentation makes evidence, decisions, ownership, and remaining
+Knowledge that exists only in a chat session cannot reliably guide the next
+module. Documentation makes evidence, decisions, ownership, and remaining
 uncertainty durable.
 
 ### Documentation categories
@@ -577,7 +580,7 @@ uncertainty durable.
 - Non-goals.
 - ADR candidates.
 
-### End-of-day reflection
+### End-of-session reflection
 
 Use telemetry and artifacts, not memory or vibes:
 
@@ -608,9 +611,9 @@ What remains manual:
 
 The skill card is a learning artifact, not an installable automation package.
 
-### Day 2 hook
+### Next Module hook
 
-> Today the agent learned to understand before it executed. Tomorrow we build
+> The investigation established understanding before execution. Next, we build
 > the rails that turn that understanding into controlled work.
 
 ## 13. Demo choreography
@@ -636,7 +639,7 @@ The skill card is a learning artifact, not an installable automation package.
 - Keep a prepared artifact for every demo, but do not present it as live output
   if the live run failed.
 
-## 14. Day 1 learner material to prepare
+## 14. Foundation Investigation learner material to prepare
 
 | Material | Audience | Purpose | Spoiler policy |
 | --- | --- | --- | --- |
@@ -646,14 +649,14 @@ The skill card is a learning artifact, not an installable automation package.
 | Investigation-prompt worksheet | Student | Construct the task contract | Safe |
 | Context-inventory worksheet | Student | Select and cite context | Safe |
 | Ontology worksheet | Student | Model entities, relationships, rules, provenance, owners | Safe |
-| Technical-brief template | Student | Produce the Day 1 artifact | Safe |
+| Technical-brief template | Student | Produce the Foundation Investigation artifact | Safe |
 | Telemetry contract | Student | Make the trajectory inspectable | Must prohibit secrets and PII |
 | Facilitation runbook | Instructor | Commands, timing, answers, fallbacks, recovery | Instructor only |
-| Oracle/injection guide | Instructor | Day 4 setup and scoring | Instructor only |
+| Oracle/injection guide | Instructor | Incident Exercise setup and scoring | Instructor only |
 
 ## 15. Repository readiness contract
 
-The implementation is not Day 1 ready because files exist. It is ready only when
+The implementation is not Foundation Investigation ready because files exist. It is ready only when
 the documented workflow succeeds from a clean environment and the documentation
 matches observed behavior.
 
@@ -680,14 +683,14 @@ make status
 - DuckDB does not contain `_control` or injected-incident tables.
 - Postgres and DuckDB row counts match after landing.
 - Re-landing does not delete student detections.
-- Status output reveals no Day 4 spoilers.
+- Status output reveals no Incident Exercise spoilers.
 - Reset and recovery commands work as documented.
 - Student documentation contains no required command that has not been executed
   successfully during rehearsal.
 
 ### Defect/scoring rehearsal
 
-Before Day 4, test every defect in isolation from a clean baseline:
+Before the Incident Exercise, test every defect in isolation from a clean baseline:
 
 ```text
 reset -> seed -> inject one defect -> land -> assert oracle truth -> reset
@@ -708,13 +711,13 @@ container. Therefore:
 
 - Describe the current design as a sealed analytical path or workflow seal.
 - Do not describe it as an adversarial security boundary.
-- Do not give the Day 4 detector agent repository-wide access to instructor code.
+- Do not give the Incident Exercise detector agent repository-wide access to instructor code.
 - For a genuinely private holdout, distribute instructor injection/scoring as a
   separate service, private repository, or instructor-controlled environment.
 - Keep student context and instructor truth physically separate before making a
   strong claim that the oracle is hidden.
 
-This boundary must be decided before Day 4. It does not block Day 1 if the
+This boundary must be decided before the Incident Exercise. It does not block the Foundation Investigation if the
 facilitator avoids exposing incident implementation details.
 
 ## 17. Validation and documentation workflow
@@ -739,7 +742,7 @@ This session acts as validator and documentation owner while Claude implements.
 - Check student/instructor information boundaries.
 - Keep README focused on project operation.
 - Keep this file as the canonical facilitation/storytelling plan.
-- Create Day 1 learner documents and facilitator runbook from this plan.
+- Create Foundation Investigation learner documents and facilitator runbook from this plan.
 - Update wording only after behavior is verified.
 - Re-run checks after every meaningful correction.
 
@@ -747,7 +750,7 @@ This session acts as validator and documentation owner while Claude implements.
 
 - "Implemented" means the code exists and has been inspected.
 - "Validated" means the behavior was executed successfully in this checkout.
-- "Day 1 ready" means the complete clean-room rehearsal passed.
+- "Foundation Investigation ready" means the complete clean-room rehearsal passed.
 - "Sealed" means the named role/path is denied; it does not imply a security
   boundary against the local environment owner.
 - "Deterministic" must identify any intentionally time-relative fields.
@@ -763,7 +766,7 @@ This session acts as validator and documentation owner while Claude implements.
 | 4 | Eval and loop engineering | Verification-driven execution | Detector, eval, execution trace, score | Result is measured against independent truth |
 | 5 | External authority and reviewed learning | Evidence review and synthesis | Capability map, lessons, next-stage plan | Claims survive expert and human review |
 
-Each day ends with the same reflection:
+Each session ends with the same reflection:
 
 ```text
 What did we believe?
@@ -775,9 +778,9 @@ What remains manual?
 What would the later machine automate?
 ```
 
-## 19. Final Day 1 gate
+## 19. Final Foundation Investigation gate
 
-Day 1 closes only when:
+Foundation Investigation closes only when:
 
 - The system is running and was investigated read-only.
 - The prompt's objective, authority, evidence, output, and stopping conditions are
@@ -789,4 +792,643 @@ Day 1 closes only when:
 - ADR candidates are identified without pretending they are approved decisions.
 - The human owner retains authority over unresolved business semantics.
 - Participants can name the skill they practiced.
-- The Day 2 hook is explicit: understanding now needs a controlled harness.
+- The Next Module hook is explicit: understanding now needs a controlled harness.
+
+## 20. Appendix A - Participant context pack
+
+These handout-ready sections are consolidated here so the facilitation plan
+remains the canonical source. Distribute only the relevant sections to
+participants or paste them into the approved agent context. Keep instructor
+truth and later-module mechanics outside that context.
+
+### A1. Context pack entry point
+
+This is a controlled investigation of an unfamiliar brownfield. The goal is not
+to build transformation models or autonomous agents. The goal is to understand
+TransactCo well enough to produce an evidence-backed technical brief through
+prompt design, context selection, ontology, and evidence.
+
+#### Learning outcome
+
+By the end of the session, you should be able to:
+
+- explain why a prompt is a work contract rather than a knowledge base;
+- select context deliberately instead of dumping files;
+- interview a system through documentation, schema, and read-only queries;
+- model entities, relationships, rules, events, provenance, and owners;
+- distinguish facts, inferences, decisions, and open questions;
+- inspect the work trajectory through safe telemetry;
+- produce a durable technical brief for human review.
+
+#### Context pack
+
+Read these in order:
+
+1. Business brief (A2)
+2. Data guide (A3)
+3. System investigation workbook (A4)
+4. Investigation telemetry contract (A5)
+5. Technical brief template (A6)
+6. Investigation reflection (A7)
+
+The repository contains material for the entire Semana. The foundation
+investigation intentionally uses only this context pack, the operational schema,
+representative data, and approved read-only commands. Incident injection,
+scoring, dbt models, the harness, and the execution loop belong to later modules.
+
+#### Working agreement
+
+- Read before changing.
+- Use read-only access during the investigation.
+- Support important claims with a path, schema object, or query.
+- Label inference as inference.
+- Do not invent business decisions.
+- Escalate questions that require an accountable owner.
+- Never put credentials, personal data, or complete rows in telemetry or notes.
+
+#### Investigation gate
+
+The investigation closes when the technical brief, ontology, evidence ledger,
+telemetry summary, and open questions have been reviewed by a human.
+
+### A2. Business brief
+
+
+#### Situation
+
+TransactCo is a high-volume e-commerce company. Store operations and analytical
+queries currently share the same Postgres database. The operational workload
+creates and updates customers, products, orders, and payments. The analytical
+workload scans and aggregates those records for reporting.
+
+The two workloads compete for the same resources. Heavy analytical work can
+affect store operations, while transactional traffic can make reporting slow or
+unpredictable.
+
+#### The CFO's question
+
+> How much revenue did we make yesterday, and why should I trust that number?
+
+The request contains two different problems:
+
+1. Calculate a number.
+2. Establish the meaning and evidence that make the number trustworthy.
+
+The foundation investigation focuses on the second problem before implementing
+a new analytical system.
+
+#### Known system boundary
+
+- Postgres is the operational source.
+- The relevant public tables are `customers`, `products`, `orders`, and
+  `payments`.
+- The initial investigation is read-only.
+- The supplied analytical crossing lands operational data into DuckDB; this
+  investigation examines that boundary rather than extending it.
+- Business meaning must survive that system crossing.
+
+#### Known stakeholders
+
+| Stakeholder | Concern |
+| --- | --- |
+| CFO | A revenue number with defensible meaning |
+| Store operations | Transactional reliability and responsiveness |
+| Data team | Reproducible transformations and quality evidence |
+| Engineering | Clear interfaces, permissions, and recovery paths |
+
+#### What is not decided for you
+
+The following are intentionally open until evidence or an accountable owner
+resolves them:
+
+- Which business event recognizes revenue?
+- Which payment and order statuses count?
+- How should refunds affect the metric?
+- Which timezone defines "yesterday"?
+- How should late-arriving data change a previously published number?
+- Who owns each semantic decision?
+
+These are not trivia questions. They are examples of the boundary between
+technical discovery and business authority.
+
+#### Investigation mission
+
+Understand the existing system, identify the evidence available, map its first
+ontology, document confirmed rules and unresolved decisions, and propose the
+questions that must be answered before building a trustworthy revenue model.
+
+### A3. Data guide
+
+
+This guide describes what the supplied columns are intended to represent. It
+does not give away every relationship or business invariant; validating those is
+part of the investigation.
+
+The executable source of schema truth is
+[`infra/postgres/init/01_schema.sql`](../infra/postgres/init/01_schema.sql).
+
+#### `public.customers`
+
+| Column | Intended meaning |
+| --- | --- |
+| `customer_id` | Internal customer identifier |
+| `full_name` | Display name |
+| `email` | Contact email as received from the source |
+| `country`, `city` | Customer location attributes |
+| `segment` | Commercial customer segment |
+| `signup_date` | Business date of registration |
+| `is_active` | Current active flag |
+| `created_at`, `updated_at` | Source lifecycle timestamps |
+| `ingested_at` | Time the row reached this database |
+
+#### `public.products`
+
+| Column | Intended meaning |
+| --- | --- |
+| `product_id` | Internal product identifier |
+| `sku` | Commercial stock-keeping identifier |
+| `product_name`, `category` | Catalog description |
+| `price` | Current selling price in the source catalog |
+| `cost` | Current product cost in the source catalog |
+| `is_active` | Current catalog availability flag |
+| `created_at`, `updated_at` | Source lifecycle timestamps |
+| `ingested_at` | Time the row reached this database |
+
+#### `public.orders`
+
+| Column | Intended meaning |
+| --- | --- |
+| `order_id` | Internal order-row identifier |
+| `customer_id` | Customer reference supplied by the source |
+| `product_id` | Product reference supplied by the source |
+| `quantity` | Ordered quantity |
+| `unit_price` | Price recorded on the order |
+| `discount` | Discount recorded on the order |
+| `total_amount` | Total recorded by the order system |
+| `status` | Current order status supplied by the source |
+| `channel` | Order acquisition channel |
+| `ordered_at` | Business time of the order |
+| `updated_at` | Last source update time |
+| `ingested_at` | Time the row reached this database |
+
+#### `public.payments`
+
+| Column | Intended meaning |
+| --- | --- |
+| `payment_id` | Internal payment-attempt identifier |
+| `order_id` | Order reference supplied by the payment source |
+| `amount` | Payment amount reported by the source |
+| `method` | Payment method |
+| `status` | Payment status |
+| `paid_at` | Business time associated with the payment event |
+| `ingested_at` | Time the row reached this database |
+
+#### Time vocabulary
+
+- **Business time** describes when something happened in the domain, such as
+  `ordered_at` or `paid_at`.
+- **Source lifecycle time** describes when a record was created or updated in an
+  operational system.
+- **Ingestion time** describes when the row reached the database being inspected.
+
+These timestamps answer different questions and must not be silently substituted
+for one another.
+
+#### Investigation questions
+
+- Which references behave like real relationships in the current data?
+- Which statuses appear, and how frequently?
+- Which timestamps are relevant to the CFO's question?
+- Which numerical fields reconcile, and under what conditions?
+- Which statements are supported by schema alone?
+- Which statements require queries or business ownership?
+
+### A4. System investigation workbook
+
+
+#### 1. Prompt as a work contract
+
+Start with the deliberately weak request:
+
+> Analyze this database and explain revenue.
+
+Record what is missing:
+
+- objective;
+- scope;
+- context;
+- tools;
+- authority;
+- evidence standard;
+- output format;
+- stopping and escalation conditions.
+
+Now construct the investigation contract:
+
+> Investigate how TransactCo represents revenue. Use the approved repository
+> context and read-only database access. Identify the relevant entities,
+> relationships, business invariants, operational risks, and unresolved business
+> questions. Support every important claim with a repository path, schema object,
+> or query. Clearly label facts, inferences, decisions, and open questions. Do not
+> modify the database or application code. Stop and ask when a conclusion requires
+> business authority rather than technical evidence.
+
+#### 2. Context inventory
+
+| Source | Why selected | Questions it can answer | Questions it cannot answer | Provenance |
+| --- | --- | --- | --- | --- |
+| Business brief |  |  |  |  |
+| Data guide |  |  |  |  |
+| Operational DDL |  |  |  |  |
+| Representative queries |  |  |  |  |
+| Foundation context-pack README |  |  |  |  |
+
+Context is selected, not dumped. Exclude a source when it does not help answer
+the mission, when its authority is unclear, or when it would reveal later-module
+instructor material.
+
+#### 3. Evidence ledger
+
+| ID | Statement | Status | Evidence | Owner | Next action |
+| --- | --- | --- | --- | --- | --- |
+| C-01 |  | fact / inference / decision / question |  |  |  |
+
+Status definitions:
+
+- **Fact:** directly supported by evidence.
+- **Inference:** reasonable but not conclusively established.
+- **Decision:** chosen by someone with authority.
+- **Question:** requires more evidence or an accountable owner.
+
+#### 4. Ontology worksheet
+
+Vocabulary:
+
+- Entity: something the business cares about.
+- Relationship: how entities connect.
+- Rule: what must remain true.
+- Event: something that happened in business time.
+- Provenance: the source supporting the statement.
+- Owner: the person or system authorized to decide meaning.
+
+| Subject | Relationship | Object | Status | Evidence | Owner/question |
+| --- | --- | --- | --- | --- | --- |
+| Customer |  | Order |  |  |  |
+| Product |  | Order |  |  |  |
+| Order |  | Payment |  |  |  |
+| Payment |  | Revenue |  |  |  |
+
+Do not promote a candidate relationship to a confirmed rule until its evidence
+and scope are explicit.
+
+#### 5. ADR candidate register
+
+The investigation identifies decisions; it does not silently approve them.
+
+| Candidate | Decision required | Alternatives | Evidence available | Missing owner/input |
+| --- | --- | --- | --- | --- |
+| ADR-C01 | Define the analytical system boundary |  |  |  |
+| ADR-C02 | Define revenue recognition time |  |  |  |
+| ADR-C03 | Define late-arrival treatment |  |  |  |
+
+#### 6. Investigation gate
+
+- [ ] Every important claim has evidence or an explicit uncertainty label.
+- [ ] The operational investigation remained read-only.
+- [ ] Ontology edges show status, evidence, and ownership.
+- [ ] Business decisions were not invented by the agent.
+- [ ] ADR candidates are proposals, not approved records.
+- [ ] The technical brief can be reviewed without replaying the chat.
+
+### A5. Investigation telemetry contract
+
+
+Telemetry makes the investigation trajectory inspectable. It should help answer
+what the agent inspected, which tools it used, what it claimed, how claims were
+verified, where it became uncertain, and which artifacts changed.
+
+Telemetry does not make an answer correct by itself. It provides evidence about
+the process that produced the answer.
+
+#### Minimum event types
+
+```text
+session_started
+phase_started
+context_loaded
+repository_inspected
+query_executed
+claim_proposed
+claim_verified
+claim_rejected
+question_opened
+artifact_updated
+gate_evaluated
+session_completed
+```
+
+#### Minimum event fields
+
+| Field | Purpose |
+| --- | --- |
+| `timestamp` | When the event occurred |
+| `run_id` | Which investigation run produced it |
+| `actor` | Human or agent responsible for the action |
+| `phase` | Current investigation phase |
+| `action` | Event type |
+| `ontology_entity` | Optional business entity affected |
+| `evidence_reference` | Path, schema object, or safe query identifier |
+| `outcome` | Success, failure, rejection, escalation, or open |
+| `duration_ms` | Optional elapsed time |
+
+#### JSONL example
+
+```json
+{"timestamp":"2026-08-10T22:05:00Z","run_id":"foundation-demo","actor":"agent","phase":"context","action":"context_loaded","ontology_entity":null,"evidence_reference":"context-pack/business-brief","outcome":"success","duration_ms":18}
+```
+
+#### Safety rules
+
+Never record:
+
+- passwords or secret-bearing connection strings;
+- `.env` contents;
+- personal customer data;
+- complete database rows;
+- private instructor material;
+- full prompts containing secrets;
+- the later-module oracle or incident details.
+
+Prefer query identifiers, aggregate counts, hashes, and file paths over raw data.
+
+#### End-of-session summary
+
+Report:
+
+- time to first verified claim;
+- context sources used;
+- read-only queries executed;
+- verified and rejected claims;
+- open questions and escalations;
+- artifacts updated;
+- gate outcome.
+
+#### Implementation status
+
+This section defines the investigation contract. A live emitter or tracing adapter
+must be implemented and rehearsed separately before the facilitator promises
+live telemetry collection. Manual event capture can demonstrate the schema, but
+must not be presented as automated instrumentation.
+
+### A6. Technical brief template
+
+
+- Status: draft / reviewed / approved
+- Authors:
+- Review owner:
+- Evidence window:
+
+#### 1. Business problem
+
+What decision or outcome is required, and why does it matter?
+
+#### 2. Current system boundary
+
+Describe the operational system, analytical pressure, interfaces, and authority
+boundaries.
+
+#### 3. Data inventory
+
+| Source/table | Purpose | Business time | Ingestion time | Evidence |
+| --- | --- | --- | --- | --- |
+
+#### 4. Ontology v1
+
+| Subject | Relationship | Object | Status | Evidence | Owner |
+| --- | --- | --- | --- | --- | --- |
+
+#### 5. Confirmed rules
+
+| Rule | Scope | Evidence | Validation query/reference |
+| --- | --- | --- | --- |
+
+#### 6. Facts, inferences, decisions, and questions
+
+| ID | Statement | Status | Evidence | Owner | Next action |
+| --- | --- | --- | --- | --- | --- |
+
+#### 7. Risks and constraints
+
+- Operational safety:
+- Data quality:
+- Semantic ambiguity:
+- Freshness:
+- Privacy/security:
+- Recovery:
+
+#### 8. Proposed analytical boundary
+
+Describe what should cross from Postgres into DuckDB, in which direction, and
+which meanings and constraints must survive.
+
+#### 9. Success measures
+
+Define observable, falsifiable outcomes. Avoid "works correctly" without a
+measurement or evidence source.
+
+#### 10. Non-goals
+
+State what this investigation is not authorizing or implementing.
+
+#### 11. ADR candidates
+
+| Candidate | Decision required | Alternatives | Evidence | Missing owner/input |
+| --- | --- | --- | --- | --- |
+
+#### 12. Open questions
+
+| Question | Why it blocks or changes the design | Owner | Due/next step |
+| --- | --- | --- | --- |
+
+#### 13. Evidence appendix
+
+List repository paths, schema objects, safe query identifiers, and telemetry run
+IDs. Do not paste credentials, personal data, or complete rows.
+
+#### Review gate
+
+- [ ] Important claims are evidenced or explicitly uncertain.
+- [ ] Business decisions have accountable owners.
+- [ ] The proposed boundary is read-only and one-directional where required.
+- [ ] The brief does not authorize later-module implementation.
+- [ ] Human review is recorded.
+
+### A7. Investigation reflection
+
+
+Use the technical brief, evidence ledger, ontology, and telemetry summary. Do not
+answer from memory alone.
+
+1. What did we initially believe?
+2. What did we actually observe?
+3. Which assumption failed?
+4. Which context source changed the result?
+5. What did the ontology make visible?
+6. What did telemetry reveal that the final answer did not?
+7. Which conclusion still requires a human owner?
+8. What artifact will the next module's work rely on?
+9. What remains manual?
+10. What would a later machine automate?
+
+#### Skill card
+
+```text
+Skill: System interviewing and context synthesis
+When to use:
+Inputs:
+Questions to ask:
+Method:
+Artifact produced:
+Evidence required:
+Human decision:
+What remains manual:
+```
+
+#### Next-module hook
+
+> The investigation established understanding before execution. Next, we build
+> the rails that turn that understanding into controlled work.
+
+## 21. Appendix B - Facilitation runbook
+
+Operational evidence, readiness gates, and recovery guidance for the foundation
+investigation.
+
+### B1. Validated baseline
+
+Validated locally from a newly recreated Docker volume:
+
+```bash
+make bootstrap
+make status
+```
+
+Observed clean baseline with the default `.env.example` settings:
+
+| Table | Rows |
+| --- | ---: |
+| `public.customers` | 5,000 |
+| `public.products` | 400 |
+| `public.orders` | approximately 64,000 |
+| `public.payments` | approximately 62,000 |
+
+The exact timestamps and final partial-day row counts are relative to seed time.
+Do not promise identical order/payment counts or wall-clock timestamps on every
+laptop.
+
+### B2. Pre-session checklist
+
+- [ ] Docker is running.
+- [ ] `uv` is installed.
+- [ ] `make bootstrap` completed while network was reliable.
+- [ ] The bootstrap output shows doctor readiness, passing unit contracts,
+  seven passing delivery checks, and a passing dbt connection/parse.
+- [ ] `make status` shows the expected clean row-count range and freshness.
+- [ ] The reviewed baseline is committed, and the exact revision used for class
+  is recorded.
+- [ ] The Appendix A context pack is ready to distribute or paste into the
+  approved agent context.
+- [ ] The presentation opens without missing fonts or assets.
+- [ ] Weak-prompt and structured-prompt fallback outputs are available.
+- [ ] Ontology v1 and technical-brief fallback artifacts are available.
+- [ ] Telemetry collection has been implemented and rehearsed, or is described
+  honestly as a manual contract demonstration.
+
+`make bootstrap` intentionally replaces the generated `warehouse.duckdb` file
+so the presentation starts with zero detector rows. Do not run it over a
+participant's later-module work without first preserving that generated artifact.
+
+### B3. Safe investigation commands
+
+```bash
+make doctor
+make status
+make query-ro Q="select count(*) from raw.orders"
+```
+
+Use approved read-only SQL for live investigation. Do not run `make inject`,
+`make reveal`, or `make score` during the foundation investigation.
+
+### B4. Evidence already validated
+
+- Fresh Docker-volume initialization applies the three Postgres init scripts.
+- The baseline seeder completed and passed its clean-data assertions.
+- `analytics_ro` could read the public path and was denied access to `_control`.
+- `analytics_ro` was denied writes to `public.customers`.
+- `make psql-ro` opened with the intended analytical role.
+- `make query-ro` could read DuckDB and rejected a `CREATE TABLE` statement.
+- DuckDB row counts matched Postgres for all four source tables.
+- DuckDB contained no control/injected-incident tables.
+- The all-defects scenario injected 14 incident records and landed successfully.
+- Every named defect injector completed independently.
+- The scorer returned 100% precision, recall, and F1 against a perfect validation
+  fixture.
+- Re-landing preserved existing `analytics.detections` rows.
+- `dbt debug` connected to DuckDB and `dbt parse` validated the deliberately
+  empty model shell.
+
+### B5. Truth boundary
+
+The current seal protects the `analytics_ro` and DuckDB landing path. It does not
+hide instructor truth from the owner of the local laptop or repository. Keep the
+investigating agent on the approved context pack and operational surfaces.
+Before the Incident Exercise, choose whether a workflow seal is sufficient or
+move the oracle and injection implementation into an instructor-controlled
+environment.
+
+### B6. Recovery paths
+
+#### Postgres is unavailable
+
+```bash
+make up
+make doctor
+```
+
+If the volume is disposable and initialization is suspect:
+
+```bash
+make reset
+make doctor
+make land
+```
+
+`make reset` destroys the local teaching database volume. Never use it against a
+non-disposable database.
+
+#### DuckDB landing is missing or stale
+
+```bash
+make land
+make verify
+```
+
+#### DuckDB extension is unavailable
+
+Run `make setup` with network access. Keep a pre-warmed facilitator environment
+and prepared evidence screenshots/output for the live session.
+
+#### The live agent run fails
+
+- Keep the failure visible if it teaches a real boundary.
+- Do not present a prepared output as if it were generated live.
+- Switch to the prepared context inventory or ontology checkpoint.
+- Continue the human review and skill distillation.
+
+### B7. Current gap
+
+The repository contains a telemetry contract but no verified live telemetry
+emitter or tracing adapter yet. This does not block the Postgres/DuckDB
+foundation investigation, but it blocks claiming that telemetry is being
+collected automatically. Implement and rehearse that surface before putting it
+in the live demo path.

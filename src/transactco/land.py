@@ -131,7 +131,7 @@ def run_land(settings: Settings, progress=None) -> LandResult:
             [(t.name, t.row_count, ",".join(t.columns), landed_at) for t in landed],
         )
 
-        # The contract the Day 4 detector writes into. Created empty and never
+        # The contract the Incident Exercise detector writes into. Created empty and never
         # replaced, so re-landing does not wipe a student's detections.
         con.execute(f"CREATE SCHEMA IF NOT EXISTS {ANALYTICS_SCHEMA}")
         con.execute(

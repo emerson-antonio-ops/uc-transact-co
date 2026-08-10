@@ -2,7 +2,7 @@
 
 Each defect corrupts public.* the way a real incident would and records in
 _control exactly what it did: which defect, which severity, which window, and
-which primary keys. The student's detector never sees this. On Day 4 it is the
+which primary keys. The student's detector never sees this. In the Incident Exercise it is the
 only thing their detector is scored against.
 
 Three of these are not simple corruptions and carry most of the teaching weight:
@@ -982,11 +982,11 @@ ALL_DEFECTS = [
 ]
 
 SCENARIOS: dict[str, list[str]] = {
-    # The Day 4 default. Two real incidents pulling revenue in opposite
+    # The Incident Exercise default. Two real incidents pulling revenue in opposite
     # directions, plus the decoy. Small enough to reason about live, and it
     # cannot be beaten by flagging everything.
     "live": ["duplicate_order", "negative_price", "ambiguous_anomaly"],
-    # Day 4 second pass, once the detector survives the first.
+    # Incident Exercise second pass, once the detector survives the first.
     "deep": [
         "duplicate_order",
         "negative_price",

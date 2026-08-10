@@ -1,7 +1,7 @@
 """Command line entry point. Everything here is reachable through the Makefile.
 
 `status` deliberately does not report whether anything has been injected. On
-Day 4 the injection is silent -- the student is supposed to notice that the
+Incident Exercise the injection is silent -- the student is supposed to notice that the
 numbers in the mart are wrong, not read it off a status line. Only `reveal`
 opens the oracle.
 """
@@ -173,7 +173,7 @@ def cmd_inject(args) -> int:
     wait_for_postgres(settings)
 
     if args.quiet:
-        # The Day 4 default: nothing on screen that tells the room what landed.
+        # The Incident Exercise default: nothing on screen that tells the room what landed.
         result = run_injection(settings, selected, force=args.force)
         console.print("[dim]done.[/dim]")
         return 0

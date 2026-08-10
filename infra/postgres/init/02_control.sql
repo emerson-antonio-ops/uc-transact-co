@@ -2,12 +2,12 @@
 -- TransactCo · _control (the sealed oracle)
 --
 -- This schema is the answer key. Every defect injected into public.* records
--- here exactly what was broken, when, and which rows were touched. On Day 4 the
+-- here exactly what was broken, when, and which rows were touched. In the Incident Exercise the
 -- student's detector is scored against this and nothing else.
 --
 -- It must never cross into DuckDB. That guarantee is enforced in 03_roles.sql
 -- by permissions, not by the good behavior of the landing script -- an agent
--- pointed at this database on Day 4 has to be unable to read it, not merely
+-- pointed at this database in the Incident Exercise has to be unable to read it, not merely
 -- asked not to.
 --
 -- Two levels of truth, because the scoring question has two halves:

@@ -12,7 +12,7 @@ written against each laptop's own rows at injection time.
 
 The baseline is deliberately clean on the seam that matters: for every order
 that has a payment, payments.amount equals orders.total_amount to the cent. Real
-noise on that relationship would drown the injected defects and make Day 4
+noise on that relationship would drown the injected defects and make Incident Exercise
 scoring meaningless -- the student would be chasing our sloppiness instead of
 the incident.
 """
@@ -419,7 +419,7 @@ def assert_baseline_is_clean(settings: Settings) -> list[str]:
     """Prove the freshly seeded database contains no incident before injection.
 
     If any of these fail, a student's detector would find real defects that the
-    answer key never recorded, and the Day 4 score would punish them for being
+    answer key never recorded, and the Incident Exercise score would punish them for being
     right. Run as part of `make seed`.
     """
     checks = {

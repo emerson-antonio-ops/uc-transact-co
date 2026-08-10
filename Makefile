@@ -16,7 +16,7 @@ help: ## Show this help
 	@echo ""
 	@echo "  TransactCo · the analytics are killing the store"
 	@echo ""
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(firstword $(MAKEFILE_LIST)) \
 		| awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-14s\033[0m %s\n", $$1, $$2}'
 	@echo ""
 
@@ -25,7 +25,7 @@ setup: ## First run: create .env, install deps, pre-warm the DuckDB extension
 	uv sync --extra dbt
 	@$(UV) python -c "import duckdb; c=duckdb.connect(); c.execute('INSTALL postgres'); c.execute('LOAD postgres'); print('  duckdb postgres extension ready')"
 
-bootstrap: ## Rebuild and prove the complete clean Day 1 baseline
+bootstrap: ## Rebuild and prove the complete clean foundation baseline
 	@$(MAKE) setup
 	@$(MAKE) up
 	@$(MAKE) doctor
@@ -68,7 +68,7 @@ inject: ## Inject defects (SCENARIO=live|deep|all|smoke, or DEFECT=name)
 		$(UV) transactco inject --scenario $(SCENARIO); \
 	fi
 
-inject-quiet: ## Inject in silence — the Day 4 version, says nothing about what landed
+inject-quiet: ## Inject in silence without revealing what landed
 	@if [ -n "$(DEFECT)" ]; then \
 		$(UV) transactco inject --quiet --defect $(DEFECT); \
 	else \
@@ -96,7 +96,7 @@ reset: ## Destroy the database and rebuild it clean
 psql: ## Open psql inside the container
 	$(COMPOSE) exec postgres psql -U transactco -d transactco
 
-psql-ro: ## Open Postgres with the Day 1 read-only role
+psql-ro: ## Open Postgres with the analytical read-only role
 	$(COMPOSE) exec -e PGPASSWORD=$(ANALYTICS_RO_PASSWORD) postgres \
 		psql -U $(ANALYTICS_RO_USER) -d $(POSTGRES_DB)
 

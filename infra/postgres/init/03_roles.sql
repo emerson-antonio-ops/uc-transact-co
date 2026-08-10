@@ -4,7 +4,7 @@
 -- `make land` connects as this role and no other. It can read public.* and it
 -- cannot read _control.* -- not by convention, by permission.
 --
--- This matters because of what happens on Day 4. The student points a capable
+-- This matters because of what happens in the Incident Exercise. The student points a capable
 -- agent at this database and asks it to find what broke. If the answer key were
 -- protected only by a landing script that declines to copy it, the agent could
 -- simply query it and win the exercise without detecting anything. Postgres

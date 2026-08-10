@@ -1,6 +1,6 @@
 """Score the student's detector against the sealed oracle.
 
-The question this answers is the one from Day 4: did it catch the right defect,
+The question this answers is the one from Incident Exercise: did it catch the right defect,
 on the right rows -- or did it just sound plausible?
 
 Those are scored separately and both are reported, because they fail
