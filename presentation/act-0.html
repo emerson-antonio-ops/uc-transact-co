@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="Semana Engenharia Agêntica · Day 1 · Act 0 — The reality of agentic systems.">
+<title>Day 1 · Act 0 — The Reality</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2308080a'/%3E%3Cpath d='M16 6l7 10-7 10-7-10z' fill='%234a9eff'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&amp;family=Fira+Code:wght@400;500;600;700&amp;family=Instrument+Serif:ital@0;1&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #08080a; --surface: #111114; --surface2: #19191e;
+  --border: rgba(120,160,220,0.08); --border-bright: rgba(120,160,220,0.18);
+  --rule: rgba(160,190,230,0.13);
+  --text: #eaedf2; --text-dim: #6e7a8c; --text-mute: #4d5666;
+  --accent: #4a9eff; --cyan: #22d3ee; --purple: #a78bfa;
+  --gold: #d4af37; --green: #3fb950; --red: #f85149; --silver: #b0bec5;
+  --font-display: 'Instrument Serif', Georgia, serif;
+  --font-editorial: 'Newsreader', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'Fira Code', 'SF Mono', Consolas, monospace;
+  --spring: cubic-bezier(0.32,0.72,0,1);
+  --ease-out: cubic-bezier(0.16,1,0.3,1);
+  --drift: cubic-bezier(0.45,0.05,0.55,0.95);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { color-scheme: dark; }
+body {
+  font-family: var(--font-body); color: var(--text); background: var(--bg);
+  overflow: hidden; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+::selection { background: var(--accent); color: #000; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+button { font: inherit; color: inherit; }
+body::after {
+  content: ''; position: fixed; inset: 0; z-index: 9999; pointer-events: none; opacity: 0.04;
+  background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSczMDAnIGhlaWdodD0nMzAwJz48ZmlsdGVyIGlkPSduJz48ZmVUdXJidWxlbmNlIHR5cGU9J2ZyYWN0YWxOb2lzZScgYmFzZUZyZXF1ZW5jeT0nMC43NScgbnVtT2N0YXZlcz0nNCcgc3RpdGNoVGlsZXM9J3N0aXRjaCcvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSczMDAnIGhlaWdodD0nMzAwJyBmaWx0ZXI9J3VybCgjbiknIG9wYWNpdHk9JzEnLz48L3N2Zz4=");
+}
+
+/* atmosphere inherited from the Day 1 deck */
+.atmosphere { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.aurora {
+  position: absolute; inset: -10%; z-index: 0; pointer-events: none;
+  filter: blur(70px); opacity: 0.42; transition: opacity 1.4s ease;
+  --a1: rgba(74,158,255,0.15); --a2: rgba(34,211,238,0.08); --a3: rgba(167,139,250,0.09);
+}
+.slide.is-active .aurora { opacity: 0.6; }
+.aurora::before, .aurora::after, .aurora > b {
+  content: ''; position: absolute; border-radius: 50%; mix-blend-mode: screen; will-change: transform;
+}
+.aurora::before { width: 46vw; height: 46vw; left: -6%; top: -14%; background: radial-gradient(circle, var(--a1), transparent 62%); animation: aur-a 28s var(--drift) infinite alternate; }
+.aurora::after { width: 36vw; height: 36vw; right: -4%; top: 22%; background: radial-gradient(circle, var(--a2), transparent 62%); animation: aur-b 36s var(--drift) infinite alternate; }
+.aurora > b { width: 33vw; height: 33vw; left: 34%; bottom: -18%; background: radial-gradient(circle, var(--a3), transparent 62%); animation: aur-c 42s var(--drift) infinite alternate; }
+@keyframes aur-a { from { transform: translate3d(0,0,0) scale(1); } to { transform: translate3d(6vw,4vh,0) scale(1.15); } }
+@keyframes aur-b { from { transform: translate3d(0,0,0) scale(1.06); } to { transform: translate3d(-5vw,-4vh,0) scale(0.95); } }
+@keyframes aur-c { from { transform: translate3d(0,0,0) scale(0.97); } to { transform: translate3d(4vw,-5vh,0) scale(1.10); } }
+.aurora--cyan { --a1: rgba(34,211,238,0.14); --a2: rgba(74,158,255,0.09); --a3: rgba(63,185,80,0.05); }
+.aurora--gold { --a1: rgba(212,175,55,0.15); --a2: rgba(74,158,255,0.07); --a3: rgba(239,144,0,0.06); }
+.aurora--purple { --a1: rgba(167,139,250,0.15); --a2: rgba(74,158,255,0.08); --a3: rgba(34,211,238,0.06); }
+.aurora--green { --a1: rgba(63,185,80,0.12); --a2: rgba(34,211,238,0.07); --a3: rgba(74,158,255,0.05); }
+.grid-floor {
+  position: absolute; left: 50%; bottom: -16%; width: 150%; height: 58%;
+  transform: translateX(-50%) perspective(1100px) rotateX(64deg); transform-origin: 50% 0%;
+  background-image: linear-gradient(rgba(120,160,220,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(120,160,220,0.06) 1px, transparent 1px);
+  background-size: 58px 58px;
+  -webkit-mask-image: radial-gradient(ellipse 56% 90% at 50% 0%, #000 4%, transparent 66%);
+  mask-image: radial-gradient(ellipse 56% 90% at 50% 0%, #000 4%, transparent 66%);
+}
+
+/* deck and chrome */
+.deck { position: relative; z-index: 1; height: 100dvh; overflow-y: auto; scroll-snap-type: y mandatory; scroll-behavior: smooth; scrollbar-width: none; }
+.deck::-webkit-scrollbar { display: none; }
+.slide {
+  height: 100dvh; scroll-snap-align: start; overflow: hidden; position: relative;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: clamp(30px,4.6vh,58px) clamp(38px,5.4vw,104px); isolation: isolate;
+}
+.slide::after {
+  content: ''; position: absolute; inset: 0; z-index: -2; pointer-events: none;
+  opacity: 0; transition: opacity 1s ease;
+  background: radial-gradient(760px circle at var(--mx,50%) var(--my,38%), rgba(140,180,255,0.06), transparent 62%);
+}
+.slide.is-active::after { opacity: 1; }
+.deck-progress { position: fixed; top: 0; left: 0; height: 2px; width: 0; background: linear-gradient(90deg,var(--accent),var(--cyan)); z-index: 100; transition: width .3s var(--ease-out); box-shadow: 0 0 14px rgba(74,158,255,.5); pointer-events: none; }
+.deck-counter {
+  position: fixed; bottom: clamp(16px,2.4vh,28px); right: clamp(16px,2.4vw,30px); z-index: 100;
+  display: flex; align-items: center; gap: 11px; font-family: var(--font-mono);
+  font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim);
+}
+.dc-act { color: #000; background: var(--dc-c,var(--accent)); padding: 3px 9px; border-radius: 3px; font-weight: 800; font-size: 9px; transition: background .6s var(--spring); }
+.dc-n { color: var(--text); font-weight: 700; }
+.dc-bar { display: flex; gap: 3px; width: clamp(54px,5vw,76px); }
+.dc-seg { flex: 1 1 0; height: 2px; background: rgba(255,255,255,.14); transition: background .4s var(--spring); }
+.dc-seg.passed { background: rgba(255,255,255,.32); }
+.dc-seg.current { background: var(--dc-c,var(--accent)); }
+.deck-tracker { position: fixed; top: 50%; right: clamp(10px,1.1vw,16px); transform: translateY(-50%); display: flex; flex-direction: column; gap: 5px; z-index: 100; }
+.deck-tracker .dot { appearance: none; border: 0; padding: 0; display: block; cursor: pointer; width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,.16); transition: background .25s var(--spring),height .25s var(--spring); }
+.deck-tracker .dot:hover { background: rgba(255,255,255,.5); }
+.deck-tracker .dot.current { height: 20px; border-radius: 3px; background: var(--accent); }
+
+/* shared type and layout */
+.wrap { position: relative; z-index: 2; width: 100%; max-width: 1800px; margin: 0 auto; }
+.display { font-family: var(--font-display); font-style: normal; font-weight: 400; letter-spacing: -1.5px; line-height: .9; text-wrap: balance; }
+.h2 { font-family: var(--font-display); font-style: normal; font-weight: 400; letter-spacing: -.8px; line-height: 1.02; text-wrap: balance; }
+.eyebrow { font-family: var(--font-mono); font-size: clamp(9.5px,.92vw,11.5px); font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--text-dim); }
+.tag { display: inline-block; font-family: var(--font-mono); font-size: clamp(8.5px,.79vw,9.5px); font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #000; background: var(--tag-c,var(--accent)); padding: 3px 9px; border-radius: 3px; white-space: nowrap; }
+.lede { font-family: var(--font-editorial); font-size: clamp(14px,1.35vw,19px); line-height: 1.42; color: var(--text-dim); }
+.lede b { color: var(--text); font-weight: 600; }
+.note { font-family: var(--font-editorial); font-style: italic; color: var(--text-dim); }
+.src { font-family: var(--font-mono); font-size: clamp(8px,.72vw,9.5px); line-height: 1.45; letter-spacing: .35px; color: var(--text-mute); border-top: 1px solid var(--rule); padding-top: clamp(7px,1.1vh,11px); margin-top: clamp(10px,1.6vh,16px); }
+.grad { background: linear-gradient(135deg,var(--accent),#fff 56%,var(--cyan)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.grad-gold { background: linear-gradient(135deg,var(--gold),#fff 52%,var(--accent)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.grad-purple { background: linear-gradient(135deg,var(--purple),#fff 52%,var(--accent)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+
+/* S01 title */
+.title-grid { display: grid; grid-template-columns: .74fr 1.26fr; gap: clamp(34px,5vw,100px); align-items: center; }
+.title-rule { width: 46px; height: 3px; background: var(--accent); margin: clamp(18px,2.7vh,28px) 0; box-shadow: 0 0 22px rgba(74,158,255,.7); }
+.title-name { font-size: clamp(54px,7.7vw,116px); max-width: 9ch; }
+.title-day { font-family: var(--font-editorial); font-size: clamp(19px,2vw,28px); color: var(--text-dim); line-height: 1.35; margin-top: clamp(16px,2.5vh,26px); }
+.question { position: relative; padding-left: clamp(20px,2.2vw,36px); border-left: 2px solid var(--accent); }
+.question .q-label { font-family: var(--font-mono); font-size: clamp(9px,.9vw,11px); text-transform: uppercase; letter-spacing: 2.6px; color: var(--accent); margin-bottom: clamp(14px,2vh,22px); }
+.question blockquote { font-family: var(--font-display); font-size: clamp(37px,5.1vw,76px); line-height: 1.03; letter-spacing: -1.15px; text-wrap: balance; }
+.question cite { display: block; font-family: var(--font-editorial); font-style: italic; font-size: clamp(14px,1.35vw,19px); color: var(--text-dim); margin-top: clamp(18px,2.8vh,28px); }
+.title-foot { display: flex; align-items: center; justify-content: space-between; gap: 28px; border-top: 1px solid var(--rule); margin-top: clamp(26px,4.1vh,48px); padding-top: clamp(15px,2.2vh,22px); }
+.presenter { display: flex; align-items: center; gap: 14px; }
+.presenter img { width: clamp(48px,4vw,64px); height: clamp(48px,4vw,64px); border-radius: 50%; object-fit: cover; object-position: 50% 45%; border: 1px solid var(--border-bright); box-shadow: 0 8px 26px rgba(0,0,0,.55),0 0 30px -10px rgba(74,158,255,.5); filter: grayscale(1) contrast(1.05); }
+.p-name { font-family: var(--font-display); font-size: clamp(18px,1.7vw,24px); line-height: 1; }
+.p-role { font-family: var(--font-editorial); font-size: clamp(10.5px,.98vw,13px); color: var(--text-dim); margin-top: 5px; }
+.title-transition { font-family: var(--font-editorial); font-style: italic; font-size: clamp(13px,1.25vw,17px); color: var(--text-dim); text-align: right; max-width: 48ch; }
+.title-transition b { color: var(--accent); font-style: normal; font-weight: 600; }
+
+/* S02 reality */
+.reality-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; }
+.reality-head .lede { max-width: 37ch; text-align: right; }
+.reality-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(18px,2.1vw,38px); margin-top: clamp(18px,3vh,30px); }
+.reality-col { border-top: 3px solid var(--rc,var(--green)); background: linear-gradient(180deg,color-mix(in srgb,var(--rc) 8%,transparent),transparent 72%); padding-top: clamp(13px,2vh,20px); }
+.reality-label { display: flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: clamp(9px,.86vw,10.5px); font-weight: 700; letter-spacing: 2.2px; text-transform: uppercase; color: var(--rc); margin-bottom: clamp(8px,1.2vh,12px); }
+.reality-label::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--rc); box-shadow: 0 0 16px var(--rc); }
+.reality-item { display: grid; grid-template-columns: clamp(28px,2.6vw,42px) 1fr; gap: clamp(10px,1vw,16px); padding: clamp(9px,1.35vh,14px) 0; border-bottom: 1px solid var(--rule); align-items: start; }
+.reality-n { font-family: var(--font-display); font-size: clamp(20px,2vw,28px); line-height: 1; color: var(--rc); opacity: .7; }
+.reality-name { font-family: var(--font-display); font-size: clamp(19px,2vw,29px); line-height: 1; }
+.reality-copy { font-family: var(--font-editorial); font-size: clamp(12px,1.12vw,15.5px); line-height: 1.38; color: var(--text-dim); margin-top: 5px; }
+.reality-verdict { display: grid; grid-template-columns: 1fr auto; gap: 22px; align-items: center; margin-top: clamp(16px,2.5vh,26px); border: 1px solid var(--border-bright); border-left: 3px solid var(--accent); border-radius: 12px; padding: clamp(13px,2vh,20px) clamp(16px,1.7vw,28px); background: linear-gradient(100deg,rgba(74,158,255,.09),var(--surface) 70%); }
+.verdict-main { font-family: var(--font-display); font-size: clamp(23px,2.6vw,38px); line-height: 1.05; }
+.verdict-main b { color: var(--accent); font-weight: 400; }
+.bench { text-align: right; padding-left: 22px; border-left: 1px solid var(--rule); }
+.bench strong { display: block; font-family: var(--font-display); font-size: clamp(25px,2.8vw,42px); color: var(--gold); line-height: 1; font-weight: 400; }
+.bench span { display: block; font-family: var(--font-mono); font-size: clamp(8px,.75vw,9.5px); color: var(--text-dim); line-height: 1.4; margin-top: 5px; }
+
+/* S03 convergence */
+.hat-grid { display: grid; grid-template-columns: repeat(6,1fr); gap: clamp(8px,.9vw,14px); margin-top: clamp(18px,3vh,30px); }
+.hat { --hc: var(--accent); border: 1px solid var(--border-bright); border-top: 3px solid var(--hc); border-radius: 12px; padding: clamp(13px,2vh,20px) clamp(9px,.9vw,15px); background: linear-gradient(180deg,color-mix(in srgb,var(--hc) 7%,transparent),var(--surface) 62%); text-align: center; transition: transform .45s var(--spring),box-shadow .45s var(--spring); }
+.hat:hover { transform: translateY(-5px); box-shadow: 0 18px 34px -20px color-mix(in srgb,var(--hc) 70%,transparent); }
+.hat-name { font-family: var(--font-display); font-size: clamp(17px,1.65vw,24px); line-height: 1.02; }
+.hat-copy { font-family: var(--font-editorial); font-size: clamp(10.5px,.96vw,13.5px); color: var(--text-dim); line-height: 1.32; margin-top: 8px; }
+.converge-arrow { text-align: center; font-family: var(--font-display); font-size: clamp(26px,3vw,42px); color: var(--gold); letter-spacing: clamp(9px,1.3vw,20px); margin: clamp(4px,.8vh,9px) 0; text-shadow: 0 0 18px rgba(212,175,55,.35); }
+.native { position: relative; max-width: 1280px; margin: 0 auto; text-align: center; border: 1px solid var(--gold); border-radius: 18px; padding: clamp(18px,2.8vh,30px) clamp(24px,2.6vw,46px); background: linear-gradient(135deg,rgba(212,175,55,.13),rgba(212,175,55,.025)); box-shadow: 0 18px 52px -30px rgba(212,175,55,.65),inset 0 1px 0 rgba(255,255,255,.07); }
+.native::before { content: ''; position: absolute; top: 0; left: 12%; right: 12%; height: 2px; background: linear-gradient(90deg,transparent,var(--gold),transparent); }
+.native-k { font-family: var(--font-editorial); font-style: italic; font-size: clamp(13px,1.25vw,17px); color: var(--gold); }
+.native-name { font-family: var(--font-display); font-size: clamp(33px,4vw,58px); line-height: 1; margin-top: 6px; }
+.native-job { font-family: var(--font-editorial); font-size: clamp(14px,1.4vw,19px); line-height: 1.4; color: var(--text); margin-top: 10px; }
+.role-tags { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px 8px; margin-top: 13px; }
+.role-tag { font-family: var(--font-mono); font-size: clamp(8px,.74vw,9.5px); letter-spacing: 1.3px; text-transform: uppercase; color: var(--tc,var(--accent)); border: 1px solid color-mix(in srgb,var(--tc,var(--accent)) 38%,transparent); background: color-mix(in srgb,var(--tc,var(--accent)) 7%,transparent); border-radius: 4px; padding: 4px 10px; }
+
+/* S04 market */
+.market-grid { display: grid; grid-template-columns: 1.55fr .86fr; gap: clamp(20px,2.6vw,48px); align-items: stretch; margin-top: clamp(18px,3vh,30px); }
+.growth-stage { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(14px,1.5vw,24px); align-items: end; border-bottom: 2px solid var(--border-bright); padding: 0 clamp(8px,1vw,16px); min-height: clamp(350px,49vh,480px); }
+.growth-card { --gc: var(--accent); position: relative; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; height: 100%; }
+.growth-label { width: 100%; border: 1px solid color-mix(in srgb,var(--gc) 54%,transparent); border-radius: 13px; padding: clamp(13px,1.8vh,18px) clamp(12px,1.2vw,20px); background: #09090c; box-shadow: 0 0 30px -12px var(--gc); text-align: center; z-index: 2; }
+.growth-role { font-family: var(--font-mono); font-size: clamp(9px,.86vw,10.5px); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gc); }
+.growth-num { font-family: var(--font-display); font-size: clamp(54px,6.6vw,94px); line-height: .9; color: var(--gc); letter-spacing: -2px; margin-top: 8px; }
+.growth-meta { font-family: var(--font-editorial); font-style: italic; font-size: clamp(11px,1vw,14px); color: var(--text-dim); margin-top: 7px; line-height: 1.35; }
+.growth-bar { width: clamp(110px,10.5vw,180px); height: var(--gh,30%); min-height: 100px; border-radius: 14px 14px 0 0; background: linear-gradient(180deg,color-mix(in srgb,var(--gc) 82%,#fff 2%),color-mix(in srgb,var(--gc) 14%,transparent)); border: 1px solid color-mix(in srgb,var(--gc) 58%,transparent); border-bottom: 0; box-shadow: 0 0 38px -13px var(--gc); margin-top: 13px; }
+.proof-stack { display: flex; flex-direction: column; gap: clamp(12px,1.8vh,18px); justify-content: center; }
+.proof-cell { --pc: var(--gold); border: 1px solid var(--border-bright); border-left: 3px solid var(--pc); border-radius: 12px; background: linear-gradient(100deg,color-mix(in srgb,var(--pc) 8%,transparent),var(--surface) 72%); padding: clamp(15px,2.2vh,23px) clamp(16px,1.5vw,24px); }
+.proof-num { font-family: var(--font-display); font-size: clamp(35px,4vw,58px); color: var(--pc); line-height: .95; letter-spacing: -.7px; }
+.proof-label { font-family: var(--font-editorial); font-size: clamp(13px,1.2vw,17px); line-height: 1.38; color: var(--text); margin-top: 7px; }
+.proof-caveat { font-family: var(--font-mono); font-size: clamp(8px,.72vw,9.5px); color: var(--text-dim); line-height: 1.4; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--rule); }
+.market-meaning { font-family: var(--font-editorial); font-style: italic; font-size: clamp(14px,1.45vw,20px); color: var(--text-dim); text-align: center; margin-top: clamp(14px,2.2vh,24px); }
+.market-meaning b { color: var(--gold); font-style: normal; font-weight: 600; }
+
+/* S05 rungs */
+.ladder { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr auto 1.18fr; gap: clamp(8px,1vw,16px); align-items: end; width: 100%; margin-top: clamp(18px,3vh,30px); }
+.rung { --rg: var(--accent); min-height: var(--rh,230px); border: 1px solid color-mix(in srgb,var(--rg) 30%,transparent); border-top: 3px solid var(--rg); border-radius: 15px; padding: clamp(14px,1.9vh,22px) clamp(13px,1.2vw,21px); background: linear-gradient(180deg,color-mix(in srgb,var(--rg) 8%,transparent),var(--surface) 67%); display: flex; flex-direction: column; transition: transform .5s var(--spring),box-shadow .5s var(--spring); }
+.rung:hover { transform: translateY(-6px); box-shadow: 0 20px 42px -25px var(--rg); }
+.rung-n { align-self: flex-start; font-family: var(--font-mono); font-size: clamp(8.5px,.8vw,10px); font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; color: #000; background: var(--rg); border-radius: 4px; padding: 4px 10px; }
+.rung-name { font-family: var(--font-display); font-size: clamp(23px,2.4vw,36px); line-height: 1; margin-top: 14px; }
+.rung-copy { font-family: var(--font-editorial); font-size: clamp(12px,1.08vw,15px); line-height: 1.42; color: var(--text-dim); margin-top: 10px; }
+.rung-copy b { color: var(--text); font-weight: 600; }
+.rung-verdict { font-family: var(--font-editorial); font-style: italic; font-size: clamp(13px,1.2vw,17px); color: var(--rg); margin-top: auto; padding-top: 13px; border-top: 1px solid var(--rule); }
+.lad-arrow { align-self: center; font-family: var(--font-display); font-size: clamp(21px,2.4vw,35px); color: var(--text-dim); opacity: .6; padding-bottom: clamp(34px,8vh,84px); }
+.rung-rule { display: flex; align-items: center; gap: clamp(14px,1.7vw,26px); margin-top: clamp(15px,2.5vh,26px); }
+.rung-rule p { font-family: var(--font-editorial); font-style: italic; font-size: clamp(13px,1.3vw,18px); line-height: 1.4; color: var(--text-dim); }
+
+/* S06 rings */
+.rings-layout { display: grid; grid-template-columns: .68fr 1.32fr; gap: clamp(18px,2.4vw,44px); align-items: center; height: min(88vh,930px); }
+.rings-copy { align-self: center; }
+.rings-copy .h2 { font-size: clamp(34px,4.8vw,68px); margin-top: 12px; }
+.rings-copy .lede { margin-top: 18px; max-width: 34ch; }
+.ring-decision { margin-top: clamp(22px,3.4vh,34px); border-left: 3px solid var(--purple); padding-left: clamp(15px,1.5vw,24px); }
+.ring-decision h3 { font-family: var(--font-display); font-size: clamp(23px,2.5vw,36px); font-weight: 400; line-height: 1; color: var(--purple); }
+.ring-decision p { font-family: var(--font-editorial); font-size: clamp(13px,1.2vw,17px); line-height: 1.45; color: var(--text-dim); margin-top: 9px; }
+.ring-decision p b { color: var(--text); font-weight: 600; }
+.rings-viz { height: 100%; display: grid; place-items: center; min-width: 0; }
+.rings-viz svg { width: 100%; height: min(88vh,930px); display: block; overflow: visible; }
+.slide.is-active .ring-breathe { transform-box: fill-box; transform-origin: center; animation: ring-breathe 9s ease-in-out infinite; }
+.slide.is-active .ring-breathe.r2 { animation-delay: 1.2s; }
+.slide.is-active .ring-breathe.r3 { animation-delay: 2.4s; }
+.slide.is-active .ring-breathe.r4 { animation-delay: 3.6s; }
+.slide.is-active .ring-breathe.r5 { animation-delay: 4.8s; }
+.slide.is-active .ring-breathe.r6 { animation-delay: 6s; }
+.slide.is-active .core-pulse { transform-box: fill-box; transform-origin: center; animation: core-pulse 4s ease-in-out infinite; }
+@keyframes ring-breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.018); } }
+@keyframes core-pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.045); } }
+
+/* S07 programme */
+.prog-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 36px; }
+.prog-head .lede { max-width: 44ch; text-align: right; }
+.rail { width: 100%; margin-top: clamp(14px,2.2vh,23px); }
+.rail-track { display: flex; width: 100%; gap: 3px; height: clamp(6px,.8vh,9px); }
+.rail-seg { border-radius: 3px; background: var(--rs,var(--text-mute)); opacity: .35; box-shadow: 0 0 18px -6px var(--rs,var(--text-mute)); }
+.programme { width: 100%; margin-top: clamp(12px,2vh,21px); border-top: 1px solid var(--rule); }
+.prow { --pc: var(--accent); display: grid; grid-template-columns: clamp(58px,5vw,78px) clamp(92px,8vw,128px) minmax(0,1fr) auto; align-items: baseline; gap: clamp(11px,1.3vw,22px); padding: clamp(7px,1.1vh,12px) 0; border-bottom: 1px solid var(--rule); transition: background .35s var(--spring),padding-left .35s var(--spring); }
+.prow:hover { background: rgba(255,255,255,.022); padding-left: 8px; }
+.prow-n { font-family: var(--font-display); font-size: clamp(19px,1.9vw,28px); color: var(--pc); line-height: 1; }
+.prow-time { font-family: var(--font-mono); font-size: clamp(8px,.74vw,9.5px); letter-spacing: .5px; color: var(--text-dim); white-space: nowrap; }
+.prow-name { font-family: var(--font-display); font-size: clamp(18px,1.9vw,29px); line-height: 1; }
+.prow-name i { font-family: var(--font-editorial); font-size: clamp(10.5px,1vw,13.5px); color: var(--text-dim); margin-left: 9px; }
+.prow-live { font-family: var(--font-mono); font-size: clamp(8px,.76vw,9.5px); color: var(--text-mute); white-space: nowrap; }
+.prow-live b { color: var(--pc); }
+.next-act { display: flex; align-items: center; gap: 18px; margin-top: clamp(15px,2.3vh,24px); }
+.next-act::before { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg,transparent,var(--accent)); }
+.next-act span { font-family: var(--font-mono); font-size: clamp(9px,.86vw,10.5px); font-weight: 700; letter-spacing: 2.2px; text-transform: uppercase; color: var(--accent); }
+
+/* motion */
+body.anim-ready .reveal > * { opacity: 0; transform: translateY(20px); transition: opacity .85s var(--ease-out),transform .85s var(--ease-out); }
+body.anim-ready .reveal.in > * { opacity: 1; transform: none; }
+body.anim-ready .reveal.in > *:nth-child(1) { transition-delay: 50ms; }
+body.anim-ready .reveal.in > *:nth-child(2) { transition-delay: 130ms; }
+body.anim-ready .reveal.in > *:nth-child(3) { transition-delay: 210ms; }
+body.anim-ready .reveal.in > *:nth-child(4) { transition-delay: 290ms; }
+body.anim-ready .reveal.in > *:nth-child(n+5) { transition-delay: 360ms; }
+
+@media (max-height: 900px) {
+  .slide { padding-top: 32px; padding-bottom: 32px; }
+  .growth-stage { min-height: 340px; }
+  .reality-item { padding: 7px 0; }
+  .hat { padding-top: 12px; padding-bottom: 12px; }
+  .native { padding-top: 15px; padding-bottom: 15px; }
+  .rung { min-height: calc(var(--rh,230px) * .86); }
+  .prow { padding: 6px 0; }
+}
+@media (max-width: 1080px) {
+  .deck-counter,.deck-tracker { display: none; }
+  .slide { overflow-y: auto; }
+  .title-grid,.rings-layout,.market-grid { grid-template-columns: 1fr; }
+  .title-name { max-width: none; }
+  .question blockquote { font-size: clamp(34px,7vw,62px); }
+  .hat-grid { grid-template-columns: repeat(3,1fr); }
+  .ladder { grid-template-columns: 1fr 1fr; align-items: stretch; }
+  .lad-arrow { display: none; }
+  .rung { min-height: 0; }
+  .rings-layout { height: auto; }
+  .rings-viz svg { height: auto; }
+  .prow { grid-template-columns: 52px 98px minmax(0,1fr); }
+  .prow-live { display: none; }
+}
+@media (max-width: 680px) {
+  .reality-grid,.growth-stage,.hat-grid { grid-template-columns: 1fr; }
+  .reality-head,.prog-head,.title-foot { align-items: flex-start; flex-direction: column; }
+  .reality-head .lede,.prog-head .lede,.title-transition { text-align: left; }
+  .reality-verdict { grid-template-columns: 1fr; }
+  .bench { text-align: left; border-left: 0; padding-left: 0; border-top: 1px solid var(--rule); padding-top: 12px; }
+  .prow { grid-template-columns: 48px minmax(0,1fr); }
+  .prow-time { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,*::before,*::after { animation: none !important; transition: none !important; }
+  .deck { scroll-behavior: auto; }
+  body.anim-ready .reveal > * { opacity: 1; transform: none; }
+}
+@media print {
+  body { overflow: visible; background: var(--bg); }
+  .deck { height: auto; overflow: visible; }
+  .slide { height: 100vh; page-break-after: always; }
+  .deck-progress,.deck-counter,.deck-tracker { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="atmosphere" aria-hidden="true">
+  <div class="aurora"><b></b></div>
+  <div class="grid-floor"></div>
+</div>
+
+<div class="deck-progress" aria-hidden="true"></div>
+<div class="deck-counter" aria-hidden="true">
+  <span class="dc-act" id="dcAct">OPENING</span>
+  <span><span class="dc-n" id="n">01</span> / <span id="total">07</span></span>
+  <span class="dc-bar" id="dcBar"></span>
+</div>
+<nav class="deck-tracker" id="tracker" aria-label="Slide navigation"></nav>
+
+<main class="deck">
+
+  <!-- S01 · TITLE -->
+  <section class="slide" data-act="OPENING" data-act-name="The CFO's question" data-accent="accent">
+    <div class="aurora" aria-hidden="true"><b></b></div>
+    <div class="wrap reveal">
+      <div class="eyebrow">Semana Engenharia Agêntica &nbsp;·&nbsp; Day 1 of 5 &nbsp;·&nbsp; 19:00–22:00 BRT</div>
+      <div class="title-grid" style="margin-top:clamp(22px,3.6vh,42px);">
+        <div>
+          <div class="title-rule" aria-hidden="true"></div>
+          <h1 class="display title-name">Semana Engenharia Agêntica</h1>
+          <p class="title-day">Day 1 · The Foundations</p>
+        </div>
+        <div class="question">
+          <div class="q-label">The question that starts the week</div>
+          <blockquote>How much revenue did we make yesterday — and why should I trust that number?</blockquote>
+          <cite>Chief Financial Officer, TransactCo</cite>
+        </div>
+      </div>
+      <div class="title-foot">
+        <div class="presenter">
+          <img src="../assets/luan-moreno-web.jpg" alt="Luan Moreno" width="64" height="64">
+          <div>
+            <div class="p-name">Luan Moreno</div>
+            <div class="p-role">Principal Forward-Deployed Engineer · Agentic Engineering · Data &amp; AI</div>
+          </div>
+        </div>
+        <p class="title-transition">Before we enter the company, <b>zoom out.</b> What does this discipline look like in the real world?</p>
+      </div>
+      <aside class="speaker-notes" hidden>[Sources]
+plan/semana.md — CFO question, Day 1 case, session timing and facilitation contract.
+[/Sources]</aside>
+    </div>
+  </section>
+
+  <!-- S02 · THE REALITY -->
+  <section class="slide" data-act="ACT 0" data-act-name="The reality" data-accent="red">
+    <div class="aurora" style="--a1:rgba(248,81,73,.13);--a2:rgba(74,158,255,.08);--a3:rgba(212,175,55,.05);" aria-hidden="true"><b></b></div>
+    <div class="wrap reveal">
+      <div class="reality-head">
+        <div>
+          <span class="tag" style="--tag-c:var(--red);">Act 0 · the reality</span>
+          <h2 class="h2" style="font-size:clamp(35px,5vw,70px);margin-top:clamp(10px,1.7vh,18px);">The gap is not the model <span style="color:var(--red);">alone</span></h2>
+        </div>
+        <p class="lede">A capable model is necessary. <b>Reliable work appears only when the environment can answer back.</b></p>
+      </div>
+
+      <div class="reality-grid">
+        <div class="reality-col" style="--rc:var(--green);">
+          <div class="reality-label">What actually works</div>
+          <div class="reality-item"><span class="reality-n">01</span><div><div class="reality-name">A bounded task</div><div class="reality-copy">Objective, authority, evidence and stopping conditions are explicit.</div></div></div>
+          <div class="reality-item"><span class="reality-n">02</span><div><div class="reality-name">Curated, current context</div><div class="reality-copy">The smallest high-signal set is loaded when the work needs it.</div></div></div>
+          <div class="reality-item"><span class="reality-n">03</span><div><div class="reality-name">Narrow tools and authority</div><div class="reality-copy">Actions are least-privilege, observable and recoverable.</div></div></div>
+          <div class="reality-item"><span class="reality-n">04</span><div><div class="reality-name">Independent proof</div><div class="reality-copy">Evals, telemetry and human checkpoints judge the outcome.</div></div></div>
+        </div>
+
+        <div class="reality-col" style="--rc:var(--red);">
+          <div class="reality-label">What quietly does not</div>
+          <div class="reality-item"><span class="reality-n">01</span><div><div class="reality-name">An open-ended mandate</div><div class="reality-copy">“Make it better” hides ownership, scope and the definition of done.</div></div></div>
+          <div class="reality-item"><span class="reality-n">02</span><div><div class="reality-name">A context dump</div><div class="reality-copy">Stale instructions and irrelevant detail compete for attention.</div></div></div>
+          <div class="reality-item"><span class="reality-n">03</span><div><div class="reality-name">Broad access</div><div class="reality-copy">One plausible tool call becomes an irreversible side effect.</div></div></div>
+          <div class="reality-item"><span class="reality-n">04</span><div><div class="reality-name">Self-declared success</div><div class="reality-copy">A fluent answer grades the same trajectory that produced it.</div></div></div>
+        </div>
+      </div>
+
+      <div class="reality-verdict">
+        <div class="verdict-main">The model supplies <b>capability.</b> The system supplies <b>reliability.</b></div>
+        <div class="bench"><strong>23.8 pts</strong><span>spread across configurable harnesses<br>same benchmark · Harness-Bench preprint</span></div>
+      </div>
+      <div class="src">Sources: Anthropic · Building effective agents (2024), Effective harnesses for long-running agents (2025), Demystifying evals (2026) · OpenAI · Harness engineering (2026) · Harness-Bench (May 2026 preprint; 5,194 trajectories).</div>
+      <aside class="speaker-notes" hidden>[Sources]
+https://www.anthropic.com/engineering/building-effective-agents
+https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents
+https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents
+https://openai.com/index/harness-engineering/
+https://arxiv.org/html/2605.27922v1
+[/Sources]
+Note: Harness-Bench is a preprint. The 23.8-point spread is 76.2 minus 52.4 across complete configurable-harness conditions, not a causal estimate for one mechanism.</aside>
+    </div>
+  </section>
+
+  <!-- S03 · SIX HATS -->
+  <section class="slide" data-act="ACT 0" data-act-name="Six hats, one engineer" data-accent="gold">
+    <div class="aurora aurora--gold" aria-hidden="true"><b></b></div>
+    <div class="wrap reveal" style="max-width:1640px;">
+      <div>
+        <span class="tag" style="--tag-c:var(--gold);">The convergence</span>
+        <h2 class="h2" style="font-size:clamp(34px,4.8vw,66px);margin-top:clamp(10px,1.7vh,18px);">Six hats. <span class="grad-gold">One end-to-end engineer.</span></h2>
+        <p class="lede" style="margin-top:10px;max-width:62ch;">The title changes by company. The accountability does not: understand the problem, build the system, prove the outcome.</p>
+      </div>
+
+      <div class="hat-grid">
+        <div class="hat" style="--hc:var(--accent);"><div class="hat-name">Software<br>Engineer</div><div class="hat-copy">systems · code quality · interfaces</div></div>
+        <div class="hat" style="--hc:var(--purple);"><div class="hat-name">AI<br>Engineer</div><div class="hat-copy">models · prompts · evals</div></div>
+        <div class="hat" style="--hc:var(--cyan);"><div class="hat-name">Data<br>Engineer</div><div class="hat-copy">pipelines · contracts · provenance</div></div>
+        <div class="hat" style="--hc:#ef9000;"><div class="hat-name">Analytics<br>Engineer</div><div class="hat-copy">metrics · semantics · evidence</div></div>
+        <div class="hat" style="--hc:var(--silver);"><div class="hat-name">DevOps /<br>Platform</div><div class="hat-copy">delivery · observability · recovery</div></div>
+        <div class="hat" style="--hc:var(--red);"><div class="hat-name">Solutions<br>Architect</div><div class="hat-copy">integration · trade-offs · adoption</div></div>
+      </div>
+
+      <div class="converge-arrow" aria-hidden="true">↘ ↓ ↙</div>
+
+      <div class="native">
+        <div class="native-k">not six full-time jobs — one line of accountability</div>
+        <div class="native-name grad-gold">AI-Native Engineer</div>
+        <div class="native-job">Owns the path from ambiguous business problem to a production system with evidence.</div>
+        <div class="role-tags">
+          <span class="role-tag" style="--tc:var(--gold);">Forward-Deployed Engineer</span>
+          <span class="role-tag" style="--tc:var(--accent);">Applied AI Engineer</span>
+          <span class="role-tag" style="--tc:var(--green);">Agentic Engineer</span>
+        </div>
+      </div>
+      <div class="src">Synthesis from the supplied template and current role descriptions. “AI-Native Engineer” is used here as a capability profile, not a standardized job taxonomy.</div>
+      <aside class="speaker-notes" hidden>[Sources]
+/Users/luanmorenomaciel/GitHub/uc-northwind-pay-edp/presentation/tmpl-agentic-engineering.html — source slide 5.
+https://openai.com/careers/forward-deployed-engineer-%28fde%29-sf-san-francisco/
+https://news.linkedin.com/2026/2026-Davos-Press-Release
+[/Sources]</aside>
+    </div>
+  </section>
+
+  <!-- S04 · THE WHY IN NUMBERS -->
+  <section class="slide" data-act="ACT 0" data-act-name="The WHY, in numbers" data-accent="gold">
+    <div class="aurora aurora--gold" aria-hidden="true"><b></b></div>
+    <div class="wrap reveal" style="max-width:1640px;">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:34px;">
+        <div>
+          <span class="tag" style="--tag-c:var(--gold);">The true WHY · in numbers</span>
+          <h2 class="h2" style="font-size:clamp(34px,4.8vw,66px);margin-top:clamp(10px,1.7vh,18px);">The market is pricing <span class="grad-gold">deployment</span></h2>
+        </div>
+        <p class="lede" style="max-width:35ch;text-align:right;">These are posting signals, not a headcount census. <b>The denominator matters.</b></p>
+      </div>
+
+      <div class="market-grid">
+        <div class="growth-stage" aria-label="LinkedIn global job-posting growth from 2023 to 2025: Forward-Deployed Engineer or Product Manager 42 times; AI Engineer 13 times.">
+          <div class="growth-card" style="--gc:var(--gold);--gh:64%;">
+            <div class="growth-label">
+              <div class="growth-role">FDE / Product Manager family</div>
+              <div class="growth-num">≈42×</div>
+              <div class="growth-meta">2023 → 2025 · ≈9K matched global postings</div>
+            </div>
+            <div class="growth-bar" aria-hidden="true"></div>
+          </div>
+          <div class="growth-card" style="--gc:var(--accent);--gh:33%;">
+            <div class="growth-label">
+              <div class="growth-role">AI Engineer</div>
+              <div class="growth-num">≈13×</div>
+              <div class="growth-meta">2023 → 2025 · ≈177K matched global postings</div>
+            </div>
+            <div class="growth-bar" aria-hidden="true"></div>
+          </div>
+        </div>
+
+        <div class="proof-stack">
+          <div class="proof-cell" style="--pc:var(--green);">
+            <div class="proof-num">#1</div>
+            <div class="proof-label">AI Engineer · U.S. Jobs on the Rise · two years running</div>
+            <div class="proof-caveat">LinkedIn Economic Graph · January 2026</div>
+          </div>
+          <div class="proof-cell" style="--pc:var(--gold);">
+            <div class="proof-num">US$135–280K</div>
+            <div class="proof-label">listed U.S. base pay · selected current FDE postings · equity or bonus extra</div>
+            <div class="proof-caveat">Illustrative posted bands · company, role and location vary · accessed 10 Aug 2026</div>
+          </div>
+        </div>
+      </div>
+
+      <p class="market-meaning">The premium is not on prompt fluency. It is on turning frontier capability into <b>measurable production impact.</b></p>
+      <div class="src">Sources: LinkedIn · Building a Future of Work That Works, Jan 2026 (global postings, 2023–2025) · LinkedIn Davos release, 14 Jan 2026 · selected current Palantir and OpenAI FDE postings, accessed 10 Aug 2026.</div>
+      <aside class="speaker-notes" hidden>[Sources]
+https://delivery-p143253-e1476319.adobeaemcloud.com/adobe/assets/urn:aaid:aem:cef0613f-8120-4328-a651-eea88832fcf0/original/as/linkedIn-labor-market-report-building-a-future-of-work-that-works-jan-2026.pdf
+https://news.linkedin.com/2026/2026-Davos-Press-Release
+https://jobs.lever.co/palantir/dab396d4-2f14-4796-aac0-0d82883dccf0
+https://openai.com/careers/forward-deployed-engineer-%28fde%29-sf-san-francisco/
+https://openai.com/careers/forward-deployed-engineer-gov-washington-dc
+[/Sources]
+Note: 42x is the Forward-Deployed Engineer / Product Manager title family, not workers employed. Compensation is posted base pay plus equity, not total compensation or a market median.</aside>
+    </div>
+  </section>
+
+  <!-- S05 · FOUR RUNGS -->
+  <section class="slide" data-act="ACT 0" data-act-name="The four rungs" data-accent="accent">
+    <div class="aurora" aria-hidden="true"><b></b></div>
+    <div class="wrap reveal" style="max-width:1760px;">
+      <div>
+        <span class="tag">Prompt → Context → Harness → Agentic</span>
+        <h2 class="h2" style="font-size:clamp(34px,4.8vw,66px);margin-top:clamp(10px,1.7vh,18px);">Every rung assumes the one below <span class="grad">already works</span></h2>
+      </div>
+
+      <div class="ladder">
+        <div class="rung" style="--rg:var(--accent);--rh:220px;">
+          <div class="rung-n">Rung 1</div>
+          <div class="rung-name">Prompt</div>
+          <div class="rung-copy"><b>The right instruction.</b> Objective, constraints, evidence and output shape.</div>
+          <div class="rung-verdict">define the work</div>
+        </div>
+        <div class="lad-arrow" aria-hidden="true">↗</div>
+        <div class="rung" style="--rg:var(--cyan);--rh:270px;">
+          <div class="rung-n">Rung 2</div>
+          <div class="rung-name">Context</div>
+          <div class="rung-copy"><b>The right information.</b> Specs, rules, examples, memory and live evidence — deliberately selected.</div>
+          <div class="rung-verdict">supply the world</div>
+        </div>
+        <div class="lad-arrow" aria-hidden="true">↗</div>
+        <div class="rung" style="--rg:var(--gold);--rh:320px;">
+          <div class="rung-n">Rung 3</div>
+          <div class="rung-name">Harness</div>
+          <div class="rung-copy"><b>The right system around the model.</b> Tools, permissions, sandbox, state, recovery and independent checks.</div>
+          <div class="rung-verdict">give it hands and brakes</div>
+        </div>
+        <div class="lad-arrow" aria-hidden="true">↗</div>
+        <div class="rung" style="--rg:var(--green);--rh:380px;">
+          <div class="rung-n">Rung 4</div>
+          <div class="rung-name">Agentic</div>
+          <div class="rung-copy"><b>All of it inside a controlled loop.</b> The system acts, observes and retries; evals judge; humans retain authority at the gates.</div>
+          <div class="rung-verdict">operate the discipline</div>
+        </div>
+      </div>
+
+      <div class="rung-rule">
+        <span class="tag" style="--tag-c:var(--accent);font-size:clamp(9px,.86vw,10.5px);padding:5px 12px;">You can only skip a rung once</span>
+        <p>A demo can borrow what it forgot. Production pays the debt on every run.</p>
+      </div>
+      <div class="src">Sources: Anthropic · Effective context engineering for AI agents (2025) · OpenAI · Harness engineering (2026) · supplied Dark Factory slide 11, adapted to preserve human authority.</div>
+      <aside class="speaker-notes" hidden>[Sources]
+/Users/luanmorenomaciel/GitHub/uc-northwind-pay-edp/presentation/workshop-dark-factory.html — source slide 11.
+https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents
+https://openai.com/index/harness-engineering/
+https://www.anthropic.com/engineering/building-effective-agents
+[/Sources]</aside>
+    </div>
+  </section>
+
+  <!-- S06 · RINGS -->
+  <section class="slide" data-act="ACT 0" data-act-name="The rings" data-accent="purple" style="padding-top:clamp(20px,3vh,40px);padding-bottom:clamp(20px,3vh,40px);">
+    <div class="aurora aurora--purple" aria-hidden="true"><b></b></div>
+    <div class="wrap rings-layout">
+      <div class="rings-copy reveal">
+        <span class="tag" style="--tag-c:var(--purple);">The system · in rings</span>
+        <h2 class="h2">The model is the core. <span class="grad-purple">The engineering is the rings.</span></h2>
+        <p class="lede">Take one away and you lose a guarantee. The outer ring gives every loop a common language.</p>
+
+        <div class="ring-decision">
+          <h3>Graph carries shared meaning.</h3>
+          <p>Entities, relationships, rules, provenance and precedent — <b>the shared meaning and decision lineage every loop resolves against.</b></p>
+          <p><b>Eval + human gates</b> now own acceptance, authority, escalation and accountability.</p>
+        </div>
+        <div class="src">Context graph is an emerging industry term, not a settled standard. Sources: Anthropic evals · AWS Context · W3C Context Graphs Community Group.</div>
+        <aside class="speaker-notes" hidden>[Sources]
+/Users/luanmorenomaciel/GitHub/uc-northwind-pay-edp/presentation/workshop-dark-factory.html — source slide 15.
+https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents
+https://aws.amazon.com/blogs/machine-learning/context-intelligence-for-your-data-and-ai-agents-at-scale/
+https://www.w3.org/community/context-graph/
+https://www.ibm.com/think/topics/context-graph
+[/Sources]
+Definition used here: Graph carries shared meaning, relationships, provenance, policy and precedent. Eval determines whether evidence and behavior pass. A human gate authorizes exceptions, releases and consequential actions.</aside>
+      </div>
+
+      <div class="rings-viz reveal">
+        <svg viewBox="0 0 1000 900" role="img" aria-label="Six engineering rings around the model: Prompt and Spec, Context, Harness, Loop, Eval and human gate, and Graph as the outer ring.">
+          <defs>
+            <radialGradient id="coreG" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#a78bfa" stop-opacity=".56"/><stop offset="100%" stop-color="#a78bfa" stop-opacity=".12"/></radialGradient>
+            <radialGradient id="g1" cx="50%" cy="50%" r="50%"><stop offset="55%" stop-color="#4a9eff" stop-opacity="0"/><stop offset="100%" stop-color="#4a9eff" stop-opacity=".12"/></radialGradient>
+            <radialGradient id="g2" cx="50%" cy="50%" r="50%"><stop offset="62%" stop-color="#22d3ee" stop-opacity="0"/><stop offset="100%" stop-color="#22d3ee" stop-opacity=".10"/></radialGradient>
+            <radialGradient id="g3" cx="50%" cy="50%" r="50%"><stop offset="68%" stop-color="#d4af37" stop-opacity="0"/><stop offset="100%" stop-color="#d4af37" stop-opacity=".10"/></radialGradient>
+            <radialGradient id="g4" cx="50%" cy="50%" r="50%"><stop offset="73%" stop-color="#b0bec5" stop-opacity="0"/><stop offset="100%" stop-color="#b0bec5" stop-opacity=".08"/></radialGradient>
+            <radialGradient id="g5" cx="50%" cy="50%" r="50%"><stop offset="78%" stop-color="#3fb950" stop-opacity="0"/><stop offset="100%" stop-color="#3fb950" stop-opacity=".09"/></radialGradient>
+            <radialGradient id="g6" cx="50%" cy="50%" r="50%"><stop offset="83%" stop-color="#a78bfa" stop-opacity="0"/><stop offset="100%" stop-color="#a78bfa" stop-opacity=".10"/></radialGradient>
+            <filter id="coreGlow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+
+          <circle class="ring-breathe r6" cx="500" cy="452" r="408" fill="url(#g6)" stroke="#a78bfa" stroke-width="1.8" stroke-opacity=".62"/>
+          <circle class="ring-breathe r5" cx="500" cy="452" r="351" fill="url(#g5)" stroke="#3fb950" stroke-width="1.7" stroke-opacity=".55"/>
+          <circle class="ring-breathe r4" cx="500" cy="452" r="297" fill="url(#g4)" stroke="#b0bec5" stroke-width="1.6" stroke-opacity=".42"/>
+          <circle class="ring-breathe r3" cx="500" cy="452" r="244" fill="url(#g3)" stroke="#d4af37" stroke-width="1.6" stroke-opacity=".54"/>
+          <circle class="ring-breathe r2" cx="500" cy="452" r="191" fill="url(#g2)" stroke="#22d3ee" stroke-width="1.6" stroke-opacity=".54"/>
+          <circle class="ring-breathe" cx="500" cy="452" r="139" fill="url(#g1)" stroke="#4a9eff" stroke-width="1.6" stroke-opacity=".6"/>
+          <circle class="core-pulse" cx="500" cy="452" r="86" fill="url(#coreG)" stroke="#a78bfa" stroke-width="2" filter="url(#coreGlow)"/>
+
+          <text x="500" y="66" fill="#c4b5fd" font-family="Instrument Serif" font-size="29" text-anchor="middle">Graph</text>
+          <text x="500" y="86" fill="#9d8bc8" font-family="Fira Code" font-size="11.5" text-anchor="middle">shared meaning · provenance · policy · precedent</text>
+
+          <text x="500" y="123" fill="#72d986" font-family="Instrument Serif" font-size="27" text-anchor="middle">Eval + human gate</text>
+          <text x="500" y="143" fill="#83c98f" font-family="Fira Code" font-size="11.5" text-anchor="middle">acceptance · authority · escalation · accountability</text>
+
+          <text x="500" y="179" fill="#cfd8dc" font-family="Instrument Serif" font-size="27" text-anchor="middle">Loop</text>
+          <text x="500" y="198" fill="#98a8b1" font-family="Fira Code" font-size="11.5" text-anchor="middle">act · observe · decide · repeat</text>
+
+          <text x="500" y="232" fill="#e6cf8a" font-family="Instrument Serif" font-size="27" text-anchor="middle">Harness</text>
+          <text x="500" y="251" fill="#c9b778" font-family="Fira Code" font-size="11.5" text-anchor="middle">tools · permissions · state · recovery</text>
+
+          <text x="500" y="285" fill="#8ae4f2" font-family="Instrument Serif" font-size="27" text-anchor="middle">Context</text>
+          <text x="500" y="304" fill="#74c8d5" font-family="Fira Code" font-size="11.5" text-anchor="middle">evidence · rules · memory · live signals</text>
+
+          <text x="500" y="338" fill="#7dc4ff" font-family="Instrument Serif" font-size="27" text-anchor="middle">Prompt / Spec</text>
+          <text x="500" y="357" fill="#69a8dc" font-family="Fira Code" font-size="11.5" text-anchor="middle">intent · constraints · output · stop</text>
+
+          <text x="500" y="445" fill="#fff" font-family="Instrument Serif" font-size="47" text-anchor="middle">Model</text>
+          <text x="500" y="471" fill="#e6dcff" font-family="Fira Code" font-size="11.5" text-anchor="middle">capability engine</text>
+
+          <text x="500" y="599" fill="#7dc4ff" font-family="Fira Code" font-size="11.5" font-style="italic" text-anchor="middle" opacity=".88">the work</text>
+          <text x="500" y="652" fill="#8ae4f2" font-family="Fira Code" font-size="11.5" font-style="italic" text-anchor="middle" opacity=".88">the world it can see</text>
+          <text x="500" y="705" fill="#e6cf8a" font-family="Fira Code" font-size="11.5" font-style="italic" text-anchor="middle" opacity=".88">the hands and the brakes</text>
+          <text x="500" y="758" fill="#aebbc2" font-family="Fira Code" font-size="11.5" font-style="italic" text-anchor="middle" opacity=".88">the engine of persistence</text>
+          <text x="500" y="811" fill="#9ce0a8" font-family="Fira Code" font-size="11.5" font-style="italic" text-anchor="middle" opacity=".88">the proof and the accountable decision</text>
+          <text x="500" y="864" fill="#c4b5fd" font-family="Fira Code" font-size="11.5" font-style="italic" text-anchor="middle" opacity=".88">the common language across every loop</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- S07 · RUN OF SHOW -->
+  <section class="slide" data-act="ACT 0" data-act-name="Tonight's run of show" data-accent="cyan">
+    <div class="aurora aurora--cyan" aria-hidden="true"><b></b></div>
+    <div class="wrap reveal" style="max-width:1800px;">
+      <div class="prog-head">
+        <div>
+          <span class="tag" style="--tag-c:var(--cyan);">Day 1 · 19:00–22:00</span>
+          <h2 class="h2" style="font-size:clamp(35px,5vw,70px);margin-top:clamp(10px,1.7vh,18px);">Tonight's run of show</h2>
+        </div>
+        <p class="lede">One question. Seven movements. Each concept ends in <b>construction, proof and a reusable skill.</b></p>
+      </div>
+
+      <div class="rail" aria-hidden="true">
+        <div class="rail-track">
+          <div class="rail-seg" style="--rs:var(--accent);flex:15"></div>
+          <div class="rail-seg" style="--rs:var(--accent);flex:25"></div>
+          <div class="rail-seg" style="--rs:var(--cyan);flex:35"></div>
+          <div class="rail-seg" style="--rs:var(--text-mute);flex:10"></div>
+          <div class="rail-seg" style="--rs:var(--purple);flex:35"></div>
+          <div class="rail-seg" style="--rs:var(--gold);flex:35"></div>
+          <div class="rail-seg" style="--rs:var(--green);flex:20"></div>
+          <div class="rail-seg" style="--rs:var(--green);flex:5"></div>
+        </div>
+      </div>
+
+      <div class="programme">
+        <div class="prow" style="--pc:var(--accent);"><span class="prow-n">00→01</span><span class="prow-time">19:00–19:15</span><span class="prow-name">The reality → the system we inherit <i>zoom out, then return to the CFO</i></span><span class="prow-live">▶ <b>00</b></span></div>
+        <div class="prow" style="--pc:var(--accent);"><span class="prow-n">02</span><span class="prow-time">19:15–19:40</span><span class="prow-name">Prompt as a work contract <i>objective · authority · evidence · stop</i></span><span class="prow-live">▶ <b>01 · 02</b></span></div>
+        <div class="prow" style="--pc:var(--cyan);"><span class="prow-n">03</span><span class="prow-time">19:40–20:15</span><span class="prow-name">Context is selected, not dumped <i>inventory · provenance · attention</i></span><span class="prow-live">▶ <b>03</b></span></div>
+        <div class="prow" style="--pc:var(--text-mute);"><span class="prow-n">—</span><span class="prow-time">20:15–20:25</span><span class="prow-name">Break <i>reset the room, preserve the question</i></span><span class="prow-live">10 min</span></div>
+        <div class="prow" style="--pc:var(--purple);"><span class="prow-n">04</span><span class="prow-time">20:25–21:00</span><span class="prow-name">The graph <i>ontology · relationships · shared meaning</i></span><span class="prow-live">▶ <b>04</b></span></div>
+        <div class="prow" style="--pc:var(--gold);"><span class="prow-n">05</span><span class="prow-time">21:00–21:35</span><span class="prow-name">Agentic development &amp; telemetry <i>the trace outranks the answer</i></span><span class="prow-live">▶ <b>05</b></span></div>
+        <div class="prow" style="--pc:var(--green);"><span class="prow-n">06</span><span class="prow-time">21:35–21:55</span><span class="prow-name">Documentation &amp; human review <i>evidence survives the session</i></span><span class="prow-live">▶ <b>06</b></span></div>
+        <div class="prow" style="--pc:var(--green);"><span class="prow-n">07</span><span class="prow-time">21:55–22:00</span><span class="prow-name">Distill the skill <i>what became true · what stays manual</i></span><span class="prow-live">▶ <b>07 · 08</b></span></div>
+      </div>
+
+      <div class="next-act"><span>Next · Act 1 · The system we inherit</span></div>
+      <aside class="speaker-notes" hidden>[Sources]
+plan/semana.md — Complete three-hour run of show, demo choreography, live checkpoints, and truth boundaries.
+presentation/semana-d1.html — inherited programme styling and Act 1 handoff.
+[/Sources]</aside>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(function () {
+  const deck = document.querySelector('.deck');
+  const progress = document.querySelector('.deck-progress');
+  const counterN = document.getElementById('n');
+  const counterTotal = document.getElementById('total');
+  const dcAct = document.getElementById('dcAct');
+  const dcBar = document.getElementById('dcBar');
+  const tracker = document.getElementById('tracker');
+  const ACCENT = { accent:'var(--accent)', cyan:'var(--cyan)', purple:'var(--purple)', gold:'var(--gold)', green:'var(--green)', red:'var(--red)' };
+  const slides = Array.from(deck.querySelectorAll('section.slide'));
+  const total = slides.length;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const pad = (value) => String(value).padStart(2,'0');
+
+  counterTotal.textContent = pad(total);
+  slides.forEach(() => { const seg = document.createElement('span'); seg.className = 'dc-seg'; dcBar.appendChild(seg); });
+  const segs = Array.from(dcBar.children);
+  const dots = slides.map((slide,index) => {
+    const dot = document.createElement('button');
+    dot.type = 'button'; dot.className = 'dot'; dot.setAttribute('aria-label','Go to slide ' + (index + 1));
+    dot.addEventListener('click',() => slide.scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth' }));
+    tracker.appendChild(dot); return dot;
+  });
+
+  let currentIdx = -1;
+  function paint(index) {
+    if (index === currentIdx) return;
+    currentIdx = index;
+    const slide = slides[index];
+    if (slide) {
+      dcAct.textContent = slide.dataset.act || '';
+      document.querySelector('.deck-counter').style.setProperty('--dc-c',ACCENT[slide.dataset.accent] || ACCENT.accent);
+    }
+    counterN.textContent = pad(index + 1);
+    dots.forEach((dot,i) => { dot.className = i === index ? 'dot current' : 'dot'; });
+    segs.forEach((seg,i) => { seg.classList.toggle('passed',i < index); seg.classList.toggle('current',i === index); });
+  }
+
+  deck.addEventListener('scroll',() => {
+    const scrollable = deck.scrollHeight - deck.clientHeight;
+    progress.style.width = (scrollable > 0 ? (deck.scrollTop / scrollable) * 100 : 0) + '%';
+    if (total) paint(Math.min(total - 1,Math.round(deck.scrollTop / deck.clientHeight)));
+  },{ passive:true });
+
+  document.addEventListener('keydown',(event) => {
+    if (event.metaKey || event.ctrlKey || event.altKey) return;
+    const height = deck.clientHeight;
+    const behavior = reduceMotion.matches ? 'auto' : 'smooth';
+    if (['ArrowDown','ArrowRight',' ','PageDown'].includes(event.key)) { event.preventDefault(); deck.scrollBy({ top:height,behavior }); }
+    else if (['ArrowUp','ArrowLeft','PageUp'].includes(event.key)) { event.preventDefault(); deck.scrollBy({ top:-height,behavior }); }
+    else if (event.key === 'Home') { event.preventDefault(); deck.scrollTo({ top:0,behavior }); }
+    else if (event.key === 'End') { event.preventDefault(); deck.scrollTo({ top:deck.scrollHeight,behavior }); }
+  });
+
+  paint(0);
+  function activate(slide) { slide.classList.add('is-active'); slide.querySelectorAll('.reveal').forEach((item) => item.classList.add('in')); }
+  function deactivate(slide) { slide.classList.remove('is-active'); slide.querySelectorAll('.reveal').forEach((item) => item.classList.remove('in')); }
+  if (!('IntersectionObserver' in window)) slides.forEach(activate);
+  else {
+    document.body.classList.add('anim-ready');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const on = entry.isIntersecting && entry.intersectionRatio >= .5;
+        if (on && !entry.target.classList.contains('is-active')) activate(entry.target);
+        else if (!on && entry.target.classList.contains('is-active')) deactivate(entry.target);
+      });
+    },{ root:deck,threshold:[0,.5,.85] });
+    slides.forEach((slide) => observer.observe(slide));
+    if (slides[0]) activate(slides[0]);
+  }
+
+  let raf = 0, cx = 0, cy = 0;
+  deck.addEventListener('pointermove',(event) => {
+    cx = event.clientX; cy = event.clientY;
+    if (!raf) raf = requestAnimationFrame(() => {
+      raf = 0;
+      deck.style.setProperty('--mx',(cx / window.innerWidth * 100).toFixed(1) + '%');
+      deck.style.setProperty('--my',(cy / window.innerHeight * 100).toFixed(1) + '%');
+    });
+  },{ passive:true });
+})();
+</script>
+
+</body>
+</html>
