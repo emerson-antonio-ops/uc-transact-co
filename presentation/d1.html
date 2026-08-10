@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Semana Engenharia Agêntica — Day 1 · Foundation Investigation · TransactCo</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --font-display: 'Instrument Serif', Georgia, serif;
+    --font-body: 'DM Sans', system-ui, sans-serif;
+    --font-editorial: 'Newsreader', 'Georgia', serif;
+    --font-mono: 'Fira Code', 'SF Mono', Consolas, monospace;
+
+    --bg: #08080a;
+    --surface: #111114;
+    --surface2: #19191e;
+    --surface-elevated: #222228;
+    --border: rgba(120, 160, 220, 0.08);
+    --border-bright: rgba(120, 160, 220, 0.18);
+    --text: #eaedf2;
+    --text-dim: #6e7a8c;
+
+    --accent: #4a9eff;
+    --accent-dim: rgba(74, 158, 255, 0.10);
+    --silver: #b0bec5;
+    --silver-bright: #cfd8dc;
+    --silver-dim: rgba(176, 190, 197, 0.10);
+    --gold: #d4af37;
+    --gold-dim: rgba(212, 175, 55, 0.10);
+    --green: #3fb950;
+    --green-dim: rgba(63, 185, 80, 0.10);
+    --red: #f85149;
+    --red-dim: rgba(248, 81, 73, 0.10);
+    --purple: #a78bfa;
+    --purple-dim: rgba(167, 139, 250, 0.10);
+    --cyan: #22d3ee;
+    --cyan-dim: rgba(34, 211, 238, 0.10);
+    --orange: #ef9000;
+    --orange-dim: rgba(239, 144, 0, 0.10);
+
+    --code-bg: #060608;
+    --code-text: #c8d0dc;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font-body); color: var(--text); background: var(--bg); overflow: hidden; }
+
+  /* film grain */
+  body::after {
+    content: '';
+    position: fixed; inset: 0; z-index: 9999; pointer-events: none; opacity: 0.035;
+    background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSczMDAnIGhlaWdodD0nMzAwJz48ZmlsdGVyIGlkPSduJz48ZmVUdXJidWxlbmNlIHR5cGU9J2ZyYWN0YWxOb2lzZScgYmFzZUZyZXF1ZW5jeT0nMC43NScgbnVtT2N0YXZlcz0nNCcgc3RpdGNoVGlsZXM9J3N0aXRjaCcvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSczMDAnIGhlaWdodD0nMzAwJyBmaWx0ZXI9J3VybCgjbiknIG9wYWNpdHk9JzEnLz48L3N2Zz4=");
+  }
+
+  .deck { height: 100dvh; overflow-y: auto; scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+
+  .slide {
+    height: 100dvh; scroll-snap-align: start; overflow: hidden; position: relative;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: clamp(32px, 5vh, 56px) clamp(36px, 5vw, 88px);
+    isolation: isolate;
+  }
+
+  .deck-progress { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--accent), var(--silver)); z-index: 100; transition: width 0.3s ease; pointer-events: none; box-shadow: 0 0 16px rgba(74,158,255,0.55), 0 0 4px rgba(255,255,255,0.4); border-radius: 0 3px 3px 0; }
+  .deck-progress::after { content: ''; position: absolute; top: 50%; right: -1px; width: 7px; height: 7px; border-radius: 50%; transform: translateY(-50%); background: #fff; box-shadow: 0 0 14px 3px rgba(74,158,255,0.7); }
+  .deck-counter { position: fixed; bottom: clamp(12px,2vh,24px); right: clamp(12px,2vw,24px); font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); z-index: 100; letter-spacing: 2px; padding: 6px 14px; border: 1px solid var(--border); border-radius: 999px; background: rgba(8,8,10,0.75); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+  .deck-counter::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); margin-right: 10px; vertical-align: 1px; box-shadow: 0 0 10px var(--accent); animation: counter-pulse 2.5s ease-in-out infinite; }
+  @keyframes counter-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+  .deck-tracker {
+    position: fixed; top: 50%; right: clamp(10px, 1.2vw, 18px); transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: 4px; padding: 10px 6px;
+    background: rgba(10, 11, 14, 0.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 999px; z-index: 100;
+    max-height: min(85vh, 960px); overflow: hidden; pointer-events: none;
+  }
+  .deck-tracker .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255, 255, 255, 0.18); transition: background 0.25s ease, width 0.25s ease, height 0.25s ease; flex: 0 0 6px; }
+  .deck-tracker .dot.passed { background: rgba(255, 255, 255, 0.4); }
+  .deck-tracker .dot.current { width: 6px; height: 22px; border-radius: 3px; background: var(--accent); box-shadow: 0 0 12px rgba(74, 158, 255, 0.5); flex: 0 0 22px; }
+  @media (max-width: 768px) { .deck-tracker { display: none; } }
+
+  .slide__display { font-family: var(--font-display); font-size: clamp(56px,10vw,120px); font-weight: 400; letter-spacing: -1px; line-height: 0.92; }
+  .slide__heading { font-family: var(--font-display); font-size: clamp(36px,6vw,72px); font-weight: 400; letter-spacing: -0.5px; line-height: 1.08; }
+  .slide__body { font-family: var(--font-editorial); font-size: clamp(19px,2.1vw,25px); font-weight: 400; line-height: 1.55; color: var(--text-dim); letter-spacing: 0.01em; }
+  .slide__subtitle { font-family: var(--font-mono); font-size: clamp(13px,1.5vw,17px); color: var(--text-dim); letter-spacing: 2px; text-transform: uppercase; }
+  .slide__label { font-family: var(--font-mono); font-size: clamp(11px,1.1vw,14px); font-weight: 600; text-transform: uppercase; letter-spacing: 2.5px; color: var(--accent); margin-bottom: 16px; }
+  .act-marker { font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 8px; opacity: 0.7; }
+
+  .gradient-text { background: linear-gradient(135deg, var(--accent) 0%, var(--silver-bright) 50%, #ffffff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .gradient-gold { background: linear-gradient(135deg, var(--gold) 0%, #ffffff 50%, var(--accent) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .gradient-green { background: linear-gradient(135deg, var(--green) 0%, #ffffff 60%, var(--green) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .gradient-red { background: linear-gradient(135deg, var(--red) 0%, #ffffff 50%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .gradient-purple { background: linear-gradient(135deg, var(--purple) 0%, #ffffff 50%, var(--accent) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; filter: drop-shadow(0 0 24px rgba(167,139,250,0.10)); }
+  .gradient-cyan { background: linear-gradient(135deg, var(--cyan) 0%, #ffffff 55%, var(--accent) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+  .slide--title { justify-content: center; align-items: center; text-align: center; background-image: radial-gradient(ellipse at 50% 30%, rgba(74,158,255,0.12) 0%, transparent 50%), radial-gradient(ellipse at 80% 80%, rgba(212,175,55,0.04) 0%, transparent 40%); }
+  .slide--silent { justify-content: center; align-items: center; text-align: center; }
+
+  .hero-badge {
+    display: inline-block; background: var(--accent); color: #000;
+    font-family: var(--font-mono); font-size: 11px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase;
+    padding: 7px 18px; border-radius: 5px;
+    box-shadow: 0 6px 22px rgba(74,158,255,0.4), 0 0 0 1px rgba(74,158,255,0.6), inset 0 1px 0 rgba(255,255,255,0.3);
+    margin-bottom: clamp(20px,3.2vh,36px);
+  }
+  .hero-badge::before { content: '\25C6'; margin-right: 8px; opacity: 0.8; }
+  .hero-badge::after { content: '\25C6'; margin-left: 8px; opacity: 0.8; }
+
+  .pill { display: inline-block; padding: 7px 16px; border-radius: 5px; font-family: var(--font-mono); font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; margin: 0 6px; color: #000; background: var(--pill-c, var(--accent)); box-shadow: 0 5px 18px var(--pill-glow, rgba(74,158,255,0.35)), 0 0 0 1px var(--pill-ring, rgba(74,158,255,0.6)), inset 0 1px 0 rgba(255,255,255,0.3); }
+  .pill::before { content: '\25C6'; margin-right: 7px; opacity: 0.7; }
+  .pill.accent { --pill-c: var(--accent); --pill-glow: rgba(74,158,255,0.4); --pill-ring: rgba(74,158,255,0.6); }
+  .pill.purple { --pill-c: var(--purple); --pill-glow: rgba(167,139,250,0.4); --pill-ring: rgba(167,139,250,0.6); }
+  .pill.gold { --pill-c: var(--gold); --pill-glow: rgba(212,175,55,0.4); --pill-ring: rgba(212,175,55,0.6); }
+  .pill.green { --pill-c: var(--green); --pill-glow: rgba(63,185,80,0.4); --pill-ring: rgba(63,185,80,0.6); }
+
+  .section-rule { display: flex; align-items: center; gap: 14px; margin: 14px 0; color: var(--text-dim); font-family: var(--font-mono); font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; }
+  .section-rule::before, .section-rule::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--border-bright), transparent); }
+
+  /* ── title-slide pillar cards ── */
+  .vs-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(10px,1.1vw,18px); align-items: stretch; width: 100%; max-width: 1280px; margin-top: clamp(10px,1.6vh,20px); }
+  .vs-card { border: 1px solid var(--border-bright); border-radius: 16px; padding: clamp(14px,1.7vh,22px) clamp(14px,1.2vw,20px); background: var(--surface); position: relative; border-top: 3px solid var(--vs-c, var(--accent)); display: flex; flex-direction: column; align-items: center; text-align: center; transition: transform 0.3s, box-shadow 0.3s; }
+  .vs-card:hover { transform: translateY(-4px); box-shadow: 0 14px 34px rgba(0,0,0,0.3); }
+  .vs-card .vs-tile { width: clamp(50px,4.6vw,68px); height: clamp(50px,4.6vw,68px); border-radius: 16px; background: radial-gradient(ellipse at 50% 35%, rgba(255,255,255,0.04), var(--code-bg) 75%); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; margin-bottom: 13px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.05); font-family: var(--font-display); font-size: clamp(24px,2.2vw,32px); color: var(--vs-c, var(--accent)); }
+  .vs-card .vs-name { font-family: var(--font-display); font-size: clamp(20px,2vw,28px); color: var(--text); line-height: 1; margin-bottom: 9px; }
+  .vs-card .vs-role { display: inline-block; font-family: var(--font-mono); font-size: clamp(9px,0.9vw,11px); font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #000; background: var(--vs-c, var(--accent)); padding: 5px 13px; border-radius: 5px; margin-bottom: 12px; box-shadow: 0 5px 18px var(--vs-glow, rgba(74,158,255,0.4)), 0 0 0 1px var(--vs-ring, rgba(74,158,255,0.6)), inset 0 1px 0 rgba(255,255,255,0.3); }
+  .vs-card .vs-role::before { content: '\25C6'; margin-right: 7px; opacity: 0.65; }
+  .vs-card .vs-desc { font-family: var(--font-editorial); font-size: clamp(13px,1.1vw,15.5px); color: var(--text-dim); line-height: 1.45; }
+  .vs-card.vs-accent { --vs-c: var(--accent); --vs-glow: rgba(74,158,255,0.4); --vs-ring: rgba(74,158,255,0.6); border-color: rgba(74,158,255,0.28); background: linear-gradient(180deg, rgba(74,158,255,0.08), rgba(74,158,255,0.01)); }
+  .vs-card.vs-cyan { --vs-c: var(--cyan); --vs-glow: rgba(34,211,238,0.4); --vs-ring: rgba(34,211,238,0.6); border-color: rgba(34,211,238,0.28); background: linear-gradient(180deg, rgba(34,211,238,0.08), rgba(34,211,238,0.01)); }
+  .vs-card.vs-gold { --vs-c: var(--gold); --vs-glow: rgba(212,175,55,0.4); --vs-ring: rgba(212,175,55,0.6); border-color: rgba(212,175,55,0.28); background: linear-gradient(180deg, rgba(212,175,55,0.08), rgba(212,175,55,0.01)); }
+  .vs-card.vs-purple { --vs-c: var(--purple); --vs-glow: rgba(167,139,250,0.4); --vs-ring: rgba(167,139,250,0.6); border-color: rgba(167,139,250,0.28); background: linear-gradient(180deg, rgba(167,139,250,0.08), rgba(167,139,250,0.01)); }
+  @media (max-width: 860px) { .vs-grid { grid-template-columns: 1fr 1fr; } }
+
+  .hero-quote { font-family: var(--font-editorial); font-style: italic; font-size: clamp(30px, 3.8vw, 54px); line-height: 1.25; color: var(--text); max-width: 1400px; margin: 0 auto; letter-spacing: -0.01em; }
+  .hero-quote::before { content: '\201C'; color: var(--accent); font-size: 1.1em; margin-right: 4px; vertical-align: -0.1em; opacity: 0.5; }
+  .hero-quote::after { content: '\201D'; color: var(--accent); font-size: 1.1em; margin-left: 4px; vertical-align: -0.1em; opacity: 0.5; }
+  .hero-cite { font-family: var(--font-mono); font-size: 14px; color: var(--text-dim); letter-spacing: 2px; text-transform: uppercase; margin-top: 40px; position: relative; display: inline-block; padding-top: 20px; }
+  .hero-cite::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 48px; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); }
+
+  /* stat grid */
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(16px,1.5vw,22px); width: 100%; max-width: 1720px; }
+  .stat-cell { text-align: center; padding: 24px 16px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); position: relative; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; }
+  .stat-cell:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(0,0,0,0.25); }
+  .stat-cell::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--sc-c, var(--accent)); opacity: 0.9; }
+  .stat-cell::after { content: ''; position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: radial-gradient(circle, var(--sc-halo, rgba(74,158,255,0.16)) 0%, transparent 70%); pointer-events: none; }
+  .stat-cell > * { position: relative; z-index: 1; }
+  .stat-cell .sc-num { font-family: var(--font-display); font-size: clamp(48px,6vw,82px); line-height: 0.95; color: var(--text); }
+  .stat-cell .sc-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-dim); margin-top: 8px; line-height: 1.4; }
+  .stat-cell.sc-accent { --sc-c: var(--accent); --sc-halo: rgba(74,158,255,0.18); border-color: var(--accent-dim); }
+  .stat-cell.sc-gold { --sc-c: var(--gold); --sc-halo: rgba(212,175,55,0.16); border-color: rgba(212,175,55,0.18); }
+  .stat-cell.sc-purple { --sc-c: var(--purple); --sc-halo: rgba(167,139,250,0.16); border-color: rgba(167,139,250,0.18); }
+  .stat-cell.sc-green { --sc-c: var(--green); --sc-halo: rgba(63,185,80,0.16); border-color: rgba(63,185,80,0.18); }
+  .stat-cell.sc-red { --sc-c: var(--red); --sc-halo: rgba(248,81,73,0.16); border-color: rgba(248,81,73,0.18); }
+  .stat-cell.sc-cyan { --sc-c: var(--cyan); --sc-halo: rgba(34,211,238,0.16); border-color: rgba(34,211,238,0.18); }
+
+  /* callout */
+  .callout { position: relative; border: 1px solid var(--green); border-radius: 14px; padding: 20px 26px; background: linear-gradient(135deg, rgba(63,185,80,0.12) 0%, rgba(63,185,80,0.03) 100%); box-shadow: 0 8px 32px rgba(63,185,80,0.10), inset 0 1px 0 rgba(255,255,255,0.06); }
+  .callout::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--green), transparent); }
+  .callout.red { background: linear-gradient(135deg, rgba(248,81,73,0.16) 0%, rgba(248,81,73,0.04) 100%); border-color: var(--red); box-shadow: 0 8px 32px rgba(248,81,73,0.14), inset 0 1px 0 rgba(255,255,255,0.06); }
+  .callout.red::before { background: linear-gradient(90deg, transparent, var(--red), transparent); }
+  .callout.gold { background: linear-gradient(135deg, rgba(212,175,55,0.16) 0%, rgba(212,175,55,0.04) 100%); border-color: var(--gold); box-shadow: 0 8px 32px rgba(212,175,55,0.14), inset 0 1px 0 rgba(255,255,255,0.06); }
+  .callout.gold::before { background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+  .callout.accent { background: linear-gradient(135deg, rgba(74,158,255,0.12), rgba(74,158,255,0.03)); border-color: var(--accent); box-shadow: 0 8px 32px rgba(74,158,255,0.12), inset 0 1px 0 rgba(255,255,255,0.06); }
+  .callout.accent::before { background: linear-gradient(90deg, transparent, var(--accent), transparent); }
+  .callout.purple { background: linear-gradient(135deg, rgba(167,139,250,0.14), rgba(167,139,250,0.03)); border-color: var(--purple); box-shadow: 0 8px 32px rgba(167,139,250,0.12), inset 0 1px 0 rgba(255,255,255,0.06); }
+  .callout.purple::before { background: linear-gradient(90deg, transparent, var(--purple), transparent); }
+  .callout .co-kicker { font-family: var(--font-mono); font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; font-weight: 700; margin-bottom: 6px; color: var(--green); }
+  .callout.red .co-kicker { color: var(--red); }
+  .callout.gold .co-kicker { color: var(--gold); }
+  .callout.accent .co-kicker { color: var(--accent); }
+  .callout.purple .co-kicker { color: var(--purple); }
+  .callout .co-body { font-family: var(--font-editorial); font-size: clamp(15px,1.7vw,19px); color: var(--text); line-height: 1.45; }
+
+  /* two-col / three-col arch boxes */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .arch-box { border: 1px solid var(--border); border-radius: 16px; padding: 26px 28px; background: var(--surface); position: relative; }
+  .arch-box.human { border-color: var(--silver-dim); background: linear-gradient(180deg, rgba(176,190,197,0.05), rgba(176,190,197,0.01)); }
+  .arch-box.machine { border-color: var(--accent-dim); background: linear-gradient(180deg, rgba(74,158,255,0.07), rgba(74,158,255,0.01)); }
+  .arch-box h4 { font-family: var(--font-display); font-size: 30px; color: var(--text); margin-bottom: 2px; }
+  .arch-box .caption { font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+  .arch-box ul { list-style: none; padding: 0; }
+  .arch-box li { font-family: var(--font-body); font-size: 15.5px; color: var(--text); padding: 6px 0; padding-left: 20px; position: relative; line-height: 1.4; }
+  .arch-box li::before { content: '\25b8'; color: var(--accent); position: absolute; left: 0; top: 7px; font-size: 12px; }
+  .arch-box.human li::before { color: var(--silver); }
+
+  /* code block */
+  .code-block { background: var(--code-bg); border: 1px solid var(--border); border-radius: 12px; padding: 22px 24px; color: var(--code-text); overflow: hidden; position: relative; white-space: pre-wrap; tab-size: 2; font-family: var(--font-mono); font-feature-settings: 'calt' 1, 'liga' 1; letter-spacing: 0.01em; font-size: clamp(12px, 1.15vw, 14px); line-height: 1.65; }
+  .code-block::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--accent) 50%, transparent); opacity: 0.4; }
+  .code-block[data-lang]::after { content: attr(data-lang); position: absolute; top: 10px; right: 14px; font-family: var(--font-mono); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim); opacity: 0.7; }
+  .code-block .c-key { color: var(--accent); }
+  .code-block .c-str { color: var(--green); }
+  .code-block .c-dim { color: var(--text-dim); }
+  .code-block .c-gold { color: var(--gold); }
+  .code-block .c-red { color: var(--red); }
+  .code-block .c-purple { color: var(--purple); }
+
+  /* ── sequence flow (horizontal pipeline) ── */
+  .seq { display: flex; align-items: stretch; justify-content: center; gap: clamp(6px,0.7vw,12px); flex-wrap: wrap; width: 100%; }
+  .seq-node { border: 1px solid var(--border-bright); border-radius: 12px; background: var(--surface); padding: clamp(12px,1.6vh,18px) clamp(12px,1.2vw,20px); text-align: center; min-width: clamp(96px,9vw,150px); position: relative; border-top: 3px solid var(--sq-c, var(--accent)); transition: transform 0.3s, box-shadow 0.3s; }
+  .seq-node:hover { transform: translateY(-3px); box-shadow: 0 10px 26px rgba(0,0,0,0.3); }
+  .seq-node .sq-n { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--sq-c, var(--accent)); margin-bottom: 6px; }
+  .seq-node .sq-name { font-family: var(--font-display); font-size: clamp(17px,1.8vw,24px); color: var(--text); line-height: 1.05; }
+  .seq-node .sq-desc { font-family: var(--font-editorial); font-size: clamp(11.5px,1.05vw,14px); color: var(--text-dim); line-height: 1.35; margin-top: 7px; }
+  .seq-node.sq-accent { --sq-c: var(--accent); }
+  .seq-node.sq-cyan { --sq-c: var(--cyan); }
+  .seq-node.sq-gold { --sq-c: var(--gold); }
+  .seq-node.sq-green { --sq-c: var(--green); }
+  .seq-node.sq-purple { --sq-c: var(--purple); }
+  .seq-node.sq-silver { --sq-c: var(--silver); }
+  .seq-node.sq-red { --sq-c: var(--red); }
+  .seq-arrow { display: flex; align-items: center; color: var(--text-dim); font-size: clamp(15px,1.5vw,22px); opacity: 0.65; font-family: var(--font-mono); }
+
+  /* ── run-of-show arc timeline ── */
+  .arc { width: 100%; max-width: 1660px; margin: 0 auto; }
+  .arc-line { position: relative; height: 2px; background: linear-gradient(90deg, transparent, var(--border-bright) 8%, var(--border-bright) 92%, transparent); margin: clamp(24px,4vh,44px) 0 0; }
+  .arc-stops { display: grid; grid-template-columns: repeat(7, 1fr); gap: clamp(8px,0.9vw,16px); margin-top: -7px; }
+  .arc-stop { text-align: center; padding-top: 0; position: relative; }
+  .arc-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--ar-c, var(--accent)); margin: 0 auto 14px; box-shadow: 0 0 12px var(--ar-glow, rgba(74,158,255,0.55)), 0 0 0 4px var(--bg), 0 0 0 5px var(--border-bright); }
+  .arc-era { font-family: var(--font-mono); font-size: clamp(10px,0.95vw,12.5px); font-weight: 700; letter-spacing: 1.6px; color: var(--ar-c, var(--accent)); text-transform: uppercase; }
+  .arc-head { font-family: var(--font-display); font-size: clamp(16px,1.65vw,24px); color: var(--text); margin-top: 6px; line-height: 1.05; }
+  .arc-body { font-family: var(--font-editorial); font-size: clamp(11.5px,1.05vw,14.5px); color: var(--text-dim); line-height: 1.4; margin-top: 7px; }
+  .arc-stop.ar-accent { --ar-c: var(--accent); --ar-glow: rgba(74,158,255,0.55); }
+  .arc-stop.ar-cyan { --ar-c: var(--cyan); --ar-glow: rgba(34,211,238,0.55); }
+  .arc-stop.ar-gold { --ar-c: var(--gold); --ar-glow: rgba(212,175,55,0.55); }
+  .arc-stop.ar-green { --ar-c: var(--green); --ar-glow: rgba(63,185,80,0.55); }
+  .arc-stop.ar-purple { --ar-c: var(--purple); --ar-glow: rgba(167,139,250,0.55); }
+  .arc-stop.ar-silver { --ar-c: var(--silver); --ar-glow: rgba(176,190,197,0.45); }
+  .arc-stop.ar-red { --ar-c: var(--red); --ar-glow: rgba(248,81,73,0.5); }
+
+  /* ── loop-part cards (anatomy grids) ── */
+  .loop-parts { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(12px,1.2vw,18px); width: 100%; max-width: 1720px; }
+  .loop-part { border: 1px solid var(--border); border-radius: 14px; background: var(--surface); padding: clamp(16px,2vh,24px) clamp(16px,1.4vw,24px); position: relative; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; }
+  .loop-part:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.28); }
+  .loop-part::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 3px; background: var(--lp-c, var(--accent)); opacity: 0.9; }
+  .loop-part .lp-n { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--lp-c, var(--accent)); text-transform: uppercase; margin-bottom: 8px; }
+  .loop-part .lp-key { font-family: var(--font-display); font-size: clamp(20px,2.1vw,29px); color: var(--text); line-height: 1.05; margin-bottom: 8px; }
+  .loop-part .lp-why { font-family: var(--font-editorial); font-size: clamp(12.5px,1.15vw,15.5px); color: var(--text-dim); line-height: 1.45; }
+  .loop-part .lp-why strong { color: var(--text); font-weight: 500; }
+  .loop-part.lp-accent { --lp-c: var(--accent); }
+  .loop-part.lp-cyan { --lp-c: var(--cyan); }
+  .loop-part.lp-gold { --lp-c: var(--gold); }
+  .loop-part.lp-green { --lp-c: var(--green); }
+  .loop-part.lp-purple { --lp-c: var(--purple); }
+  .loop-part.lp-silver { --lp-c: var(--silver); }
+  .loop-part.lp-red { --lp-c: var(--red); }
+  .loop-part.lp-orange { --lp-c: var(--orange); }
+  @media (max-width: 900px) { .loop-parts { grid-template-columns: 1fr 1fr; } }
+
+  /* ── journey ladder (tier rows) ── */
+  .tier-row { display: grid; grid-template-columns: clamp(150px,14vw,230px) 1fr clamp(210px,20vw,330px); gap: clamp(14px,1.6vw,26px); align-items: center; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); padding: clamp(16px,2.2vh,26px) clamp(20px,2vw,32px); margin-bottom: clamp(10px,1.4vh,16px); position: relative; overflow: hidden; }
+  .tier-row::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 3px; background: var(--tr-c, var(--silver)); opacity: 0.85; }
+  .tier-row .tier-name { font-family: var(--font-display); font-size: clamp(24px,2.6vw,38px); color: var(--text); line-height: 1; }
+  .tier-row .tier-desc { font-family: var(--font-editorial); font-size: clamp(14px,1.4vw,18.5px); color: var(--text-dim); line-height: 1.45; }
+  .tier-row .tier-badge { justify-self: end; font-family: var(--font-editorial); font-style: italic; font-size: clamp(15px,1.5vw,21px); color: var(--tr-c, var(--silver)); text-align: right; line-height: 1.3; }
+  .tier-row.us { --tr-c: var(--accent); border-color: rgba(74,158,255,0.35); background: linear-gradient(180deg, rgba(74,158,255,0.09), rgba(74,158,255,0.02)); box-shadow: 0 0 34px rgba(74,158,255,0.12); }
+  .tier-row.t-gold { --tr-c: var(--gold); }
+  .tier-row.t-purple { --tr-c: var(--purple); }
+  @keyframes us-pulse { 0%,100% { box-shadow: 0 0 34px rgba(74,158,255,0.12); } 50% { box-shadow: 0 0 48px rgba(74,158,255,0.22); } }
+
+  /* ── system flow diagram (architecture) ── */
+  .flow { display: flex; align-items: stretch; justify-content: center; gap: clamp(8px,0.9vw,16px); flex-wrap: wrap; width: 100%; }
+  .flow__node { border: 1px solid var(--border-bright); border-radius: 14px; background: var(--surface); padding: clamp(14px,2vh,22px) clamp(14px,1.4vw,24px); flex: 1 1 0; min-width: clamp(140px,12vw,200px); max-width: 330px; text-align: left; position: relative; border-top: 3px solid var(--fl-c, var(--accent)); }
+  .flow__node .fl-kicker { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--fl-c, var(--accent)); margin-bottom: 7px; }
+  .flow__node .fl-name { font-family: var(--font-display); font-size: clamp(20px,2vw,28px); color: var(--text); line-height: 1.05; margin-bottom: 8px; }
+  .flow__node .fl-list { list-style: none; }
+  .flow__node .fl-list li { font-family: var(--font-mono); font-size: clamp(10.5px,1vw,13px); color: var(--code-text); padding: 2.5px 0; }
+  .flow__node .fl-list li::before { content: '\25b8 '; color: var(--fl-c, var(--accent)); font-size: 10px; }
+  .flow__node .fl-note { font-family: var(--font-editorial); font-size: clamp(11.5px,1.05vw,14px); color: var(--text-dim); line-height: 1.4; margin-top: 8px; }
+  .flow__node.fl-accent { --fl-c: var(--accent); }
+  .flow__node.fl-cyan { --fl-c: var(--cyan); }
+  .flow__node.fl-gold { --fl-c: var(--gold); }
+  .flow__node.fl-green { --fl-c: var(--green); }
+  .flow__node.fl-purple { --fl-c: var(--purple); }
+  .flow__node.fl-red { --fl-c: var(--red); border-style: dashed; background: linear-gradient(180deg, rgba(248,81,73,0.05), transparent); }
+  .flow__node.fl-sealed { --fl-c: var(--gold); border-style: dashed; background: linear-gradient(180deg, rgba(212,175,55,0.06), transparent); }
+
+  /* ── ontology chain ── */
+  .onto { display: flex; align-items: center; justify-content: center; gap: clamp(4px,0.5vw,10px); flex-wrap: wrap; width: 100%; }
+  .onto-ent { border: 1px solid var(--border-bright); border-radius: 999px; background: var(--surface); padding: clamp(14px,2vh,22px) clamp(24px,2.6vw,44px); font-family: var(--font-display); font-size: clamp(22px,2.5vw,36px); color: var(--text); position: relative; border-color: var(--on-c, var(--accent)); box-shadow: 0 0 26px var(--on-glow, rgba(74,158,255,0.12)), inset 0 1px 0 rgba(255,255,255,0.05); }
+  .onto-ent.on-accent { --on-c: rgba(74,158,255,0.5); --on-glow: rgba(74,158,255,0.14); }
+  .onto-ent.on-cyan { --on-c: rgba(34,211,238,0.5); --on-glow: rgba(34,211,238,0.13); }
+  .onto-ent.on-green { --on-c: rgba(63,185,80,0.5); --on-glow: rgba(63,185,80,0.13); }
+  .onto-ent.on-purple { --on-c: rgba(167,139,250,0.5); --on-glow: rgba(167,139,250,0.13); }
+  .onto-ent.on-gold { --on-c: rgba(212,175,55,0.6); --on-glow: rgba(212,175,55,0.16); border-style: dashed; font-style: italic; }
+  .onto-edge { display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: clamp(80px,8vw,140px); }
+  .onto-edge .oe-label { font-family: var(--font-mono); font-size: clamp(9.5px,0.9vw,12px); letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-dim); }
+  .onto-edge .oe-line { width: 100%; height: 2px; background: linear-gradient(90deg, var(--oe-c, var(--accent)), transparent 96%); position: relative; opacity: 0.75; }
+  .onto-edge .oe-line::after { content: ''; position: absolute; right: -1px; top: 50%; transform: translateY(-50%); border-left: 7px solid var(--oe-c, var(--accent)); border-top: 5px solid transparent; border-bottom: 5px solid transparent; }
+  .onto-edge.oe-gold { --oe-c: var(--gold); }
+  .onto-edge.oe-gold .oe-line { background: repeating-linear-gradient(90deg, var(--gold) 0 8px, transparent 8px 15px); }
+  .onto-edge.oe-gold .oe-label { color: var(--gold); }
+
+  /* ── telemetry event grid ── */
+  .ev-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: clamp(8px,0.9vw,14px); width: 100%; max-width: 1720px; }
+  .ev { border: 1px solid var(--border); border-radius: 10px; background: var(--code-bg); padding: clamp(10px,1.4vh,16px) clamp(10px,1vw,16px); font-family: var(--font-mono); font-size: clamp(10.5px,1vw,13.5px); color: var(--code-text); position: relative; overflow: hidden; }
+  .ev::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 2px; background: var(--ev-c, var(--accent)); }
+  .ev .ev-k { display: block; font-size: 9px; letter-spacing: 1.8px; text-transform: uppercase; color: var(--text-dim); margin-bottom: 5px; }
+  .ev.ev-accent { --ev-c: var(--accent); }
+  .ev.ev-cyan { --ev-c: var(--cyan); }
+  .ev.ev-gold { --ev-c: var(--gold); }
+  .ev.ev-green { --ev-c: var(--green); }
+  .ev.ev-purple { --ev-c: var(--purple); }
+  .ev.ev-red { --ev-c: var(--red); }
+  .ev.ev-silver { --ev-c: var(--silver); }
+  @media (max-width: 900px) { .ev-grid { grid-template-columns: repeat(3, 1fr); } }
+
+  /* keyboard hint on title */
+  .key-hint { font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); letter-spacing: 1.5px; margin-top: clamp(14px,2vh,24px); opacity: 0.65; }
+  .key-hint .key { display: inline-block; border: 1px solid var(--border-bright); border-bottom-width: 2px; border-radius: 5px; padding: 2px 8px; margin: 0 3px; background: var(--surface); font-size: 10px; color: var(--silver-bright); }
+
+  /* ═══════════ CINEMATIC MOTION LAYER ═══════════ */
+  @media (prefers-reduced-motion: no-preference) {
+    body.anim-ready .slide > * {
+      opacity: 0;
+      transform: translateY(30px);
+      filter: blur(6px);
+      transition: opacity 0.72s cubic-bezier(0.22, 0.61, 0.36, 1),
+                  transform 0.72s cubic-bezier(0.22, 0.61, 0.36, 1),
+                  filter 0.6s ease;
+      transition-delay: 0ms;
+    }
+    body.anim-ready .slide.is-active > * { opacity: 1; transform: translateY(0); filter: blur(0); }
+    body.anim-ready .slide.is-active > *:nth-child(1) { transition-delay: 70ms; }
+    body.anim-ready .slide.is-active > *:nth-child(2) { transition-delay: 150ms; }
+    body.anim-ready .slide.is-active > *:nth-child(3) { transition-delay: 230ms; }
+    body.anim-ready .slide.is-active > *:nth-child(4) { transition-delay: 315ms; }
+    body.anim-ready .slide.is-active > *:nth-child(5) { transition-delay: 400ms; }
+    body.anim-ready .slide.is-active > *:nth-child(6) { transition-delay: 485ms; }
+    body.anim-ready .slide.is-active > *:nth-child(n+7) { transition-delay: 560ms; }
+
+    body.anim-ready .slide--silent > *,
+    body.anim-ready .slide--title > * {
+      transform: translateY(40px) scale(0.985);
+      filter: blur(8px);
+      transition-duration: 0.9s;
+    }
+    body.anim-ready .slide--silent.is-active > *,
+    body.anim-ready .slide--title.is-active > * { transform: translateY(0) scale(1); filter: blur(0); }
+
+    /* ambient breathing glow behind content slides */
+    .slide::before {
+      content: '';
+      position: absolute; inset: 0; z-index: -1; pointer-events: none;
+      opacity: 0; transition: opacity 1.4s ease;
+      background: radial-gradient(58% 50% at 28% 18%, rgba(74,158,255,0.055), transparent 68%),
+                  radial-gradient(50% 46% at 82% 88%, rgba(212,175,55,0.035), transparent 70%);
+    }
+    .slide.is-active::before { opacity: 1; animation: ambient-drift 18s ease-in-out infinite; }
+    .slide--silent::before, .slide--title::before { display: none; }
+    @keyframes ambient-drift {
+      0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+      50%      { transform: translate3d(-2.5%, 1.5%, 0) scale(1.09); }
+    }
+
+    .slide--title.is-active .slide__display {
+      background-size: 220% auto;
+      animation: title-shimmer 7s ease-in-out infinite;
+    }
+    @keyframes title-shimmer {
+      0%, 100% { background-position: 0% center; }
+      50%      { background-position: 100% center; }
+    }
+
+    /* per-sibling stagger index */
+    .slide :nth-child(1) { --i: 0; } .slide :nth-child(2) { --i: 1; }
+    .slide :nth-child(3) { --i: 2; } .slide :nth-child(4) { --i: 3; }
+    .slide :nth-child(5) { --i: 4; } .slide :nth-child(6) { --i: 5; }
+    .slide :nth-child(7) { --i: 6; } .slide :nth-child(8) { --i: 7; }
+    .slide :nth-child(9) { --i: 8; } .slide :nth-child(n+10) { --i: 9; }
+
+    body.anim-ready .slide.is-active :is(.stat-cell, .loop-part, .vs-card, .seq-node, .flow__node, .arch-box, .tier-row, .arc-stop, .onto-ent, .onto-edge, .ev) {
+      animation: item-in 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) backwards;
+      animation-delay: calc(0.34s + var(--i, 0) * 0.085s);
+    }
+    body.anim-ready .slide.is-active .tier-row.us {
+      animation: item-in 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) backwards, us-pulse 3.5s ease-in-out infinite;
+      animation-delay: calc(0.34s + var(--i, 0) * 0.085s), 1.2s;
+    }
+    @keyframes item-in {
+      from { opacity: 0; transform: translateY(26px) scale(0.97); filter: blur(5px); }
+      to   { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    }
+
+    /* cursor spotlight */
+    .slide.is-active { background-image: radial-gradient(560px circle at var(--mx, 50%) var(--my, 40%), rgba(120,160,220,0.045), transparent 62%); }
+    .slide--silent.is-active, .slide--title.is-active { background-blend-mode: screen; }
+  }
+</style>
+</head>
+<body>
+
+<div class="deck-progress" style="width: 0%"></div>
+<div class="deck-counter"><span id="n">01</span> / <span id="total">00</span></div>
+<div class="deck-tracker" id="tracker"></div>
+
+<div class="deck">
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 01 — TITLE
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="slide slide--title">
+  <span class="hero-badge">Semana · Day 1</span>
+  <h1 class="slide__display gradient-text" style="font-size: clamp(48px, 8.5vw, 118px); letter-spacing: -3px; line-height: 0.96; margin-bottom: clamp(10px,1.8vh,18px);">Engenharia Agêntica</h1>
+  <div class="slide__heading" style="color: var(--text); font-size: clamp(22px,3vw,42px); margin-bottom: clamp(10px,1.8vh,18px);">Foundation Investigation</div>
+  <p class="slide__body" style="max-width: 1000px; margin: 0 auto; font-size: clamp(20px,2.3vw,28px);">Tonight we learn to <span style="color:var(--text);">understand a system</span> before we build on it.</p>
+
+  <div class="vs-grid" style="margin-top: clamp(22px,3.6vh,40px); max-width: 1100px;">
+    <div class="vs-card vs-accent">
+      <div class="vs-tile">P</div>
+      <div class="vs-name">Prompt</div>
+      <div class="vs-role">The Contract</div>
+    </div>
+    <div class="vs-card vs-cyan">
+      <div class="vs-tile">C</div>
+      <div class="vs-name">Context</div>
+      <div class="vs-role">The World</div>
+    </div>
+    <div class="vs-card vs-gold">
+      <div class="vs-tile">O</div>
+      <div class="vs-name">Ontology</div>
+      <div class="vs-role">The Meaning</div>
+    </div>
+    <div class="vs-card vs-purple">
+      <div class="vs-tile">T</div>
+      <div class="vs-name">Telemetry</div>
+      <div class="vs-role">The Proof</div>
+    </div>
+  </div>
+
+  <p style="margin-top: clamp(22px,3.4vh,38px); font-family: var(--font-editorial); font-style: italic; font-size: clamp(16px,1.8vw,22px); color: var(--text-dim); letter-spacing: 0.01em;">
+    The case: <span class="gradient-gold" style="font-style:normal;">TransactCo</span> · 19:00 – 22:00 · São Paulo
+  </p>
+  <div class="key-hint"><span class="key">↑</span><span class="key">↓</span> navigate &nbsp;·&nbsp; <span class="key">space</span> next</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 02 — THE CFO QUESTION (silent)
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="slide slide--silent" style="background-image: radial-gradient(ellipse at 50% 45%, rgba(212,175,55,0.09) 0%, transparent 65%);">
+  <div class="act-marker">The question the whole week answers</div>
+  <p class="hero-quote">How much revenue did we make yesterday — and why should I <span class="gradient-gold" style="font-style:normal;">trust</span> that number?</p>
+  <div class="hero-cite">The CFO · TransactCo</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 03 — TWO PROBLEMS IN ONE QUESTION
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="slide__label">The hidden split</div>
+  <h2 class="slide__heading" style="margin-bottom: 10px;">One question. <span class="gradient-gold">Two different problems.</span></h2>
+  <p class="slide__body" style="max-width: 1150px; margin-bottom: clamp(18px,3vh,30px);">The request sounds like arithmetic. It is actually a question about <span style="color:var(--text);">meaning, provenance, and validation.</span></p>
+  <div class="two-col" style="max-width: 1500px;">
+    <div class="arch-box machine">
+      <h4>1 · Calculate a number</h4>
+      <div class="caption">The easy problem</div>
+      <ul>
+        <li>Sum some column, filter some dates</li>
+        <li>Any plausible query produces a figure</li>
+        <li>Precise to the cent — instantly</li>
+        <li>Nothing about it says it is <em>right</em></li>
+      </ul>
+    </div>
+    <div class="arch-box human" style="border-color: rgba(212,175,55,0.3);">
+      <h4>2 · Establish trust in the number</h4>
+      <div class="caption">The real problem — today's focus</div>
+      <ul>
+        <li>Which business event recognizes revenue?</li>
+        <li>Which statuses count? How do refunds behave?</li>
+        <li>Which timezone defines "yesterday"?</li>
+        <li>Who owns each semantic decision?</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout gold" style="max-width: 1500px; margin-top: clamp(16px,2.6vh,26px);">
+    <div class="co-kicker">The teaching thesis</div>
+    <div class="co-body">A report can be <strong>precise and still be wrong</strong>. Foundation Investigation attacks the second problem before anyone builds an analytical system for the first.</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 04 — THE TEACHING RULE
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="slide__label">How every block is taught</div>
+  <h2 class="slide__heading" style="margin-bottom: 10px;">Nobody constructs with a concept that was not <span class="gradient-text">first demonstrated.</span></h2>
+  <p class="slide__body" style="max-width: 1200px; margin-bottom: clamp(20px,3.4vh,36px);">Every teaching block follows the same progression — motivated, defined, grounded in data, demonstrated, then built.</p>
+  <div class="seq">
+    <div class="seq-node sq-accent"><div class="sq-n">01</div><div class="sq-name">Why</div><div class="sq-desc">Create the tension</div></div>
+    <div class="seq-arrow">→</div>
+    <div class="seq-node sq-accent"><div class="sq-n">02</div><div class="sq-name">Concept</div><div class="sq-desc">Name the idea</div></div>
+    <div class="seq-arrow">→</div>
+    <div class="seq-node sq-cyan"><div class="sq-n">03</div><div class="sq-name">Material</div><div class="sq-desc">Supply the data</div></div>
+    <div class="seq-arrow">→</div>
+    <div class="seq-node sq-gold"><div class="sq-n">04</div><div class="sq-name">Demonstration</div><div class="sq-desc">Test it live</div></div>
+    <div class="seq-arrow">→</div>
+    <div class="seq-node sq-green"><div class="sq-n">05</div><div class="sq-name">Construction</div><div class="sq-desc">The room builds</div></div>
+    <div class="seq-arrow">→</div>
+    <div class="seq-node sq-purple"><div class="sq-n">06</div><div class="sq-name">Proof</div><div class="sq-desc">Evidence counts</div></div>
+    <div class="seq-arrow">→</div>
+    <div class="seq-node sq-silver"><div class="sq-n">07</div><div class="sq-name">Skill</div><div class="sq-desc">Distill &amp; keep</div></div>
+  </div>
+  <div class="callout accent" style="max-width: 1500px; margin-top: clamp(18px,3vh,30px);">
+    <div class="co-kicker">Not "PowerPoint, then demo"</div>
+    <div class="co-body">It is a braided story — the deck creates a question, the demo tests it against TransactCo, evidence shows what actually happened, and only then the concept gets its name. <em>"We could debate this, but let's test it."</em></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 05 — THE JOURNEY
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="slide__label">Where tonight sits</div>
+  <h2 class="slide__heading" style="margin-bottom: 10px;">The learning ladder</h2>
+  <p class="slide__body" style="max-width: 1150px; margin-bottom: clamp(18px,3vh,30px);">The Semana teaches the generic practices underneath the machine — <span style="color:var(--text);">manually, so the belief is earned.</span></p>
+  <div style="max-width: 1560px; width: 100%;">
+    <div class="tier-row us">
+      <div class="tier-name">Semana</div>
+      <div class="tier-desc">Perform the canonical practices by hand — prompt, context, ontology, evidence, telemetry, brief.</div>
+      <div class="tier-badge">"I can do this."</div>
+    </div>
+    <div class="tier-row t-gold">
+      <div class="tier-name">Bootcamp</div>
+      <div class="tier-desc">Turn the practices into reusable skills, gates, and evals.</div>
+      <div class="tier-badge">"I can systematize this."</div>
+    </div>
+    <div class="tier-row t-purple">
+      <div class="tier-name">Converge</div>
+      <div class="tier-desc">Compose the skills into an end-to-end operating method.</div>
+      <div class="tier-badge">"I can build and operate the machine."</div>
+    </div>
+  </div>
+  <p class="slide__body" style="max-width: 1400px; margin-top: clamp(12px,2vh,20px); font-size: clamp(15px,1.6vw,19px);">Tonight's verbs: <span style="color:var(--text);">understand · ground · model · specify · decide · verify.</span> The protected machinery stays out of the room.</p>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 06 — RUN OF SHOW
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="slide__label">19:00 → 22:00 · run of show</div>
+  <h2 class="slide__heading" style="margin-bottom: 8px;">Three hours, <span class="gradient-text">six acts</span></h2>
+  <div class="arc">
+    <div class="arc-line"></div>
+    <div class="arc-stops">
+      <div class="arc-stop ar-accent"><div class="arc-dot"></div><div class="arc-era">19:00</div><div class="arc-head">The System</div><div class="arc-body">The business tension and the four entities</div></div>
+      <div class="arc-stop ar-accent"><div class="arc-dot"></div><div class="arc-era">19:15</div><div class="arc-head">The Prompt</div><div class="arc-body">The room constructs an investigation contract</div></div>
+      <div class="arc-stop ar-cyan"><div class="arc-dot"></div><div class="arc-era">19:40</div><div class="arc-head">The Context</div><div class="arc-body">A deliberate, traceable context package</div></div>
+      <div class="arc-stop ar-silver"><div class="arc-dot"></div><div class="arc-era">20:15</div><div class="arc-head">Break</div><div class="arc-body">Reset · environment check</div></div>
+      <div class="arc-stop ar-gold"><div class="arc-dot"></div><div class="arc-era">20:25</div><div class="arc-head">The Ontology</div><div class="arc-body">Ontology v1, constructed and validated</div></div>
+      <div class="arc-stop ar-green"><div class="arc-dot"></div><div class="arc-era">21:00</div><div class="arc-head">The Trajectory</div><div class="arc-body">Agentic work becomes inspectable via telemetry</div></div>
+      <div class="arc-stop ar-purple"><div class="arc-dot"></div><div class="arc-era">21:35</div><div class="arc-head">The Brief</div><div class="arc-body">Evidence becomes a durable artifact · reflect</div></div>
+    </div>
+  </div>
+  <div class="stat-grid" style="grid-template-columns: repeat(2, 1fr); max-width: 1000px; margin: clamp(20px,3.4vh,36px) auto 0;">
+    <div class="stat-cell sc-accent"><div class="sc-num">50<span style="font-size:0.45em;">min</span></div><div class="sc-label">Framing &amp; guided concepts</div></div>
+    <div class="stat-cell sc-green"><div class="sc-num">120<span style="font-size:0.45em;">min</span></div><div class="sc-label">Repository work · construction · proof</div></div>
+  </div>
+  <p class="slide__body" style="text-align:center; max-width: 1200px; margin: clamp(14px,2.2vh,22px) auto 0; font-size: clamp(15px,1.6vw,19px);">The deck is <span style="color:var(--text);">braided into live work</span> — never a one-hour lecture.</p>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     ACT 1 DIVIDER — THE SYSTEM
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="slide slide--silent" style="background-image: radial-gradient(ellipse at 50% 50%, rgba(74,158,255,0.10) 0%, transparent 70%);">
+  <div class="act-marker">ACT 1 · 19:00 · WHY THIS SYSTEM MATTERS</div>
+  <h1 class="slide__display gradient-text" style="font-size: clamp(120px, 22vw, 300px); margin-bottom: 18px; line-height: 0.9;">1.</h1>
+  <div class="slide__heading" style="color: var(--text); font-size: clamp(40px,6.5vw,84px);">The System</div>
+  <p class="slide__body" style="max-width: 1080px; margin-top: 22px; font-size: clamp(18px,2.1vw,26px);">
+    A brownfield is not an empty repository. It has <strong style="color:var(--text);">history, implicit rules, constraints, and existing users</strong> — and tonight, it has a store to protect.
+  </p>
+  <div class="section-rule" style="max-width: 640px; width: 100%; margin-top: clamp(22px,3.4vh,40px);">CONCRETE TENSION FIRST — CONCEPTS ONLY AFTER</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 08 — TRANSACTCO BASELINE
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="slide__label">The inherited system</div>
+  <h2 class="slide__heading" style="margin-bottom: 10px;">TransactCo — a store and its analytics, <span class="gradient-red">sharing one database</span></h2>
+  <p class="slide__body" style="max-width: 1250px; margin-bottom: clamp(18px,3vh,30px);">High-volume e-commerce. The operational workload runs the store; the analytical workload scans it to explain it. <span style="color:var(--text);">Both compete for the same Postgres.</span></p>
+  <div class="stat-grid">
+    <div class="stat-cell sc-accent"><div class="sc-num">5,000</div><div class="sc-label">customers</div></div>
+    <div class="stat-cell sc-cyan"><div class="sc-num">400</div><div class="sc-label">products</div></div>
+    <div class="stat-cell sc-gold"><div class="sc-num">64,000</div><div class="sc-label">orders · approx</div></div>
+    <div class="stat-cell sc-purple"><div class="sc-num">62,000</div><div class="sc-label">payments · approx</div></div>
+  </div>
+  <div class="two-col" style="max-width: 1720px; margin-top: clamp(16px,2.6vh,26px);">
+    <div class="callout red">
+      <div class="co-kicker">The friction</div>
+      <div class="co-body">Heavy analytical scans slow the store. Transactional traffic makes reporting unpredictable. Neither side trusts the numbers.</div>
+    </div>
+    <div class="callout accent">
+      <div class="co-kicker">Tonight's authority</div>
+      <div class="co-body">Read-only investigation. Inspect everything, modify nothing — the store keeps running while we learn it.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 09 — ARCHITECTURE FLOW
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="slide__label">The analytical crossing</div>
+  <h2 class="slide__heading" style="margin-bottom: 10px;">From the store to the warehouse — <span class="gradient-text">one sealed path</span></h2>
+  <p class="slide__body" style="max-width: 1250px; margin-bottom: clamp(20px,3.4vh,34px);">Operational data crosses into DuckDB through a read-only attachment. What participants will build later is <span style="color:var(--text);">deliberately absent tonight.</span></p>
+  <div class="flow">
+    <div class="flow__node fl-accent">
+      <div class="fl-kicker">Operational source</div>
+      <div class="fl-name">Postgres</div>
+      <ul class="fl-list">
+        <li>public.customers</li>
+        <li>public.products</li>
+        <li>public.orders</li>
+        <li>public.payments</li>
+      </ul>
+    </div>
+    <div class="seq-arrow">→</div>
+    <div class="flow__node fl-cyan">
+      <div class="fl-kicker">Authority boundary</div>
+      <div class="fl-name">analytics_ro</div>
+      <div class="fl-note">Read-only role. Reads <span style="font-family:var(--font-mono); color:var(--code-text);">public.*</span>, denied writes, denied the oracle.</div>
+    </div>
+    <div class="seq-arrow">→</div>
+    <div class="flow__node fl-green">
+      <div class="fl-kicker">The crossing</div>
+      <div class="fl-name">make land</div>
+      <div class="fl-note">Carries the four tables across with count parity — verified, repeatable, one direction.</div>
+    </div>
+    <div class="seq-arrow">→</div>
+    <div class="flow__node fl-purple">
+      <div class="fl-kicker">Analytical warehouse</div>
+      <div class="fl-name">DuckDB</div>
+      <ul class="fl-list">
+        <li>raw.customers … raw.payments</li>
+        <li>landing manifest</li>
+      </ul>
+    </div>
+    <div class="seq-arrow">→</div>
+    <div class="flow__node fl-red">
+      <div class="fl-kicker">Absent by design</div>
+      <div class="fl-name">dbt models</div>
+      <div class="fl-note">Staging, marts, detector, harness — the work participants will construct in later modules.</div>
+    </div>
+  </div>
+  <div class="callout gold" style="max-width: 1720px; margin-top: clamp(18px,3vh,28px);">
+    <div class="co-kicker">Sealed, not secret</div>
+    <div class="co-body">Instructor truth lives in <span style="font-family:var(--font-mono); font-size:0.9em;">_control.*</span> — denied to the analytical role and never copied to DuckDB. A <strong>workflow seal</strong>, not an adversarial security boundary.</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 10 — PRECISE VS TRUSTWORTHY
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="slide__label">Act 1 · the proof</div>
+  <h2 class="slide__heading" style="margin-bottom: 10px;">A plausible query is <span class="gradient-red">not yet</span> a revenue definition</h2>
+  <p class="slide__body" style="max-width: 1250px; margin-bottom: clamp(18px,3vh,30px);">The audience leaves Act 1 able to restate the tension, name the four entities, and explain why this query proves nothing:</p>
+  <div class="two-col" style="max-width: 1660px; align-items: stretch;">
+    <div class="code-block" data-lang="sql"><span class="c-dim">-- precise to the cent. meaning: undefined.</span>
+<span class="c-key">SELECT</span> <span class="c-gold">SUM</span>(total_amount)
+<span class="c-key">FROM</span>   orders
+<span class="c-key">WHERE</span>  ordered_at::date = <span class="c-str">'yesterday'</span>;
+
+<span class="c-dim">-- which statuses count?   unknown
+-- refunds?                unhandled
+-- paid vs ordered?        conflated
+-- whose timezone?         nobody decided</span></div>
+    <div class="arch-box" style="border-color: rgba(63,185,80,0.25);">
+      <h4>What "trustworthy" requires</h4>
+      <div class="caption">A metric, not just a number</div>
+      <ul>
+        <li><strong>Defined meaning</strong> — which business event recognizes revenue</li>
+        <li><strong>Provenance</strong> — which sources and columns back the figure</li>
+        <li><strong>Validation</strong> — evidence the definition holds in the data</li>
+        <li><strong>Ownership</strong> — a human accountable for each semantic choice</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     ACT 2 DIVIDER — THE PROMPT
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="slide slide--silent" style="background-image: radial-gradient(ellipse at 50% 50%, rgba(167,139,250,0.10) 0%, transparent 70%);">
+  <div class="act-marker">ACT 2 · 19:15 · WHY PROMPTS MATTER</div>
+  <h1 class="slide__display gradient-purple" style="font-size: clamp(120px, 22vw, 300px); margin-bottom: 18px; line-height: 0.9;">2.</h1>
+  <div class="slide__heading" style="color: var(--text); font-size: clamp(40px,6.5vw,84px);">The Prompt</div>
+  <p class="slide__body" style="max-width: 1080px; margin-top: 22px; font-size: clamp(18px,2.1vw,26px);">
+    A prompt is a <strong style="color:var(--text);">contract for the next piece of work</strong> — not a wish, not a knowledge base, not a vibe.
+  </p>
+  <div class="section-rule" style="max-width: 640px; width: 100%; margin-top: clamp(22px,3.4vh,40px);">VAGUE REQUEST ≠ EXECUTABLE ASSIGNMENT</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 12 — WEAK VS CONTRACT
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="slide__label">Demonstration A vs B · run both, live</div>
+  <h2 class="slide__heading" style="margin-bottom: 10px;">The weak ask vs <span class="gradient-green">the investigation contract</span></h2>
+  <div class="two-col" style="max-width: 1720px; margin-top: clamp(12px,2vh,20px); align-items: stretch;">
+    <div class="code-block" data-lang="weak" style="border-color: rgba(248,81,73,0.3);"><span class="c-red">&gt; Analyze this database and explain revenue.</span>
+
+<span class="c-dim">what the room will catch:</span>
+<span class="c-red">✗</span> assumptions presented as facts
+<span class="c-red">✗</span> no evidence required
+<span class="c-red">✗</span> revenue semantics undefined
+<span class="c-red">✗</span> no authority boundary
+<span class="c-red">✗</span> no stopping condition</div>
+    <div class="code-block" data-lang="contract" style="border-color: rgba(63,185,80,0.3);"><span class="c-str">&gt; Investigate how TransactCo represents revenue.</span>
+<span class="c-str">&gt;</span> Use the repository and <span class="c-key">read-only</span> database access.
+<span class="c-str">&gt;</span> Identify entities, relationships, invariants,
+<span class="c-str">&gt;</span> risks, and unresolved business questions.
+<span class="c-str">&gt;</span> Support every claim with a <span class="c-gold">path, schema object,</span>
+<span class="c-str">&gt;</span> <span class="c-gold">or query</span>. Label facts, inferences, decisions,
+<span class="c-str">&gt;</span> and open questions. <span class="c-red">Do not modify</span> the database
+<span class="c-str">&gt;</span> or code. <span class="c-purple">Stop and ask</span> when a conclusion requires
+<span class="c-str">&gt;</span> business authority rather than technical evidence.</div>
+  </div>
+  <div class="callout purple" style="max-width: 1720px; margin-top: clamp(16px,2.6vh,26px);">
+    <div class="co-kicker">The proof of Act 2</div>
+    <div class="co-body">The audience can explain <strong>why each clause exists</strong> — and predict exactly which failure it prevents.</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 13 — PROMPT ANATOMY
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="slide__label">The anatomy</div>
+  <h2 class="slide__heading" style="margin-bottom: 10px;">Eight clauses of an <span class="gradient-purple">investigation prompt</span></h2>
+  <p class="slide__body" style="max-width: 1200px; margin-bottom: clamp(18px,3vh,30px);">The prompt does not carry domain knowledge. It tells the agent <span style="color:var(--text);">what work to perform</span> with the context and tools it receives.</p>
+  <div class="loop-parts">
+    <div class="loop-part lp-accent"><div class="lp-n">01</div><div class="lp-key">Objective</div><div class="lp-why">The single outcome this piece of work must produce.</div></div>
+    <div class="loop-part lp-cyan"><div class="lp-n">02</div><div class="lp-key">Context</div><div class="lp-why">What world the agent is given — <strong>and its provenance.</strong></div></div>
+    <div class="loop-part lp-gold"><div class="lp-n">03</div><div class="lp-key">Questions</div><div class="lp-why">The specific things the investigation must answer.</div></div>
+    <div class="loop-part lp-green"><div class="lp-n">04</div><div class="lp-key">Tools</div><div class="lp-why">What is permitted — repository reads, read-only queries.</div></div>
+    <div class="loop-part lp-purple"><div class="lp-n">05</div><div class="lp-key">Authority</div><div class="lp-why">Inspect vs modify vs decide. <strong>Never implicit.</strong></div></div>
+    <div class="loop-part lp-orange"><div class="lp-n">06</div><div class="lp-key">Evidence</div><div class="lp-why">The standard every important claim must meet.</div></div>
+    <div class="loop-part lp-silver"><div class="lp-n">07</div><div class="lp-key">Output</div><div class="lp-why">The artifact's shape — so review needs no chat replay.</div></div>
+    <div class="loop-part lp-red"><div class="lp-n">08</div><div class="lp-key">Stop</div><div class="lp-why">When to halt and escalate to a human owner.</div></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     ACT 3 DIVIDER — THE CONTEXT
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="slide slide--silent" style="background-image: radial-gradient(ellipse at 50% 50%, rgba(34,211,238,0.10) 0%, transparent 70%);">
+  <div class="act-marker">ACT 3 · 19:40 · WHY CONTEXT MATTERS</div>
+  <h1 class="slide__display gradient-cyan" style="font-size: clamp(120px, 22vw, 300px); margin-bottom: 18px; line-height: 0.9;">3.</h1>
+  <div class="slide__heading" style="color: var(--text); font-size: clamp(40px,6.5vw,84px);">The Context</div>
+  <p class="slide__body" style="max-width: 1120px; margin-top: 22px; font-size: clamp(18px,2.1vw,26px);">
+    The prompt defines the work. <strong style="color:var(--text);">Context supplies the world.</strong> The model knows what an order usually means — not what TransactCo recognizes as revenue.
+  </p>
+  <div class="section-rule" style="max-width: 640px; width: 100%; margin-top: clamp(22px,3.4vh,40px);">SELECTION · ORDERING · PROVENANCE — NEVER A FILE DUMP</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 15 — SIX CONTEXT LAYERS
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="slide__label">The layers</div>
+  <h2 class="slide__heading" style="margin-bottom: 10px;">Six layers of context — <span class="gradient-cyan">each answers a different question</span></h2>
+  <div class="loop-parts" style="grid-template-columns: repeat(3, 1fr); margin-top: clamp(16px,2.8vh,28px);">
+    <div class="loop-part lp-accent"><div class="lp-n">Business</div><div class="lp-key">Why does the work matter?</div><div class="lp-why">The CFO's question, the store at risk, the stakes.</div></div>
+    <div class="loop-part lp-cyan"><div class="lp-n">Domain</div><div class="lp-key">What do the terms mean here?</div><div class="lp-why">Revenue, refund, "yesterday" — as TransactCo uses them.</div></div>
+    <div class="loop-part lp-gold"><div class="lp-n">System</div><div class="lp-key">Where do things live?</div><div class="lp-why">Code, data, interfaces — the repository map and DDL.</div></div>
+    <div class="loop-part lp-red"><div class="lp-n">Operational</div><div class="lp-key">What must stay safe?</div><div class="lp-why">The store keeps running; the investigation stays read-only.</div></div>
+    <div class="loop-part lp-green"><div class="lp-n">Evidence</div><div class="lp-key">What can support a claim?</div><div class="lp-why">Schema objects, sample rows, safe queries.</div></div>
+    <div class="loop-part lp-purple"><div class="lp-n">Authority</div><div class="lp-key">What may the agent decide?</div><div class="lp-why">Inspect, change, or decide — each explicitly granted.</div></div>
+  </div>
+  <div class="callout accent" style="max-width: 1720px; margin-top: clamp(16px,2.6vh,26px);">
+    <div class="co-kicker">Context engineering</div>
+    <div class="co-body">Selection, ordering, and provenance. <strong>Not copying every file into a model window.</strong></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 16 — THE PACKAGE + LEDGER
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="slide__label">Demonstration · build the inventory live</div>
+  <h2 class="slide__heading" style="margin-bottom: 10px;">A deliberate package, <span class="gradient-cyan">a cited ledger</span></h2>
+  <div class="two-col" style="max-width: 1720px; margin-top: clamp(14px,2.4vh,24px); align-items: stretch;">
+    <div class="arch-box" style="border-color: rgba(34,211,238,0.25);">
+      <h4>The context package</h4>
+      <div class="caption">Every source included for a reason</div>
+      <ul>
+        <li>Business brief · repository map</li>
+        <li>Postgres DDL · data dictionary</li>
+        <li>Representative, non-sensitive sample rows</li>
+        <li>Operational constraints · read-only connection</li>
+        <li>Technical-brief template · telemetry contract</li>
+      </ul>
+    </div>
+    <div class="arch-box" style="border-color: rgba(63,185,80,0.25);">
+      <h4>The evidence ledger</h4>
+      <div class="caption">Every important claim gets a label</div>
+      <ul>
+        <li><strong style="color:var(--green);">Fact</strong> — directly supported by evidence</li>
+        <li><strong style="color:var(--accent);">Inference</strong> — reasonable, not conclusively established</li>
+        <li><strong style="color:var(--gold);">Decision</strong> — chosen by someone with authority</li>
+        <li><strong style="color:var(--purple);">Question</strong> — needs more evidence or an owner</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout" style="max-width: 1720px; margin-top: clamp(16px,2.6vh,26px);">
+    <div class="co-kicker">The proof of Act 3</div>
+    <div class="co-body">The audience can point to <strong>the exact context source</strong> that changed or supported a specific conclusion.</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     ACT 4 DIVIDER — THE ONTOLOGY
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="slide slide--silent" style="background-image: radial-gradient(ellipse at 50% 50%, rgba(212,175,55,0.10) 0%, transparent 70%);">
+  <div class="act-marker">ACT 4 · 20:25 · WHY ONTOLOGY MATTERS</div>
+  <h1 class="slide__display gradient-gold" style="font-size: clamp(120px, 22vw, 300px); margin-bottom: 18px; line-height: 0.9;">4.</h1>
+  <div class="slide__heading" style="color: var(--text); font-size: clamp(40px,6.5vw,84px);">The Ontology</div>
+  <p class="slide__body" style="max-width: 1080px; margin-top: 22px; font-size: clamp(18px,2.1vw,26px);">
+    Column-to-column copying is not enough. <strong style="color:var(--text);">Business meaning and constraints must survive the crossing</strong> from Postgres to DuckDB.
+  </p>
+  <div class="section-rule" style="max-width: 640px; width: 100%; margin-top: clamp(22px,3.4vh,40px);">MEANING PRESERVED WHILE SYSTEMS CHANGE</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 18 — ONTOLOGY CHAIN
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="slide__label">Ontology v1 · the starting map</div>
+  <h2 class="slide__heading" style="margin-bottom: 10px;">Four entities, <span class="gradient-gold">one deliberately conditional edge</span></h2>
+  <p class="slide__body" style="max-width: 1250px; margin-bottom: clamp(26px,4.4vh,46px);">Derived from schema and business brief, then <span style="color:var(--text);">tested with read-only queries</span> — cardinality, reconciliation, evidence attached to every confirmed edge.</p>
+  <div class="onto">
+    <div class="onto-ent on-accent">Customer</div>
+    <div class="onto-edge"><span class="oe-label">places</span><span class="oe-line"></span></div>
+    <div class="onto-ent on-cyan">Order</div>
+    <div class="onto-edge"><span class="oe-label">settled by</span><span class="oe-line"></span></div>
+    <div class="onto-ent on-green">Payment</div>
+    <div class="onto-edge oe-gold"><span class="oe-label">may contribute to</span><span class="oe-line"></span></div>
+    <div class="onto-ent on-gold">Revenue</div>
+  </div>
+  <div class="onto" style="margin-top: clamp(14px,2.4vh,24px);">
+    <div class="onto-ent on-purple">Product</div>
+    <div class="onto-edge"><span class="oe-label">appears in</span><span class="oe-line"></span></div>
+    <div class="onto-ent on-cyan" style="opacity: 0.85;">Order</div>
+  </div>
+  <div class="callout gold" style="max-width: 1660px; margin-top: clamp(22px,3.6vh,36px);">
+    <div class="co-kicker">Why the last edge is dashed</div>
+    <div class="co-body">Whether — and when — a payment becomes recognized revenue is a <strong>business decision</strong>. Not something the model should invent. The dashes are the whole lesson.</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 19 — ONTOLOGY VOCABULARY
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="slide__label">The vocabulary</div>
+  <h2 class="slide__heading" style="margin-bottom: 10px;">Six words that make meaning <span class="gradient-gold">portable</span></h2>
+  <div class="loop-parts" style="grid-template-columns: repeat(3, 1fr); margin-top: clamp(16px,2.8vh,28px);">
+    <div class="loop-part lp-accent"><div class="lp-n">Entity</div><div class="lp-key">Something the business cares about</div><div class="lp-why">Customer, product, order, payment.</div></div>
+    <div class="loop-part lp-cyan"><div class="lp-n">Relationship</div><div class="lp-key">How entities connect</div><div class="lp-why">Inferred from names, values, cardinalities — then tested.</div></div>
+    <div class="loop-part lp-red"><div class="lp-n">Rule</div><div class="lp-key">What must remain true</div><div class="lp-why">Invariants and reconciliations, with scope and evidence.</div></div>
+    <div class="loop-part lp-green"><div class="lp-n">Event</div><div class="lp-key">Something that happened in business time</div><div class="lp-why">Ordered, paid — anchored to the domain clock.</div></div>
+    <div class="loop-part lp-gold"><div class="lp-n">Provenance</div><div class="lp-key">The source behind the statement</div><div class="lp-why">A path, schema object, or query — always attached.</div></div>
+    <div class="loop-part lp-purple"><div class="lp-n">Owner</div><div class="lp-key">Who is authorized to decide meaning</div><div class="lp-why">Unresolved semantics get an owner, not a guess.</div></div>
+  </div>
+  <div class="callout" style="max-width: 1720px; margin-top: clamp(16px,2.6vh,26px);">
+    <div class="co-kicker">The proof of Act 4</div>
+    <div class="co-body">Every ontology edge is <strong>evidenced, explicitly inferred, or marked as an unresolved business decision.</strong> No silent promotions.</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 20 — THE THREE CLOCKS
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="slide__label">The trap inside "yesterday"</div>
+  <h2 class="slide__heading" style="margin-bottom: 10px;">Three clocks tick <span class="gradient-red">in every row</span></h2>
+  <p class="slide__body" style="max-width: 1200px; margin-bottom: clamp(18px,3vh,30px);">They answer different questions — and must never be silently substituted for one another.</p>
+  <div class="three-col" style="max-width: 1720px;">
+    <div class="arch-box" style="border-color: rgba(74,158,255,0.25);">
+      <h4>Business time</h4>
+      <div class="caption">ordered_at · paid_at</div>
+      <ul>
+        <li>When it happened in the domain</li>
+        <li>The clock the CFO is asking about</li>
+      </ul>
+    </div>
+    <div class="arch-box" style="border-color: rgba(212,175,55,0.25);">
+      <h4>Lifecycle time</h4>
+      <div class="caption">created_at · updated_at</div>
+      <ul>
+        <li>When the source system touched the record</li>
+        <li>The operational system's clock</li>
+      </ul>
+    </div>
+    <div class="arch-box" style="border-color: rgba(167,139,250,0.25);">
+      <h4>Ingestion time</h4>
+      <div class="caption">ingested_at</div>
+      <ul>
+        <li>When the row reached this database</li>
+        <li>The clock late-arriving data lives on</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout red" style="max-width: 1720px; margin-top: clamp(16px,2.6vh,26px);">
+    <div class="co-kicker">Deliberately unresolved</div>
+    <div class="co-body">Which timezone defines "yesterday"? How does late-arriving data change a published number? <strong>These need an owner — not an assumption.</strong></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     ACT 5 DIVIDER — THE TRAJECTORY
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="slide slide--silent" style="background-image: radial-gradient(ellipse at 50% 50%, rgba(63,185,80,0.10) 0%, transparent 70%);">
+  <div class="act-marker">ACT 5 · 21:00 · WHY AGENTIC DEVELOPMENT AND TELEMETRY MATTER</div>
+  <h1 class="slide__display gradient-green" style="font-size: clamp(120px, 22vw, 300px); margin-bottom: 18px; line-height: 0.9;">5.</h1>
+  <div class="slide__heading" style="color: var(--text); font-size: clamp(40px,6.5vw,84px);">The Trajectory</div>
+  <p class="slide__body" style="max-width: 1120px; margin-top: 22px; font-size: clamp(18px,2.1vw,26px);">
+    Ordinary chat produces a response. <strong style="color:var(--text);">Agentic development produces controlled work</strong> — and the final answer alone cannot prove how the work was performed.
+  </p>
+  <div class="section-rule" style="max-width: 640px; width: 100%; margin-top: clamp(22px,3.4vh,40px);">NOT A LONGER CHAT — CONTROLLED WORK</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 22 — CONTROLLED WORK LOOP
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="slide__label">The shape of controlled work</div>
+  <h2 class="slide__heading" style="margin-bottom: 10px;">From objective to <span class="gradient-green">durable artifact</span></h2>
+  <p class="slide__body" style="max-width: 1200px; margin-bottom: clamp(20px,3.4vh,36px);">Tools, observations, claims, verification, and human gates — every hop leaves evidence.</p>
+  <div class="seq">
+    <div class="seq-node sq-accent"><div class="sq-n">01</div><div class="sq-name">Objective</div></div>
+    <div class="seq-arrow">→</div>
+    <div class="seq-node sq-cyan"><div class="sq-n">02</div><div class="sq-name">Context</div></div>
+    <div class="seq-arrow">→</div>
+    <div class="seq-node sq-gold"><div class="sq-n">03</div><div class="sq-name">Tool use</div></div>
+    <div class="seq-arrow">→</div>
+    <div class="seq-node sq-gold"><div class="sq-n">04</div><div class="sq-name">Observation</div></div>
+    <div class="seq-arrow">→</div>
+    <div class="seq-node sq-green"><div class="sq-n">05</div><div class="sq-name">Claim</div></div>
+    <div class="seq-arrow">→</div>
+    <div class="seq-node sq-green"><div class="sq-n">06</div><div class="sq-name">Verification</div></div>
+    <div class="seq-arrow">→</div>
+    <div class="seq-node sq-purple"><div class="sq-n">07</div><div class="sq-name">Human decision</div></div>
+    <div class="seq-arrow">→</div>
+    <div class="seq-node sq-silver"><div class="sq-n">08</div><div class="sq-name">Artifact</div></div>
+  </div>
+  <div class="two-col" style="max-width: 1720px; margin-top: clamp(18px,3vh,30px);">
+    <div class="callout accent">
+      <div class="co-kicker">Tonight's authority — in full</div>
+      <div class="co-body">Read repository files · run approved read-only queries · write the investigation artifacts. <strong>Nothing else.</strong></div>
+    </div>
+    <div class="callout red">
+      <div class="co-kicker">Never</div>
+      <div class="co-body">Modify operational data · make business decisions · proceed through ambiguity. <strong>Escalate to the named owner.</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 23 — TELEMETRY CONTRACT
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="slide__label">The telemetry contract</div>
+  <h2 class="slide__heading" style="margin-bottom: 8px;">Twelve events make the trajectory <span class="gradient-green">inspectable</span></h2>
+  <p class="slide__body" style="max-width: 1250px; margin-bottom: clamp(16px,2.6vh,26px); font-size: clamp(16px,1.8vw,21px);">Telemetry does not make an answer correct. It provides <span style="color:var(--text);">evidence about the process</span> that produced it.</p>
+  <div class="ev-grid">
+    <div class="ev ev-accent"><span class="ev-k">lifecycle</span>session_started</div>
+    <div class="ev ev-accent"><span class="ev-k">lifecycle</span>phase_started</div>
+    <div class="ev ev-cyan"><span class="ev-k">grounding</span>context_loaded</div>
+    <div class="ev ev-cyan"><span class="ev-k">grounding</span>repository_inspected</div>
+    <div class="ev ev-gold"><span class="ev-k">evidence</span>query_executed</div>
+    <div class="ev ev-green"><span class="ev-k">claims</span>claim_proposed</div>
+    <div class="ev ev-green"><span class="ev-k">claims</span>claim_verified</div>
+    <div class="ev ev-red"><span class="ev-k">claims</span>claim_rejected</div>
+    <div class="ev ev-purple"><span class="ev-k">escalation</span>question_opened</div>
+    <div class="ev ev-silver"><span class="ev-k">artifacts</span>artifact_updated</div>
+    <div class="ev ev-gold"><span class="ev-k">gates</span>gate_evaluated</div>
+    <div class="ev ev-accent"><span class="ev-k">lifecycle</span>session_completed</div>
+  </div>
+  <div class="code-block" data-lang="jsonl" style="max-width: 1720px; margin-top: clamp(14px,2.4vh,24px);">{<span class="c-key">"timestamp"</span>:<span class="c-str">"2026-08-10T22:05:00Z"</span>, <span class="c-key">"run_id"</span>:<span class="c-str">"foundation-demo"</span>, <span class="c-key">"actor"</span>:<span class="c-str">"agent"</span>, <span class="c-key">"phase"</span>:<span class="c-str">"context"</span>, <span class="c-key">"action"</span>:<span class="c-str">"context_loaded"</span>, <span class="c-key">"evidence_reference"</span>:<span class="c-str">"context-pack/business-brief"</span>, <span class="c-key">"outcome"</span>:<span class="c-str">"success"</span>, <span class="c-key">"duration_ms"</span>:<span class="c-gold">18</span>}</div>
+  <div class="two-col" style="max-width: 1720px; margin-top: clamp(14px,2.4vh,22px);">
+    <div class="callout red">
+      <div class="co-kicker">Never record</div>
+      <div class="co-body">Passwords · connection strings · <span style="font-family:var(--font-mono); font-size:0.88em;">.env</span> contents · personal data · complete rows · instructor truth.</div>
+    </div>
+    <div class="callout">
+      <div class="co-kicker">Prefer instead</div>
+      <div class="co-body">Query identifiers · aggregate counts · hashes · file paths. <strong>Evidence without leakage.</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 24 — WHAT THE TRACE REVEALS
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="slide__label">Demonstration · run it, then read the trace</div>
+  <h2 class="slide__heading" style="margin-bottom: 10px;">The trace shows what the answer <span class="gradient-red">cannot</span></h2>
+  <p class="slide__body" style="max-width: 1250px; margin-bottom: clamp(18px,3vh,30px);">The structured investigation runs with read-only authority — then the room inspects the event stream, not the vibes.</p>
+  <div class="loop-parts" style="grid-template-columns: repeat(3, 1fr);">
+    <div class="loop-part lp-green"><div class="lp-n">Visible</div><div class="lp-key">Claims tied to evidence</div><div class="lp-why">Every claim connects to a source and an ontology entity.</div></div>
+    <div class="loop-part lp-red"><div class="lp-n">Visible</div><div class="lp-key">One rejected assumption</div><div class="lp-why">The trace shows a claim <strong>failing</strong> verification — on purpose.</div></div>
+    <div class="loop-part lp-purple"><div class="lp-n">Visible</div><div class="lp-key">One human escalation</div><div class="lp-why">A conclusion that required business authority — and stopped.</div></div>
+  </div>
+  <div class="callout" style="max-width: 1720px; margin-top: clamp(16px,2.6vh,26px);">
+    <div class="co-kicker">The proof of Act 5</div>
+    <div class="co-body">The facilitator can <strong>reconstruct</strong> which sources, tools, evidence, and decisions produced the technical brief — from the trace alone.</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     ACT 6 DIVIDER — THE BRIEF
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="slide slide--silent" style="background-image: radial-gradient(ellipse at 50% 50%, rgba(176,190,197,0.10) 0%, transparent 70%);">
+  <div class="act-marker">ACT 6 · 21:35 · WHY DOCUMENTATION MATTERS</div>
+  <h1 class="slide__display gradient-text" style="font-size: clamp(120px, 22vw, 300px); margin-bottom: 18px; line-height: 0.9;">6.</h1>
+  <div class="slide__heading" style="color: var(--text); font-size: clamp(40px,6.5vw,84px);">The Brief</div>
+  <p class="slide__body" style="max-width: 1080px; margin-top: 22px; font-size: clamp(18px,2.1vw,26px);">
+    Knowledge that exists only in a chat session cannot guide the next module. <strong style="color:var(--text);">Evidence becomes valuable when it survives the session.</strong>
+  </p>
+  <div class="section-rule" style="max-width: 640px; width: 100%; margin-top: clamp(22px,3.4vh,40px);">REVIEWABLE WITHOUT REPLAYING THE CHAT</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 26 — THE TECHNICAL BRIEF
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="slide__label">The durable artifact</div>
+  <h2 class="slide__heading" style="margin-bottom: 10px;">One brief, <span class="gradient-text">thirteen sections</span>, one review gate</h2>
+  <div class="two-col" style="max-width: 1720px; margin-top: clamp(16px,2.8vh,28px); align-items: stretch;">
+    <div class="arch-box" style="border-color: rgba(74,158,255,0.25);">
+      <h4>What goes in</h4>
+      <div class="caption">technical brief · v1</div>
+      <ul>
+        <li>Business problem · system boundary · data inventory</li>
+        <li>Ontology v1 · confirmed rules · evidence ledger</li>
+        <li>Risks · assumptions · open questions with owners</li>
+        <li>Proposed analytical boundary · success measures</li>
+        <li>Non-goals · ADR candidates</li>
+      </ul>
+    </div>
+    <div class="arch-box" style="border-color: rgba(63,185,80,0.25);">
+      <h4>The review gate</h4>
+      <div class="caption">checked by a human, not vibes</div>
+      <ul>
+        <li>Claims evidenced or explicitly uncertain</li>
+        <li>Business decisions have accountable owners</li>
+        <li>Boundary is read-only and one-directional</li>
+        <li>Nothing authorizes later-module implementation</li>
+        <li>Human review is recorded</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout gold" style="max-width: 1720px; margin-top: clamp(16px,2.6vh,26px);">
+    <div class="co-kicker">ADR candidates — not ADRs</div>
+    <div class="co-body">The investigation <strong>identifies</strong> decisions. A decision becomes an ADR only when choice, alternatives, trade-offs, evidence, and an accountable owner are explicit.</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 27 — REFLECTION + SKILL
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="slide__label">21:55 · distill the skill</div>
+  <h2 class="slide__heading" style="margin-bottom: 10px;">Reflect from <span class="gradient-purple">artifacts, not memory</span></h2>
+  <div class="two-col" style="max-width: 1720px; margin-top: clamp(14px,2.4vh,24px); align-items: stretch;">
+    <div class="arch-box" style="border-color: rgba(167,139,250,0.25);">
+      <h4>The reflection</h4>
+      <div class="caption">answered with telemetry and the ledger</div>
+      <ul>
+        <li>What did we believe — and what did we <strong>observe</strong>?</li>
+        <li>Which assumption failed?</li>
+        <li>Which context source changed the result?</li>
+        <li>What did telemetry reveal that the answer did not?</li>
+        <li>Which decision still requires a human?</li>
+        <li>What remains manual — and what would a later machine automate?</li>
+      </ul>
+    </div>
+    <div class="code-block" data-lang="skill card"><span class="c-purple">Skill:</span> System interviewing and context synthesis
+
+<span class="c-key">When to use:</span>      an unfamiliar brownfield, before building
+<span class="c-key">Inputs:</span>           schema, brief, read-only access
+<span class="c-key">Method:</span>           contract → context → interview → ontology
+<span class="c-key">Artifact:</span>         evidence-backed technical brief
+<span class="c-key">Evidence:</span>         paths, schema objects, safe queries
+<span class="c-key">Human decision:</span>   revenue semantics, refunds, timezone
+<span class="c-key">Remains manual:</span>   judgment, ownership, review</div>
+  </div>
+  <p class="slide__body" style="max-width: 1400px; margin-top: clamp(12px,2vh,20px); font-size: clamp(15px,1.6vw,19px);">The skill card is a <span style="color:var(--text);">learning artifact</span> — not an installable automation package. Yet.</p>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 28 — THE FIVE-DAY ARC
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="slide__label">Where this goes</div>
+  <h2 class="slide__heading" style="margin-bottom: 8px;">Five days, <span class="gradient-text">five skills</span>, one machine at the end</h2>
+  <div class="arc" style="margin-top: clamp(10px,1.8vh,18px);">
+    <div class="arc-line"></div>
+    <div class="arc-stops" style="grid-template-columns: repeat(5, 1fr);">
+      <div class="arc-stop ar-accent"><div class="arc-dot"></div><div class="arc-era">Day 1 · Tonight</div><div class="arc-head">Investigation</div><div class="arc-body">Prompt, context, ontology, controlled investigation → technical brief</div></div>
+      <div class="arc-stop ar-cyan"><div class="arc-dot"></div><div class="arc-era">Day 2</div><div class="arc-head">Harness</div><div class="arc-body">Roles, tools, authority — agents operate inside declared boundaries</div></div>
+      <div class="arc-stop ar-gold"><div class="arc-dot"></div><div class="arc-era">Day 3</div><div class="arc-head">Specification</div><div class="arc-body">Spec-driven execution, atomic tasks, visible dependencies</div></div>
+      <div class="arc-stop ar-green"><div class="arc-dot"></div><div class="arc-era">Day 4</div><div class="arc-head">Evals &amp; Loop</div><div class="arc-body">Detector, evals, execution trace — measured against independent truth</div></div>
+      <div class="arc-stop ar-purple"><div class="arc-dot"></div><div class="arc-era">Day 5</div><div class="arc-head">Review &amp; Learn</div><div class="arc-body">External authority, capability map, next-stage plan</div></div>
+    </div>
+  </div>
+  <div class="callout accent" style="max-width: 1720px; margin: clamp(20px,3.4vh,34px) auto 0;">
+    <div class="co-kicker">Every session ends the same way</div>
+    <div class="co-body">What did we believe? What did we observe? What artifact changed? What evidence made it trustworthy? <strong>What would the later machine automate?</strong></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SLIDE 29 — CLOSER (silent)
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="slide slide--silent" style="background-image: radial-gradient(ellipse at 50% 40%, rgba(74,158,255,0.12) 0%, transparent 55%), radial-gradient(ellipse at 80% 85%, rgba(212,175,55,0.05) 0%, transparent 45%);">
+  <div class="act-marker">The next-module hook</div>
+  <p class="hero-quote" style="font-size: clamp(28px,3.4vw,48px);">The investigation established <span class="gradient-text" style="font-style:normal;">understanding before execution</span>. Next, we build the rails that turn that understanding into <span class="gradient-gold" style="font-style:normal;">controlled work</span>.</p>
+  <div class="hero-cite">Semana Engenharia Agêntica · Day 1 → Day 2</div>
+  <div class="section-rule" style="max-width: 640px; width: 100%; margin-top: clamp(26px,4vh,48px);">UNDERSTANDING IS NOW AN INSPECTABLE ARTIFACT</div>
+</section>
+
+</div>
+
+<script>
+  const progress = document.querySelector('.deck-progress');
+  const counter = document.getElementById('n');
+  const totalEl = document.getElementById('total');
+  const tracker = document.getElementById('tracker');
+  const deck = document.querySelector('.deck');
+  const sections = deck.querySelectorAll('section.slide');
+  const total = sections.length;
+
+  totalEl.textContent = String(total).padStart(2, '0');
+
+  const dots = [];
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('span');
+    d.className = 'dot';
+    d.dataset.idx = i;
+    tracker.appendChild(d);
+    dots.push(d);
+  }
+
+  let currentIdx = -1;
+  function paint(idx) {
+    if (idx === currentIdx) return;
+    currentIdx = idx;
+    for (let i = 0; i < total; i++) {
+      const el = dots[i];
+      if (i === idx) el.className = 'dot current';
+      else if (i < idx) el.className = 'dot passed';
+      else el.className = 'dot';
+    }
+    const cur = dots[idx];
+    if (cur && cur.scrollIntoView) {
+      cur.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+    }
+  }
+
+  deck.addEventListener('scroll', () => {
+    const scrollTotal = deck.scrollHeight - deck.clientHeight;
+    const pct = scrollTotal > 0 ? (deck.scrollTop / scrollTotal) * 100 : 0;
+    progress.style.width = pct + '%';
+    const idx = Math.min(total - 1, Math.round(deck.scrollTop / deck.clientHeight));
+    counter.textContent = String(idx + 1).padStart(2, '0');
+    paint(idx);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    const h = deck.clientHeight;
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+      e.preventDefault(); deck.scrollBy({ top: h, behavior: 'smooth' });
+    } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'PageUp') {
+      e.preventDefault(); deck.scrollBy({ top: -h, behavior: 'smooth' });
+    } else if (e.key === 'Home') {
+      e.preventDefault(); deck.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (e.key === 'End') {
+      e.preventDefault(); deck.scrollTo({ top: deck.scrollHeight, behavior: 'smooth' });
+    }
+  });
+
+  paint(0);
+
+  /* ── Cinematic reveal: activate slides as they enter the viewport ── */
+  (function () {
+    if (!('IntersectionObserver' in window)) {
+      sections.forEach((s) => s.classList.add('is-active'));
+      return;
+    }
+    document.body.classList.add('anim-ready');
+
+    /* Stat numbers count up whenever their slide arrives */
+    function animateStats(slideEl) {
+      slideEl.querySelectorAll('.sc-num').forEach((el) => {
+        if (!el.dataset.cuFull) el.dataset.cuFull = el.textContent;
+        const full = el.dataset.cuFull;
+        const m = full.match(/^(\d[\d.,]*)/);
+        if (!m) return;
+        const numStr = m[1];
+        const suffix = full.slice(numStr.length);
+        const target = parseFloat(numStr.replace(/,/g, ''));
+        if (isNaN(target)) return;
+        const decimals = (numStr.split('.')[1] || '').length;
+        const grouped = numStr.includes(',');
+        if (el._cuRaf) cancelAnimationFrame(el._cuRaf);
+        const t0 = performance.now(), dur = 1100;
+        const tick = (t) => {
+          const p = Math.min(1, (t - t0) / dur);
+          const eased = 1 - Math.pow(1 - p, 3);
+          if (p < 1) {
+            const v = target * eased;
+            el.textContent = (grouped ? Math.round(v).toLocaleString('en-US') : v.toFixed(decimals)) + suffix;
+            el._cuRaf = requestAnimationFrame(tick);
+          } else {
+            el.textContent = full;
+          }
+        };
+        el._cuRaf = requestAnimationFrame(tick);
+      });
+    }
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (en.isIntersecting && en.intersectionRatio >= 0.5) {
+          if (!en.target.classList.contains('is-active')) {
+            en.target.classList.add('is-active');
+            animateStats(en.target);
+          }
+        } else {
+          en.target.classList.remove('is-active');
+        }
+      });
+    }, { root: deck, threshold: [0, 0.5, 0.85] });
+
+    sections.forEach((s) => revealObserver.observe(s));
+
+    /* Cursor spotlight — track the pointer as CSS vars per slide */
+    deck.addEventListener('pointermove', (e) => {
+      const s = sections[Math.max(0, currentIdx)];
+      if (!s) return;
+      const r = s.getBoundingClientRect();
+      s.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100).toFixed(2) + '%');
+      s.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100).toFixed(2) + '%');
+    }, { passive: true });
+  })();
+</script>
+
+</body>
+</html>

@@ -595,10 +595,25 @@ Use telemetry and artifacts, not memory or vibes:
 9. What remains manual?
 10. What would a later machine automate?
 
-### Skill card
+### Skill cards
+
+Skill distillation is per act, not a single end-of-day card. Each act closes
+by filling the matching card in [`skills/d1/`](../skills/d1/README.md),
+so participants leave with the full d1 set:
+
+| Card | Skill | Filled after |
+| --- | --- | --- |
+| S1 | Prompt as a work contract | Act 2 |
+| S2 | Deliberate context selection | Act 3 |
+| S3 | System interviewing | Act 5 |
+| S4 | Ontology modeling with evidence | Act 4 |
+| S5 | Trajectory inspection through telemetry | Act 5 |
+| S6 | Technical brief for human review | Act 6 |
+
+Every card uses the same structure:
 
 ```text
-Skill: System interviewing and context synthesis
+Skill:
 When to use:
 Inputs:
 Questions to ask:
@@ -609,7 +624,9 @@ Human decision:
 What remains manual:
 ```
 
-The skill card is a learning artifact, not an installable automation package.
+Skill cards are learning artifacts, not installable automation packages. The
+end-of-day review in `skills/d1/README.md` closes only when all cards are
+filled from session artifacts, not from memory.
 
 ### Next Module hook
 
@@ -617,6 +634,13 @@ The skill card is a learning artifact, not an installable automation package.
 > the rails that turn that understanding into controlled work.
 
 ## 13. Demo choreography
+
+Each checkpoint has a paste-ready follow-along file in
+[`live/d1/`](../live/d1/), numbered in execution order. Every
+file states the slide question, the authority boundary, the exact prompt or
+commands, the proof that counts, and the skill card it feeds. Facilitator and
+participants open the same file at each transition. These files must contain
+nothing from the "deliberately not revealed" list in section 3.
 
 ### Demo checkpoints
 
@@ -1280,10 +1304,16 @@ answer from memory alone.
 9. What remains manual?
 10. What would a later machine automate?
 
-#### Skill card
+#### Skill cards
+
+You filled one card per act during the session; they live in
+`skills/d1/`. Review the set now (S1 prompt as a work contract, S2
+deliberate context selection, S3 system interviewing, S4 ontology modeling,
+S5 trajectory inspection, S6 technical brief). Each card follows this
+structure:
 
 ```text
-Skill: System interviewing and context synthesis
+Skill:
 When to use:
 Inputs:
 Questions to ask:
@@ -1293,6 +1323,9 @@ Evidence required:
 Human decision:
 What remains manual:
 ```
+
+A card is complete when someone who was not in the room could apply the
+skill and know what artifact and evidence it must produce.
 
 #### Next-module hook
 
@@ -1340,6 +1373,9 @@ laptop.
   approved agent context.
 - [ ] The presentation opens without missing fonts or assets.
 - [ ] Weak-prompt and structured-prompt fallback outputs are available.
+- [ ] Every checkpoint file in `live/d1/` has been executed successfully during
+  rehearsal, and the six `skills/d1/` cards were filled from that
+  rehearsal at least once.
 - [ ] Ontology v1 and technical-brief fallback artifacts are available.
 - [ ] Telemetry collection has been implemented and rehearsed, or is described
   honestly as a manual contract demonstration.

@@ -314,10 +314,14 @@ at a non-disposable database.
 | [`src/transactco/analytical/`](src/transactco/analytical/) | Builders | Read-only source crossing and DuckDB landing |
 | [`src/transactco/control/`](src/transactco/control/) | Builders | Verification, evaluation, scoring, and future telemetry |
 | [`plan/semana.md`](plan/semana.md) | Facilitators | Storytelling, session design, delivery gates, context pack, and runbook |
+| [`presentation/d1.html`](presentation/d1.html) | Facilitators | Day 1 slide deck — open in a browser, navigate with arrow keys or space |
+| [`live/d1/`](live/d1/) | Facilitators | Live follow-along spine — one numbered file per demo checkpoint |
+| [`skills/d1/`](skills/d1/) | Participants | Six skill cards filled during the session, one per practiced skill |
 
-Session material — the participant context pack, the facilitation runbook, and
-the readiness gates — is consolidated in `plan/semana.md` and distributed by the
-facilitator rather than published as repository paths.
+The participant context pack and the readiness gates are consolidated in
+`plan/semana.md` and distributed by the facilitator. The day 1 session runs
+from three surfaces: the deck (`presentation/d1.html`), the checkpoint files
+(`live/d1/`), and the skill cards (`skills/d1/`).
 
 The root README spans the complete project and names the failure/scoring
 surfaces. For a spoiler-safe foundation investigation, give the agent only the
