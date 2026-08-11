@@ -117,7 +117,7 @@ body::after {
 
 /* canonical tag — the one pill treatment used everywhere (HUD act, contract keys,
    programme topic markers). New slides should use this class, not a bespoke copy. */
-.tag {
+.tag, .epill {
   display: inline-block; font-family: var(--font-mono);
   font-size: clamp(8.5px,0.79vw,9.5px); font-weight: 800; letter-spacing: 2px;
   text-transform: uppercase; color: #000; background: var(--tag-c, var(--accent));
@@ -687,13 +687,8 @@ body::after {
   flex: 0 0 clamp(62px,5.8vw,90px); font-family: var(--font-mono); font-size: clamp(7.5px,0.72vw,9px);
   font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase; color: var(--ec, var(--text-mute));
 }
-.epill {
-  display: inline-block; font-family: var(--font-mono); font-size: clamp(8px,0.78vw,10px); font-weight: 600;
-  letter-spacing: 0.6px; white-space: nowrap; color: var(--ec, var(--text));
-  border: 1px solid color-mix(in srgb, var(--ec, var(--accent)) 45%, transparent);
-  background: color-mix(in srgb, var(--ec, var(--accent)) 10%, transparent);
-  padding: 3px 9px; border-radius: 999px;
-}
+/* same treatment as .tag / the HUD act pill — the row's --ec drives the fill */
+.epill { --tag-c: var(--ec, var(--accent)); }
 
 /* the seam — a labelled crossing between two states of the same thing */
 .seam { display: flex; align-items: center; gap: clamp(11px,1.2vw,20px); padding: clamp(7px,1.2vh,12px) 0; }
@@ -724,7 +719,18 @@ body::after {
 .gsvg .g-sub  { font-family: var(--font-mono); font-size: 10.5px; fill: #c8d0dc; }
 .gsvg .g-chip { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; fill: var(--text-dim); }
 .gsvg .g-elbl { font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; fill: var(--text-dim); }
+.gsvg .g-pred { font-family: var(--font-editorial); font-style: italic; font-size: 13.5px; fill: var(--text); }
 .gsvg .g-note { font-family: var(--font-editorial); font-style: italic; font-size: 12px; fill: var(--text-mute); }
+
+/* S33 canonical-ontology figure — larger type, and solid tag pills (same treatment
+   as the .tag / HUD act pill: black text on a solid accent fill) */
+.gsvg.o1 .g-name { font-size: 23px; }
+.gsvg.o1 .g-line { font-size: 13px; fill: #d7dde8; }
+.gsvg.o1 .g-sub  { font-size: 11.5px; fill: #cdd5e0; }
+.gsvg.o1 .g-chip { font-size: 11px; }
+.gsvg.o1 .g-elbl { font-family: var(--font-display); font-size: 14px; font-weight: 400; letter-spacing: 0.4px; text-transform: none; }
+.gsvg.o1 .g-note { font-size: 13.5px; }
+.gsvg.o1 .g-pill { font-family: var(--font-mono); font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; fill: #000; }
 
 /* published figures, cited */
 .stats { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: clamp(12px,1.4vw,26px); }
@@ -894,13 +900,15 @@ body::after {
 .ring-decision p b { color: var(--text); font-weight: 600; }
 .rings-viz { height: 100%; display: grid; place-items: center; min-width: 0; }
 .rings-viz svg { width: 100%; height: min(88vh,930px); display: block; overflow: visible; }
-.slide.is-active .ring-breathe { transform-box: fill-box; transform-origin: center; animation: ring-breathe 9s ease-in-out infinite; }
-.slide.is-active .ring-breathe.r2 { animation-delay: 1.2s; }
-.slide.is-active .ring-breathe.r3 { animation-delay: 2.4s; }
-.slide.is-active .ring-breathe.r4 { animation-delay: 3.6s; }
-.slide.is-active .ring-breathe.r5 { animation-delay: 4.8s; }
-.slide.is-active .ring-breathe.r6 { animation-delay: 6s; }
-.slide.is-active .core-pulse { transform-box: fill-box; transform-origin: center; animation: core-pulse 4s ease-in-out infinite; }
+/* never gate these on .is-active — the class toggles while scrolling, and every
+   toggle restarted all seven animations from scale(1), which reads as a flicker */
+.ring-breathe { transform-box: fill-box; transform-origin: center; animation: ring-breathe 9s ease-in-out infinite; }
+.ring-breathe.r2 { animation-delay: 1.2s; }
+.ring-breathe.r3 { animation-delay: 2.4s; }
+.ring-breathe.r4 { animation-delay: 3.6s; }
+.ring-breathe.r5 { animation-delay: 4.8s; }
+.ring-breathe.r6 { animation-delay: 6s; }
+.core-pulse { transform-box: fill-box; transform-origin: center; animation: core-pulse 4s ease-in-out infinite; }
 @keyframes ring-breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.018); } }
 @keyframes core-pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.045); } }
 
@@ -930,29 +938,21 @@ body::after {
   aspect-ratio: 1;
   margin: 0 auto;
 }
-.orbit-ring::after {
-  position: absolute;
-  border-radius: 50%;
-  content: '';
-}
+/* static true circle — no orbiting bead, no continuous spin */
 .orbit-ring {
+  position: absolute;
   inset: 13%;
-  border: 1px dashed rgba(212,175,55,0.34);
-  box-shadow: inset 0 0 64px rgba(212,175,55,0.025), 0 0 60px rgba(212,175,55,0.035);
-  animation: orbit-spin 52s linear infinite;
-}
-.orbit-ring::before {
-  width: 11px;
-  height: 11px;
-  left: 50%;
-  top: -6px;
-  transform: translateX(-50%);
-  background: var(--gold);
-  box-shadow: 0 0 14px var(--gold), 0 0 34px rgba(212,175,55,0.55);
+  border-radius: 50%;
+  border: 1.5px solid rgba(212,175,55,0.38);
+  box-shadow: inset 0 0 64px rgba(212,175,55,0.04), 0 0 60px rgba(212,175,55,0.04);
+  pointer-events: none;
 }
 .orbit-ring::after {
+  content: '';
+  position: absolute;
   inset: 18%;
-  border: 1px solid rgba(63,185,80,0.18);
+  border-radius: 50%;
+  border: 1px solid rgba(63,185,80,0.2);
 }
 .orbit-core {
   position: absolute;
@@ -960,12 +960,24 @@ body::after {
   top: 50%;
   transform: translate(-50%,-50%);
   width: 43%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
+  padding: clamp(12px,1.6vh,22px);
+  border: 1px solid rgba(212,175,55,0.28);
+  background:
+    radial-gradient(circle at 50% 42%, rgba(212,175,55,0.12), transparent 68%),
+    radial-gradient(circle at 50% 50%, rgba(17,17,20,0.92), rgba(8,8,10,0.55));
+  box-shadow: inset 0 0 36px rgba(212,175,55,0.06), 0 0 40px rgba(0,0,0,0.35);
 }
 .orbit-core strong {
   display: block;
   font-family: var(--font-display);
-  font-size: clamp(23px,2.1vw,33px);
+  font-size: clamp(20px,1.9vw,30px);
   font-weight: 400;
   line-height: 1.04;
   color: var(--gold);
@@ -973,10 +985,11 @@ body::after {
 .orbit-core span {
   display: block;
   margin-top: 8px;
+  max-width: 16ch;
   font-family: var(--font-editorial);
-  font-size: clamp(11px,1.02vw,14px);
+  font-size: clamp(10.5px,0.96vw,13px);
   font-style: italic;
-  line-height: 1.4;
+  line-height: 1.35;
   color: var(--text-dim);
 }
 .orbit-core b { color: var(--purple); font-style: normal; font-weight: 600; }
@@ -1025,14 +1038,26 @@ body::after {
   line-height: 1.3;
   color: var(--text-dim);
 }
-.on-1 { left: 50%; top: 7%; }
+/* top station: caption sits above the pill so it never rides the ring */
+.on-1 {
+  left: 50%;
+  top: 4%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.on-1 .node-note {
+  order: -1;
+  margin-top: 0;
+  margin-bottom: clamp(6px,0.9vh,10px);
+}
 .on-2 { left: 91%; top: 35%; }
 .on-3 { left: 76%; top: 86%; }
 .on-4 { left: 24%; top: 86%; }
 .on-5 { left: 9%; top: 35%; }
 .payoff {
   position: relative;
-  margin-top: clamp(10px,1.8vh,18px);
+  margin-top: clamp(36px,6.5vh,72px);
   padding: clamp(13px,1.9vh,20px) clamp(18px,1.8vw,30px);
   display: flex;
   justify-content: center;
@@ -1413,7 +1438,7 @@ body::after {
   color: var(--text-dim);
 }
 .hook-copy b { color: var(--text); font-style: normal; font-weight: 600; }
-@keyframes orbit-spin { to { transform: rotate(360deg); } }
+
 
 /* ── motion — 3 primitives only ───────────────────────────────────── */
 body.anim-ready .reveal > * {
@@ -1500,7 +1525,7 @@ body.anim-ready .reveal.reveal-reset > * { transition: none !important; }
 @media (max-height: 820px) {
   .orbit { width: min(100%, clamp(390px,51vh,510px)); }
   .fly-copy .lede { font-size: clamp(13px,1.26vw,17px); }
-  .payoff { padding-block: 11px; }
+  .payoff { margin-top: clamp(22px,3.5vh,36px); padding-block: 11px; }
   .turn-lane { margin-top: 15px; }
   .skill-line { padding-block: 5px; }
   .run-step { padding-block: 16px; }
@@ -2131,12 +2156,12 @@ Definition used here: Graph carries shared meaning, relationships, provenance, p
           <text x="500" y="445" fill="#fff" font-family="Instrument Serif" font-size="47" text-anchor="middle">Model</text>
           <text x="500" y="471" fill="#e6dcff" font-family="Fira Code" font-size="11.5" text-anchor="middle">capability engine</text>
 
-          <text x="500" y="599" fill="#7dc4ff" font-family="Fira Code" font-size="11.5" font-style="italic" text-anchor="middle" opacity=".88">the work</text>
-          <text x="500" y="652" fill="#8ae4f2" font-family="Fira Code" font-size="11.5" font-style="italic" text-anchor="middle" opacity=".88">the world it can see</text>
-          <text x="500" y="705" fill="#e6cf8a" font-family="Fira Code" font-size="11.5" font-style="italic" text-anchor="middle" opacity=".88">the hands and the brakes</text>
-          <text x="500" y="758" fill="#aebbc2" font-family="Fira Code" font-size="11.5" font-style="italic" text-anchor="middle" opacity=".88">the engine of persistence</text>
-          <text x="500" y="811" fill="#9ce0a8" font-family="Fira Code" font-size="11.5" font-style="italic" text-anchor="middle" opacity=".88">the proof and the accountable decision</text>
-          <text x="500" y="864" fill="#c4b5fd" font-family="Fira Code" font-size="11.5" font-style="italic" text-anchor="middle" opacity=".88">the common language across every loop</text>
+          <text x="500" y="569" fill="#7dc4ff" font-family="Fira Code" font-size="11.5" font-style="italic" text-anchor="middle" opacity=".88">the work</text>
+          <text x="500" y="621" fill="#8ae4f2" font-family="Fira Code" font-size="11.5" font-style="italic" text-anchor="middle" opacity=".88">the world it can see</text>
+          <text x="500" y="674" fill="#e6cf8a" font-family="Fira Code" font-size="11.5" font-style="italic" text-anchor="middle" opacity=".88">the hands and the brakes</text>
+          <text x="500" y="727" fill="#aebbc2" font-family="Fira Code" font-size="11.5" font-style="italic" text-anchor="middle" opacity=".88">the engine of persistence</text>
+          <text x="500" y="780" fill="#9ce0a8" font-family="Fira Code" font-size="11.5" font-style="italic" text-anchor="middle" opacity=".88">the proof and the accountable decision</text>
+          <text x="500" y="836" fill="#c4b5fd" font-family="Fira Code" font-size="11.5" font-style="italic" text-anchor="middle" opacity=".88">the common language across every loop</text>
         </svg>
       </div>
     </div>
@@ -4138,14 +4163,15 @@ order_id    BIGINT
   </section>
 
   <!-- ═══════════ S33 · THE CANONICAL ONTOLOGY ═══════════ -->
-  <section class="slide" data-act="ACT 4" data-act-name="The canonical ontology" data-accent="purple">
+  <section class="slide" data-act="ACT 4" data-act-name="The canonical ontology" data-accent="purple"
+           style="padding-left:clamp(26px,2.8vw,58px);padding-right:clamp(26px,2.8vw,58px);">
     <div class="aurora" aria-hidden="true"><b></b></div>
-    <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1880px;margin:0 auto;">
+    <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1920px;margin:0 auto;">
 
       <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:clamp(24px,3vw,60px);flex-wrap:wrap;">
         <div style="flex:1 1 clamp(420px,58%,1160px);min-width:0;">
           <span class="tag" style="--tag-c:var(--purple);">The canonical ontology</span>
-          <h2 class="h2" style="font-size:clamp(32px,4.7vw,66px);margin-top:clamp(10px,1.7vh,18px);">
+          <h2 class="h2" style="font-size:clamp(27px,3.7vw,52px);margin-top:clamp(8px,1.4vh,14px);">
             One canonical layer between <span style="color:var(--purple);">the schema and the answer</span>
           </h2>
         </div>
@@ -4154,150 +4180,144 @@ order_id    BIGINT
         </p>
       </div>
 
-      <div style="margin-top:clamp(12px,2vh,22px);">
-        <svg class="gsvg" viewBox="0 0 1680 500" style="height:clamp(320px,47vh,520px);" role="img"
+      <div style="margin-top:clamp(10px,1.6vh,18px);">
+        <svg class="gsvg o1" viewBox="0 0 1680 560" style="max-height:62vh;" role="img"
              aria-label="Canonical ontology: sources are extracted into a canonical layer of entities, relationships, rules and events, each carrying a status; the layer is served to the agent, which answers what is evidenced and refuses what is unresolved.">
           <defs>
-            <marker id="o1-ar-gold" viewBox="0 0 14 14" refX="12" refY="7" markerWidth="10" markerHeight="10" orient="auto"><path d="M0 1 L13 7 L0 13 Z" fill="var(--gold)"/></marker>
-            <marker id="o1-ar-purple" viewBox="0 0 14 14" refX="12" refY="7" markerWidth="10" markerHeight="10" orient="auto"><path d="M0 1 L13 7 L0 13 Z" fill="var(--purple)"/></marker>
-            <marker id="o1-ar-cyan" viewBox="0 0 14 14" refX="12" refY="7" markerWidth="10" markerHeight="10" orient="auto"><path d="M0 1 L13 7 L0 13 Z" fill="var(--cyan)"/></marker>
-            <marker id="o1-ar-green" viewBox="0 0 14 14" refX="12" refY="7" markerWidth="10" markerHeight="10" orient="auto"><path d="M0 1 L13 7 L0 13 Z" fill="var(--green)"/></marker>
-            <marker id="o1-ar-red" viewBox="0 0 14 14" refX="12" refY="7" markerWidth="10" markerHeight="10" orient="auto"><path d="M0 1 L13 7 L0 13 Z" fill="var(--red)"/></marker>
-
-            <linearGradient id="o1-f1" x1="0" x2="1"><stop offset="0%" stop-color="#6e7a8c" stop-opacity="0.45"/><stop offset="100%" stop-color="#d4af37"/></linearGradient>
-            <linearGradient id="o1-f2" x1="0" x2="1"><stop offset="0%" stop-color="#d4af37"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient>
-            <linearGradient id="o1-f3" x1="0" x2="1"><stop offset="0%" stop-color="#a78bfa"/><stop offset="100%" stop-color="#22d3ee"/></linearGradient>
-            <linearGradient id="o1-f4" x1="0" x2="1"><stop offset="0%" stop-color="#22d3ee"/><stop offset="100%" stop-color="#3fb950"/></linearGradient>
-
             <linearGradient id="o1-n-src" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#6e7a8c" stop-opacity="0.13"/><stop offset="100%" stop-color="#6e7a8c" stop-opacity="0.02"/></linearGradient>
             <linearGradient id="o1-n-ext" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#d4af37" stop-opacity="0.14"/><stop offset="100%" stop-color="#d4af37" stop-opacity="0.02"/></linearGradient>
             <linearGradient id="o1-n-dec" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#a78bfa" stop-opacity="0.16"/><stop offset="100%" stop-color="#a78bfa" stop-opacity="0.02"/></linearGradient>
             <linearGradient id="o1-n-srv" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#22d3ee" stop-opacity="0.14"/><stop offset="100%" stop-color="#22d3ee" stop-opacity="0.02"/></linearGradient>
             <linearGradient id="o1-n-agt" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#3fb950" stop-opacity="0.14"/><stop offset="100%" stop-color="#3fb950" stop-opacity="0.02"/></linearGradient>
-
-            <filter id="o1-glow" x="-25%" y="-25%" width="150%" height="150%">
-              <feGaussianBlur stdDeviation="2.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-            </filter>
           </defs>
 
-          <!-- top rail -->
-          <text class="g-rail" x="145" y="24" text-anchor="middle" style="fill:var(--text-mute);">the system</text>
-          <text class="g-rail" x="385" y="24" text-anchor="middle" style="fill:var(--gold);">01 · extract</text>
-          <text class="g-rail" x="720" y="24" text-anchor="middle" style="fill:var(--purple);">02 · declare</text>
-          <text class="g-rail" x="1090" y="24" text-anchor="middle" style="fill:var(--cyan);">03 · serve</text>
-          <text class="g-rail" x="1480" y="24" text-anchor="middle" style="fill:var(--green);">04 · the agent</text>
-          <line x1="40" y1="38" x2="1640" y2="38" style="stroke:var(--rule)"/>
+          <!-- top rail — stage pills, same treatment as the ACT tag -->
+          <rect x="96" y="6" width="98" height="26" rx="4" fill="#6e7a8c"/>
+          <text class="g-pill" x="145" y="23" text-anchor="middle">the system</text>
+          <rect x="383" y="6" width="114" height="26" rx="4" fill="var(--gold)"/>
+          <text class="g-pill" x="440" y="23" text-anchor="middle">01 · extract</text>
+          <rect x="713" y="6" width="114" height="26" rx="4" fill="var(--purple)"/>
+          <text class="g-pill" x="770" y="23" text-anchor="middle">02 · declare</text>
+          <rect x="1076" y="6" width="98" height="26" rx="4" fill="var(--cyan)"/>
+          <text class="g-pill" x="1125" y="23" text-anchor="middle">03 · serve</text>
+          <rect x="1425" y="6" width="130" height="26" rx="4" fill="var(--green)"/>
+          <text class="g-pill" x="1490" y="23" text-anchor="middle">04 · the agent</text>
+          <line x1="40" y1="44" x2="1640" y2="44" style="stroke:var(--rule)"/>
 
           <!-- sources -->
-          <rect x="40" y="112" width="210" height="230" rx="13" fill="url(#o1-n-src)" style="stroke:var(--text-mute);stroke-width:1.4"/>
-          <text class="g-k" x="145" y="140" text-anchor="middle" style="fill:var(--text-mute);">sources</text>
-          <text class="g-name" x="145" y="172" text-anchor="middle">Postgres · public</text>
-          <line x1="62" y1="190" x2="228" y2="190" style="stroke:var(--text-mute);stroke-opacity:0.3"/>
-          <text class="g-line" x="145" y="216" text-anchor="middle">customers · products</text>
-          <text class="g-line" x="145" y="238" text-anchor="middle">orders · payments</text>
-          <text class="g-line" x="145" y="266" text-anchor="middle" style="fill:var(--text-mute);">01_schema.sql</text>
-          <text class="g-line" x="145" y="288" text-anchor="middle" style="fill:var(--text-mute);">seed.py</text>
-          <text class="g-note" x="145" y="318" text-anchor="middle">read-only · no migration</text>
+          <rect x="40" y="118" width="210" height="282" rx="13" fill="url(#o1-n-src)" style="stroke:var(--text-mute);stroke-width:1.4"/>
+          <rect x="109" y="132" width="72" height="24" rx="4" fill="#6e7a8c"/>
+          <text class="g-pill" x="145" y="148" text-anchor="middle">sources</text>
+          <text class="g-name" x="145" y="188" text-anchor="middle">Postgres · public</text>
+          <line x1="62" y1="208" x2="228" y2="208" style="stroke:var(--text-mute);stroke-opacity:0.3"/>
+          <text class="g-line" x="145" y="236" text-anchor="middle">customers · products</text>
+          <text class="g-line" x="145" y="262" text-anchor="middle">orders · payments</text>
+          <text class="g-line" x="145" y="292" text-anchor="middle" style="fill:var(--text-mute);">01_schema.sql</text>
+          <text class="g-line" x="145" y="316" text-anchor="middle" style="fill:var(--text-mute);">seed.py</text>
+          <text class="g-note" x="145" y="354" text-anchor="middle">read-only · no migration</text>
 
-          <path d="M255 227 C285 227 300 227 326 227" fill="none" style="stroke:url(#o1-f1);stroke-width:3" marker-end="url(#o1-ar-gold)" filter="url(#o1-glow)"/>
-          <text class="g-elbl" x="291" y="214" text-anchor="middle" style="fill:var(--gold);">read</text>
+          <text class="g-elbl" x="291" y="244" text-anchor="middle" style="fill:var(--gold);">read</text>
 
           <!-- extract -->
-          <rect x="330" y="112" width="220" height="230" rx="13" fill="url(#o1-n-ext)" style="stroke:var(--gold);stroke-width:1.8"/>
-          <text class="g-k" x="440" y="140" text-anchor="middle" style="fill:var(--gold);">what the schema proves</text>
-          <text class="g-name" x="440" y="172" text-anchor="middle">Physical facts</text>
-          <line x1="352" y1="190" x2="528" y2="190" style="stroke:var(--gold);stroke-opacity:0.28"/>
-          <text class="g-line" x="440" y="216" text-anchor="middle">tables · columns · types</text>
-          <text class="g-line" x="440" y="238" text-anchor="middle">status values that appear</text>
-          <text class="g-line" x="440" y="260" text-anchor="middle">three clocks per row</text>
-          <rect x="356" y="282" width="168" height="30" rx="6" fill="rgba(248,81,73,0.12)" style="stroke:var(--red);stroke-width:1;stroke-opacity:0.55"/>
-          <text class="g-chip" x="440" y="302" text-anchor="middle" style="fill:var(--red);">no FK · no CHECK</text>
-          <text class="g-note" x="440" y="330" text-anchor="middle">measurable, not meaningful</text>
+          <rect x="330" y="118" width="220" height="282" rx="13" fill="url(#o1-n-ext)" style="stroke:var(--gold);stroke-width:1.8"/>
+          <rect x="344" y="132" width="192" height="24" rx="4" fill="var(--gold)"/>
+          <text class="g-pill" x="440" y="148" text-anchor="middle">what the schema proves</text>
+          <text class="g-name" x="440" y="188" text-anchor="middle">Physical facts</text>
+          <line x1="352" y1="208" x2="528" y2="208" style="stroke:var(--gold);stroke-opacity:0.28"/>
+          <text class="g-line" x="440" y="236" text-anchor="middle">tables · columns · types</text>
+          <text class="g-line" x="440" y="262" text-anchor="middle">status values that appear</text>
+          <text class="g-line" x="440" y="288" text-anchor="middle">three clocks per row</text>
+          <rect x="368" y="310" width="144" height="24" rx="4" fill="var(--red)"/>
+          <text class="g-pill" x="440" y="326" text-anchor="middle">no FK · no CHECK</text>
+          <text class="g-note" x="440" y="368" text-anchor="middle">measurable, not meaningful</text>
 
-          <path d="M555 227 C585 227 600 227 626 227" fill="none" style="stroke:url(#o1-f2);stroke-width:3" marker-end="url(#o1-ar-purple)" filter="url(#o1-glow)"/>
-          <text class="g-elbl" x="591" y="214" text-anchor="middle" style="fill:var(--purple);">declare</text>
+          <text class="g-elbl" x="591" y="244" text-anchor="middle" style="fill:var(--purple);">declare</text>
 
           <!-- declare · the canonical layer -->
-          <rect x="630" y="62" width="280" height="330" rx="13" fill="url(#o1-n-dec)" style="stroke:var(--purple);stroke-width:1.8"/>
-          <text class="g-k" x="770" y="90" text-anchor="middle" style="fill:var(--purple);">the canonical layer</text>
-          <text class="g-name" x="770" y="122" text-anchor="middle">One agreed vocabulary</text>
-          <line x1="652" y1="140" x2="888" y2="140" style="stroke:var(--purple);stroke-opacity:0.28"/>
+          <rect x="630" y="64" width="280" height="390" rx="13" fill="url(#o1-n-dec)" style="stroke:var(--purple);stroke-width:1.8"/>
+          <rect x="686" y="78" width="168" height="24" rx="4" fill="var(--purple)"/>
+          <text class="g-pill" x="770" y="94" text-anchor="middle">the canonical layer</text>
+          <text class="g-name" x="770" y="130" text-anchor="middle">One agreed vocabulary</text>
+          <line x1="652" y1="148" x2="888" y2="148" style="stroke:var(--purple);stroke-opacity:0.28"/>
 
-          <rect x="650" y="156" width="240" height="44" rx="6" fill="rgba(167,139,250,0.10)" style="stroke:var(--purple);stroke-width:1;stroke-opacity:0.5"/>
-          <text class="g-chip" x="662" y="175" style="fill:var(--purple);">entities</text>
-          <text class="g-sub" x="662" y="192">Customer · Product · Order · Payment</text>
+          <rect x="642" y="160" width="256" height="54" rx="6" fill="rgba(167,139,250,0.10)" style="stroke:var(--purple);stroke-width:1;stroke-opacity:0.5"/>
+          <text class="g-chip" x="654" y="182" style="fill:var(--purple);">entities</text>
+          <text class="g-sub" x="654" y="202">Customer, Product, Order, Payment</text>
 
-          <rect x="650" y="206" width="240" height="44" rx="6" fill="rgba(167,139,250,0.10)" style="stroke:var(--purple);stroke-width:1;stroke-opacity:0.5"/>
-          <text class="g-chip" x="662" y="225" style="fill:var(--purple);">relationships</text>
-          <text class="g-sub" x="662" y="242">typed and directed · 4 of them</text>
+          <rect x="642" y="224" width="256" height="54" rx="6" fill="rgba(167,139,250,0.10)" style="stroke:var(--purple);stroke-width:1;stroke-opacity:0.5"/>
+          <text class="g-chip" x="654" y="246" style="fill:var(--purple);">relationships</text>
+          <text class="g-sub" x="654" y="266">typed and directed · 4 of them</text>
 
-          <rect x="650" y="256" width="240" height="44" rx="6" fill="rgba(167,139,250,0.10)" style="stroke:var(--purple);stroke-width:1;stroke-opacity:0.5"/>
-          <text class="g-chip" x="662" y="275" style="fill:var(--purple);">rules + events</text>
-          <text class="g-sub" x="662" y="292">parity holds · PaymentCaptured</text>
+          <rect x="642" y="288" width="256" height="54" rx="6" fill="rgba(167,139,250,0.10)" style="stroke:var(--purple);stroke-width:1;stroke-opacity:0.5"/>
+          <text class="g-chip" x="654" y="310" style="fill:var(--purple);">rules + events</text>
+          <text class="g-sub" x="654" y="330">parity holds · PaymentCaptured</text>
 
-          <rect x="650" y="306" width="240" height="44" rx="6" fill="rgba(167,139,250,0.10)" style="stroke:var(--purple);stroke-width:1;stroke-opacity:0.5"/>
-          <text class="g-chip" x="662" y="325" style="fill:var(--purple);">provenance</text>
-          <text class="g-sub" x="662" y="342">every statement cites a path</text>
+          <rect x="642" y="352" width="256" height="54" rx="6" fill="rgba(167,139,250,0.10)" style="stroke:var(--purple);stroke-width:1;stroke-opacity:0.5"/>
+          <text class="g-chip" x="654" y="374" style="fill:var(--purple);">provenance</text>
+          <text class="g-sub" x="654" y="394">every statement cites a path</text>
 
-          <text class="g-note" x="770" y="374" text-anchor="middle">nothing enters without a status</text>
+          <text class="g-note" x="770" y="432" text-anchor="middle">nothing enters without a status</text>
 
-          <path d="M915 227 C945 227 960 227 986 227" fill="none" style="stroke:url(#o1-f3);stroke-width:3" marker-end="url(#o1-ar-cyan)" filter="url(#o1-glow)"/>
-          <text class="g-elbl" x="951" y="214" text-anchor="middle" style="fill:var(--cyan);">validate</text>
+          <text class="g-elbl" x="951" y="244" text-anchor="middle" style="fill:var(--cyan);">validate</text>
 
           <!-- serve -->
-          <rect x="990" y="62" width="270" height="330" rx="13" fill="url(#o1-n-srv)" style="stroke:var(--cyan);stroke-width:1.8"/>
-          <text class="g-k" x="1125" y="90" text-anchor="middle" style="fill:var(--cyan);">served to the agent</text>
-          <text class="g-name" x="1125" y="122" text-anchor="middle">transactco.ontology.json</text>
-          <line x1="1012" y1="140" x2="1238" y2="140" style="stroke:var(--cyan);stroke-opacity:0.28"/>
+          <rect x="990" y="64" width="270" height="390" rx="13" fill="url(#o1-n-srv)" style="stroke:var(--cyan);stroke-width:1.8"/>
+          <rect x="1041" y="78" width="168" height="24" rx="4" fill="var(--cyan)"/>
+          <text class="g-pill" x="1125" y="94" text-anchor="middle">served to the agent</text>
+          <text class="g-line" x="1125" y="130" text-anchor="middle" style="font-size:14.5px;fill:var(--text);">transactco.ontology.json</text>
+          <line x1="1010" y1="148" x2="1240" y2="148" style="stroke:var(--cyan);stroke-opacity:0.28"/>
 
-          <rect x="1010" y="156" width="230" height="44" rx="6" fill="rgba(34,211,238,0.10)" style="stroke:var(--cyan);stroke-width:1;stroke-opacity:0.5"/>
-          <text class="g-chip" x="1022" y="175" style="fill:var(--cyan);">term → column</text>
-          <text class="g-sub" x="1022" y="192">canonical name to a real object</text>
+          <rect x="1000" y="160" width="250" height="54" rx="6" fill="rgba(34,211,238,0.10)" style="stroke:var(--cyan);stroke-width:1;stroke-opacity:0.5"/>
+          <text class="g-chip" x="1010" y="182" style="fill:var(--cyan);">term → column</text>
+          <text class="g-sub" x="1010" y="202">canonical name to a real object</text>
 
-          <rect x="1010" y="206" width="230" height="44" rx="6" fill="rgba(34,211,238,0.10)" style="stroke:var(--cyan);stroke-width:1;stroke-opacity:0.5"/>
-          <text class="g-chip" x="1022" y="225" style="fill:var(--cyan);">status per edge</text>
-          <text class="g-sub" x="1022" y="242">evidenced · inferred · unresolved</text>
+          <rect x="1000" y="224" width="250" height="54" rx="6" fill="rgba(34,211,238,0.10)" style="stroke:var(--cyan);stroke-width:1;stroke-opacity:0.5"/>
+          <text class="g-chip" x="1010" y="246" style="fill:var(--cyan);">status per edge</text>
+          <text class="g-sub" x="1010" y="266">evidenced · inferred · unresolved</text>
 
-          <rect x="1010" y="256" width="230" height="44" rx="6" fill="rgba(34,211,238,0.10)" style="stroke:var(--cyan);stroke-width:1;stroke-opacity:0.5"/>
-          <text class="g-chip" x="1022" y="275" style="fill:var(--cyan);">blocking questions</text>
-          <text class="g-sub" x="1022" y="292">four of them, with an owner</text>
+          <rect x="1000" y="288" width="250" height="54" rx="6" fill="rgba(34,211,238,0.10)" style="stroke:var(--cyan);stroke-width:1;stroke-opacity:0.5"/>
+          <text class="g-chip" x="1010" y="310" style="fill:var(--cyan);">blocking questions</text>
+          <text class="g-sub" x="1010" y="330">four of them, with an owner</text>
 
-          <rect x="1010" y="306" width="230" height="44" rx="6" fill="rgba(248,81,73,0.10)" style="stroke:var(--red);stroke-width:1;stroke-opacity:0.5"/>
-          <text class="g-chip" x="1022" y="325" style="fill:var(--red);">refusal rule</text>
-          <text class="g-sub" x="1022" y="342">unresolved ⇒ do not answer</text>
+          <rect x="1000" y="352" width="250" height="54" rx="6" fill="rgba(248,81,73,0.10)" style="stroke:var(--red);stroke-width:1;stroke-opacity:0.5"/>
+          <text class="g-chip" x="1010" y="374" style="fill:var(--red);">refusal rule</text>
+          <text class="g-sub" x="1010" y="394">unresolved ⇒ do not answer</text>
 
-          <text class="g-note" x="1125" y="374" text-anchor="middle">uv run transactco ontology validate</text>
+          <text class="g-note" x="1125" y="432" text-anchor="middle">uv run transactco ontology validate</text>
 
-          <path d="M1265 227 C1295 227 1310 227 1336 227" fill="none" style="stroke:url(#o1-f4);stroke-width:3" marker-end="url(#o1-ar-green)" filter="url(#o1-glow)"/>
-          <text class="g-elbl" x="1301" y="214" text-anchor="middle" style="fill:var(--green);">ask</text>
+          <text class="g-elbl" x="1301" y="244" text-anchor="middle" style="fill:var(--green);">ask</text>
 
           <!-- the agent -->
-          <rect x="1340" y="112" width="300" height="230" rx="13" fill="url(#o1-n-agt)" style="stroke:var(--green);stroke-width:1.8"/>
-          <text class="g-k" x="1490" y="140" text-anchor="middle" style="fill:var(--green);">the question arrives</text>
-          <text class="g-name" x="1490" y="172" text-anchor="middle">“Revenue yesterday?”</text>
-          <line x1="1362" y1="190" x2="1618" y2="190" style="stroke:var(--green);stroke-opacity:0.28"/>
-          <text class="g-line" x="1490" y="216" text-anchor="middle">resolves the canonical term</text>
-          <text class="g-line" x="1490" y="238" text-anchor="middle">answers what is evidenced</text>
-          <rect x="1366" y="258" width="248" height="54" rx="6" fill="rgba(248,81,73,0.12)" style="stroke:var(--red);stroke-width:1.2"/>
-          <text class="g-chip" x="1490" y="278" text-anchor="middle" style="fill:var(--red);">stops at the unresolved edge</text>
-          <text class="g-sub" x="1490" y="298" text-anchor="middle">and names Finance as the owner</text>
-          <text class="g-note" x="1490" y="330" text-anchor="middle">a refusal is a valid answer</text>
+          <rect x="1340" y="118" width="300" height="282" rx="13" fill="url(#o1-n-agt)" style="stroke:var(--green);stroke-width:1.8"/>
+          <rect x="1402" y="132" width="176" height="24" rx="4" fill="var(--green)"/>
+          <text class="g-pill" x="1490" y="148" text-anchor="middle">the question arrives</text>
+          <text class="g-name" x="1490" y="188" text-anchor="middle">“Revenue yesterday?”</text>
+          <line x1="1362" y1="208" x2="1618" y2="208" style="stroke:var(--green);stroke-opacity:0.28"/>
+          <text class="g-line" x="1490" y="236" text-anchor="middle">resolves the canonical term</text>
+          <text class="g-line" x="1490" y="262" text-anchor="middle">answers what is evidenced</text>
+          <rect x="1360" y="282" width="260" height="62" rx="6" fill="rgba(248,81,73,0.12)" style="stroke:var(--red);stroke-width:1.2"/>
+          <text class="g-chip" x="1490" y="306" text-anchor="middle" style="fill:var(--red);">stops at the unresolved edge</text>
+          <text class="g-sub" x="1490" y="328" text-anchor="middle">and names Finance as the owner</text>
+          <text class="g-note" x="1490" y="372" text-anchor="middle">a refusal is a valid answer</text>
 
           <!-- bottom rule + the three statuses -->
-          <line x1="40" y1="412" x2="1640" y2="412" style="stroke:var(--rule)"/>
-          <rect x="40" y="430" width="1600" height="52" rx="10" fill="var(--surface)" style="stroke:var(--purple);stroke-width:1.2;stroke-opacity:0.5"/>
+          <line x1="40" y1="478" x2="1640" y2="478" style="stroke:var(--rule)"/>
+          <rect x="40" y="494" width="1600" height="58" rx="10" fill="var(--surface)" style="stroke:var(--purple);stroke-width:1.2;stroke-opacity:0.5"/>
 
-          <text class="g-chip" x="70" y="452" style="fill:var(--green);">evidenced</text>
-          <text class="g-sub" x="70" y="470">a cited source directly supports it</text>
-          <line x1="440" y1="440" x2="440" y2="472" style="stroke:var(--rule)"/>
-          <text class="g-chip" x="470" y="452" style="fill:var(--cyan);">inferred</text>
-          <text class="g-sub" x="470" y="470">the data agrees, no contract declares it</text>
-          <line x1="880" y1="440" x2="880" y2="472" style="stroke:var(--rule)"/>
-          <text class="g-chip" x="910" y="452" style="fill:var(--red);">unresolved</text>
-          <text class="g-sub" x="910" y="470">it depends on a named owner</text>
-          <line x1="1290" y1="440" x2="1290" y2="472" style="stroke:var(--rule)"/>
-          <text class="g-chip" x="1320" y="452" style="fill:var(--text-mute);">there is no fourth option</text>
-          <text class="g-sub" x="1320" y="470">and that is the whole discipline</text>
+          <rect x="70" y="505" width="88" height="22" rx="4" fill="var(--green)"/>
+          <text class="g-pill" x="114" y="520" text-anchor="middle">evidenced</text>
+          <text class="g-sub" x="70" y="542">a cited source directly supports it</text>
+          <line x1="440" y1="504" x2="440" y2="542" style="stroke:var(--rule)"/>
+          <rect x="470" y="505" width="80" height="22" rx="4" fill="var(--cyan)"/>
+          <text class="g-pill" x="510" y="520" text-anchor="middle">inferred</text>
+          <text class="g-sub" x="470" y="542">the data agrees, no contract declares it</text>
+          <line x1="880" y1="504" x2="880" y2="542" style="stroke:var(--rule)"/>
+          <rect x="910" y="505" width="96" height="22" rx="4" fill="var(--red)"/>
+          <text class="g-pill" x="958" y="520" text-anchor="middle">unresolved</text>
+          <text class="g-sub" x="910" y="542">it depends on a named owner</text>
+          <line x1="1290" y1="504" x2="1290" y2="542" style="stroke:var(--rule)"/>
+          <text class="g-chip" x="1320" y="520" style="fill:var(--text-mute);">there is no fourth option</text>
+          <text class="g-sub" x="1320" y="542">and that is the whole discipline</text>
         </svg>
       </div>
 
@@ -4322,7 +4342,7 @@ order_id    BIGINT
       </div>
 
       <div style="margin-top:clamp(12px,2vh,24px);">
-        <svg class="gsvg" viewBox="0 0 1680 310" role="img"
+        <svg class="gsvg" viewBox="0 0 1680 330" role="img"
              aria-label="Ontology v1: Customer places Order, Order contains Product, Order has a payment record of Payment — all inferred. Payment may contribute to Revenue is unresolved and owned by Finance; Revenue has no table and no policy.">
           <defs>
             <marker id="o2-ar-cyan" viewBox="0 0 14 14" refX="12" refY="7" markerWidth="10" markerHeight="10" orient="auto"><path d="M0 1 L13 7 L0 13 Z" fill="var(--cyan)"/></marker>
@@ -4347,80 +4367,80 @@ order_id    BIGINT
           </defs>
 
           <!-- rail -->
-          <text class="g-rail" x="170" y="20" text-anchor="middle">who</text>
+          <text class="g-rail" x="175" y="20" text-anchor="middle">who</text>
           <text class="g-rail" x="600" y="20" text-anchor="middle" style="fill:var(--purple);">what was ordered</text>
           <text class="g-rail" x="1050" y="20" text-anchor="middle" style="fill:var(--gold);">what money did</text>
           <text class="g-rail" x="1500" y="20" text-anchor="middle" style="fill:var(--red);">the claim</text>
           <line x1="40" y1="32" x2="1640" y2="32" style="stroke:var(--rule)"/>
 
           <!-- Product, above Order -->
-          <rect x="470" y="48" width="260" height="80" rx="13" fill="url(#o2-n-prod)" style="stroke:var(--cyan);stroke-width:1.6"/>
-          <text class="g-k" x="600" y="72" text-anchor="middle" style="fill:var(--cyan);">entity · evidenced</text>
-          <text class="g-name" x="600" y="100" text-anchor="middle">Product</text>
-          <text class="g-line" x="600" y="118" text-anchor="middle" style="fill:var(--text-dim);">public.products</text>
+          <rect x="470" y="44" width="260" height="80" rx="13" fill="url(#o2-n-prod)" style="stroke:var(--cyan);stroke-width:1.6"/>
+          <text class="g-k" x="600" y="68" text-anchor="middle" style="fill:var(--cyan);">entity · evidenced</text>
+          <text class="g-name" x="600" y="96" text-anchor="middle">Product</text>
+          <text class="g-line" x="600" y="114" text-anchor="middle" style="fill:var(--text-dim);">public.products</text>
 
           <!-- Order contains Product (upward) -->
-          <path d="M600 166 L600 134" fill="none" style="stroke:url(#o2-e4);stroke-width:2.4" marker-end="url(#o2-ar-cyan)" filter="url(#o2-glow)"/>
-          <text class="g-elbl" x="620" y="146" style="fill:var(--cyan);">contains</text>
-          <text class="g-note" x="620" y="164">inferred · no key either</text>
+          <path d="M600 176 L600 130" fill="none" style="stroke:url(#o2-e4);stroke-width:2.4" marker-end="url(#o2-ar-cyan)" filter="url(#o2-glow)"/>
+          <text class="g-pred" x="620" y="148" style="fill:var(--cyan);">contains</text>
+          <text class="g-note" x="620" y="166">inferred · no key either</text>
 
           <!-- Customer -->
-          <rect x="40" y="166" width="260" height="104" rx="13" fill="url(#o2-n-cust)" style="stroke:var(--accent);stroke-width:1.6"/>
-          <text class="g-k" x="170" y="192" text-anchor="middle" style="fill:var(--accent);">entity · evidenced</text>
-          <text class="g-name" x="170" y="222" text-anchor="middle">Customer</text>
-          <line x1="62" y1="234" x2="278" y2="234" style="stroke:var(--accent);stroke-opacity:0.26"/>
-          <text class="g-line" x="170" y="256" text-anchor="middle" style="fill:var(--text-dim);">public.customers</text>
+          <rect x="40" y="176" width="270" height="104" rx="13" fill="url(#o2-n-cust)" style="stroke:var(--accent);stroke-width:1.6"/>
+          <text class="g-k" x="175" y="202" text-anchor="middle" style="fill:var(--accent);">entity · evidenced</text>
+          <text class="g-name" x="175" y="232" text-anchor="middle">Customer</text>
+          <line x1="62" y1="244" x2="288" y2="244" style="stroke:var(--accent);stroke-opacity:0.26"/>
+          <text class="g-line" x="175" y="266" text-anchor="middle" style="fill:var(--text-dim);">public.customers</text>
 
           <!-- Customer places Order -->
-          <path d="M305 218 C345 218 400 218 466 218" fill="none" style="stroke:url(#o2-e1);stroke-width:2.8" marker-end="url(#o2-ar-purple)" filter="url(#o2-glow)"/>
-          <text class="g-elbl" x="385" y="200" text-anchor="middle" style="fill:var(--purple);">places</text>
-          <rect x="337" y="228" width="96" height="21" rx="5" fill="rgba(34,211,238,0.12)" style="stroke:var(--cyan);stroke-width:1;stroke-opacity:0.55"/>
-          <text class="g-chip" x="385" y="243" text-anchor="middle" style="fill:var(--cyan);">inferred</text>
-          <text class="g-note" x="385" y="266" text-anchor="middle">no foreign key</text>
+          <path d="M315 228 C355 228 410 228 466 228" fill="none" style="stroke:url(#o2-e1);stroke-width:2.8" marker-end="url(#o2-ar-purple)" filter="url(#o2-glow)"/>
+          <text class="g-pred" x="390" y="208" text-anchor="middle" style="fill:var(--purple);">places</text>
+          <rect x="342" y="238" width="96" height="21" rx="5" fill="rgba(34,211,238,0.12)" style="stroke:var(--cyan);stroke-width:1;stroke-opacity:0.55"/>
+          <text class="g-chip" x="390" y="253" text-anchor="middle" style="fill:var(--cyan);">inferred</text>
+          <text class="g-note" x="390" y="276" text-anchor="middle">no foreign key</text>
 
           <!-- Order -->
-          <rect x="470" y="166" width="260" height="104" rx="13" fill="url(#o2-n-ord)" style="stroke:var(--purple);stroke-width:1.8"/>
-          <text class="g-k" x="600" y="192" text-anchor="middle" style="fill:var(--purple);">entity · evidenced</text>
-          <text class="g-name" x="600" y="222" text-anchor="middle">Order</text>
-          <line x1="492" y1="234" x2="708" y2="234" style="stroke:var(--purple);stroke-opacity:0.26"/>
-          <text class="g-line" x="600" y="256" text-anchor="middle" style="fill:var(--text-dim);">public.orders</text>
+          <rect x="470" y="176" width="260" height="104" rx="13" fill="url(#o2-n-ord)" style="stroke:var(--purple);stroke-width:1.8"/>
+          <text class="g-k" x="600" y="202" text-anchor="middle" style="fill:var(--purple);">entity · evidenced</text>
+          <text class="g-name" x="600" y="232" text-anchor="middle">Order</text>
+          <line x1="492" y1="244" x2="708" y2="244" style="stroke:var(--purple);stroke-opacity:0.26"/>
+          <text class="g-line" x="600" y="266" text-anchor="middle" style="fill:var(--text-dim);">public.orders</text>
 
           <!-- Order has_payment_record Payment -->
-          <path d="M735 218 C780 218 855 218 916 218" fill="none" style="stroke:url(#o2-e2);stroke-width:2.8" marker-end="url(#o2-ar-gold)" filter="url(#o2-glow)"/>
-          <text class="g-elbl" x="825" y="200" text-anchor="middle" style="fill:var(--gold);">has_payment_record</text>
-          <rect x="777" y="228" width="96" height="21" rx="5" fill="rgba(34,211,238,0.12)" style="stroke:var(--cyan);stroke-width:1;stroke-opacity:0.55"/>
-          <text class="g-chip" x="825" y="243" text-anchor="middle" style="fill:var(--cyan);">inferred</text>
-          <text class="g-note" x="825" y="266" text-anchor="middle">not settlement</text>
+          <path d="M735 228 C780 228 855 228 916 228" fill="none" style="stroke:url(#o2-e2);stroke-width:2.8" marker-end="url(#o2-ar-gold)" filter="url(#o2-glow)"/>
+          <text class="g-pred" x="825" y="208" text-anchor="middle" style="fill:var(--gold);">has_payment_record</text>
+          <rect x="777" y="238" width="96" height="21" rx="5" fill="rgba(34,211,238,0.12)" style="stroke:var(--cyan);stroke-width:1;stroke-opacity:0.55"/>
+          <text class="g-chip" x="825" y="253" text-anchor="middle" style="fill:var(--cyan);">inferred</text>
+          <text class="g-note" x="825" y="276" text-anchor="middle">not settlement</text>
 
           <!-- Payment -->
-          <rect x="920" y="166" width="260" height="104" rx="13" fill="url(#o2-n-pay)" style="stroke:var(--gold);stroke-width:1.6"/>
-          <text class="g-k" x="1050" y="192" text-anchor="middle" style="fill:var(--gold);">entity · evidenced</text>
-          <text class="g-name" x="1050" y="222" text-anchor="middle">Payment</text>
-          <line x1="942" y1="234" x2="1158" y2="234" style="stroke:var(--gold);stroke-opacity:0.26"/>
-          <text class="g-line" x="1050" y="256" text-anchor="middle" style="fill:var(--text-dim);">public.payments</text>
+          <rect x="920" y="176" width="260" height="104" rx="13" fill="url(#o2-n-pay)" style="stroke:var(--gold);stroke-width:1.6"/>
+          <text class="g-k" x="1050" y="202" text-anchor="middle" style="fill:var(--gold);">entity · evidenced</text>
+          <text class="g-name" x="1050" y="232" text-anchor="middle">Payment</text>
+          <line x1="942" y1="244" x2="1158" y2="244" style="stroke:var(--gold);stroke-opacity:0.26"/>
+          <text class="g-line" x="1050" y="266" text-anchor="middle" style="fill:var(--text-dim);">public.payments</text>
 
           <!-- Payment may_contribute_to Revenue — the edge that will not close -->
-          <path d="M1185 218 C1235 218 1300 218 1356 218" fill="none"
+          <path d="M1185 228 C1235 228 1300 228 1356 228" fill="none"
                 style="stroke:url(#o2-e3);stroke-width:3;stroke-dasharray:9 7" marker-end="url(#o2-ar-red)" filter="url(#o2-glow)"/>
-          <text class="g-elbl" x="1270" y="200" text-anchor="middle" style="fill:var(--red);">may_contribute_to</text>
-          <rect x="1214" y="228" width="112" height="21" rx="5" fill="rgba(248,81,73,0.14)" style="stroke:var(--red);stroke-width:1;stroke-opacity:0.65"/>
-          <text class="g-chip" x="1270" y="243" text-anchor="middle" style="fill:var(--red);">unresolved</text>
-          <text class="g-note" x="1270" y="266" text-anchor="middle" style="fill:var(--red);">Finance owns it</text>
+          <text class="g-pred" x="1270" y="208" text-anchor="middle" style="fill:var(--red);">may_contribute_to</text>
+          <rect x="1214" y="238" width="112" height="21" rx="5" fill="rgba(248,81,73,0.14)" style="stroke:var(--red);stroke-width:1;stroke-opacity:0.65"/>
+          <text class="g-chip" x="1270" y="253" text-anchor="middle" style="fill:var(--red);">unresolved</text>
+          <text class="g-note" x="1270" y="276" text-anchor="middle" style="fill:var(--red);">Finance owns it</text>
 
           <!-- Revenue — no table, no policy -->
-          <rect x="1360" y="166" width="280" height="104" rx="13" fill="url(#o2-n-rev)"
+          <rect x="1360" y="176" width="280" height="104" rx="13" fill="url(#o2-n-rev)"
                 style="stroke:var(--red);stroke-width:1.6;stroke-dasharray:9 6"/>
-          <text class="g-k" x="1500" y="192" text-anchor="middle" style="fill:var(--red);">concept · unresolved</text>
-          <text class="g-name" x="1500" y="222" text-anchor="middle">Revenue<tspan dx="8" style="fill:var(--red);font-size:26px">?</tspan></text>
-          <line x1="1382" y1="234" x2="1618" y2="234" style="stroke:var(--red);stroke-opacity:0.3"/>
-          <text class="g-line" x="1500" y="256" text-anchor="middle" style="fill:var(--red);">no table · no policy</text>
+          <text class="g-k" x="1500" y="202" text-anchor="middle" style="fill:var(--red);">concept · unresolved</text>
+          <text class="g-name" x="1500" y="232" text-anchor="middle">Revenue<tspan dx="8" style="fill:var(--red);font-size:26px">?</tspan></text>
+          <line x1="1382" y1="244" x2="1618" y2="244" style="stroke:var(--red);stroke-opacity:0.3"/>
+          <text class="g-line" x="1500" y="266" text-anchor="middle" style="fill:var(--red);">no table · no policy</text>
 
           <!-- footnotes -->
-          <line x1="40" y1="284" x2="1640" y2="284" style="stroke:var(--rule)"/>
-          <text class="g-chip" x="170" y="304" text-anchor="middle">4 entities · all evidenced</text>
-          <text class="g-chip" x="600" y="304" text-anchor="middle">3 edges · all inferred</text>
-          <text class="g-chip" x="1050" y="304" text-anchor="middle" style="fill:var(--gold);">a record, not a settlement</text>
-          <text class="g-chip" x="1500" y="304" text-anchor="middle" style="fill:var(--red);">1 edge · waiting on a human</text>
+          <line x1="40" y1="302" x2="1640" y2="302" style="stroke:var(--rule)"/>
+          <text class="g-chip" x="175" y="322" text-anchor="middle">4 entities · all evidenced</text>
+          <text class="g-chip" x="600" y="322" text-anchor="middle">3 edges · all inferred</text>
+          <text class="g-chip" x="1050" y="322" text-anchor="middle" style="fill:var(--gold);">a record, not a settlement</text>
+          <text class="g-chip" x="1500" y="322" text-anchor="middle" style="fill:var(--red);">1 edge · waiting on a human</text>
         </svg>
       </div>
 
@@ -5003,7 +5023,7 @@ order_id    BIGINT
             <span class="eyebrow" style="font-size:clamp(8px,0.74vw,9.5px);letter-spacing:2px;">the whole vocabulary</span>
           </div>
           <div style="margin-top:clamp(6px,1vh,11px);flex:1;display:flex;flex-direction:column;justify-content:space-around;">
-            <div class="erow" style="--ec:var(--text-dim);">
+            <div class="erow" style="--ec:var(--silver);">
               <span class="ek">lifecycle</span>
               <span class="epill">session_started</span><span class="epill">phase_started</span><span class="epill">session_completed</span>
             </div>
@@ -5870,18 +5890,15 @@ order_id    BIGINT
         const s = en.target;
         if (en.isIntersecting && en.intersectionRatio >= 0.5) {
           if (!s.classList.contains('is-active')) activate(s);
-        } else {
+        } else if (!en.isIntersecting) {
           s.classList.remove('is-active');
-          // rearm the entrance animation only once the slide is fully hidden,
-          // and instantly — never fade content that is still on screen
-          if (!en.isIntersecting) {
-            s.querySelectorAll('.reveal.in').forEach((r) => {
-              r.classList.add('reveal-reset');
-              r.classList.remove('in');
-              void r.offsetWidth;
-              r.classList.remove('reveal-reset');
-            });
-          }
+          // rearm the entrance animation, instantly — the slide is fully hidden
+          s.querySelectorAll('.reveal.in').forEach((r) => {
+            r.classList.add('reveal-reset');
+            r.classList.remove('in');
+            void r.offsetWidth;
+            r.classList.remove('reveal-reset');
+          });
         }
       });
     }, { root: deck, threshold: [0, 0.5] });
