@@ -4605,7 +4605,102 @@ Talk track: this is the emotional peak. Run Action A first — the room sees a r
 AGENTS.md / CLAUDE.md — repo root, contract dialects
 transcripts/d1-10-08-26-record.cc.vtt — Igor's question at ≈00:41
 [/Sources]
-Talk track: this is the payoff of Igor's question from Act 0. Three cards, three engines, one contract. Claude Code fills every layer; Codex attacks the same plan; Kimi executes the atomic item with fewer layers but the same gate. Do not chain them — that is Day 4's loop. The callout is the close: the contract is the constant, the engine is the variable. End the act on that line.</aside>
+Talk track: this is the payoff of Igor's question from Act 0. Three cards, three engines, one contract. Claude Code fills every layer; Codex attacks the same plan; Kimi executes the atomic item with fewer layers but the same gate. Do not chain them — that is Day 4's loop. The callout is the close: the contract is the constant, the engine is the variable. Then turn it around: the rails govern what goes in, and the next slide is what comes back out.</aside>
+    </div>
+  </section>
+
+  <!-- ═══════════ ACT 5 · BRIEFSPEC · the return path, given away ═══════════ -->
+  <section class="slide" data-act="ACT 5" data-act-name="BriefSpec · the shared brief" data-accent="cyan"
+           style="padding-top:clamp(18px,2.6vh,36px);padding-bottom:clamp(18px,2.6vh,36px);">
+    <div class="aurora aurora--cyan" aria-hidden="true"><b></b></div>
+    <div class="wrap reveal" style="max-width:1680px;">
+
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:34px;">
+        <div>
+          <span class="tag" style="--tag-c:var(--cyan);">yours tonight · MIT</span>
+          <h2 class="h2" style="font-size:clamp(26px,3.4vw,46px);margin-top:clamp(8px,1.3vh,14px);">
+            Same rails, any engine.<br><span class="grad-cyan">Same brief, any engine.</span>
+          </h2>
+        </div>
+        <p class="lede" style="max-width:40ch;text-align:right;">
+          The contract governs what goes <b>in</b>. Three engines still hand back three
+          different shapes. <b>BriefSpec makes all of them close the same way.</b>
+        </p>
+      </div>
+
+      <div class="cols" style="--cols:1.04fr 1fr;margin-top:clamp(10px,1.7vh,20px);">
+
+        <div class="code" data-lang="outcome brief · v1"
+             style="font-size:clamp(8.5px,0.79vw,10.5px);line-height:1.72;">
+<span class="c">&lt;!-- briefspec:outcome:v1 --&gt;</span>
+<span class="w">## Outcome Brief</span>
+
+<span class="k">Status:</span> <span class="n">REVIEW</span>
+<span class="k">Outcome:</span> <span class="w">stg_orders parses inside the contract's writable path.</span>
+<span class="w">         The revenue mart was refused.</span>
+<span class="k">Human action:</span> <span class="w">Finance resolves the four Revenue decisions.</span>
+
+<span class="k">Proof:</span>
+<span class="w">- </span><span class="g">[direct/pass]</span> <span class="s">make dbt-check</span> <span class="w">→ parse PASS · inside staging/</span>
+<span class="w">- </span><span class="n">[direct/info]</span> <span class="s">2-ontology.md</span> <span class="w">→ Revenue unresolved · Finance</span>
+
+<span class="k">Gaps:</span>
+<span class="w">- No revenue model exists — by design, not by omission.</span>
+
+<span class="k">Next:</span>
+<span class="w">- Decompose 4-plan-transform.md into atomic task specs.</span>
+
+<span class="k">Open:</span>
+<span class="r">- D1–D4: statuses · recognition · adjustments · business day.</span>
+<span class="c">&lt;!-- /briefspec --&gt;</span>
+        </div>
+
+        <div>
+          <div class="panel" style="--pk:var(--cyan);">
+            <div class="panel-k">What it is</div>
+            <div class="gl-grid" style="grid-template-columns:clamp(92px,8.2vw,124px) minmax(0,1fr);gap:clamp(6px,1vh,10px) clamp(12px,1.4vw,22px);margin-top:clamp(10px,1.6vh,15px);">
+              <div class="gl-k">contract</div>
+              <div class="gl-v">One shared handoff for <b>Codex</b>, <b>Claude Code</b> and
+                <b>Copilot</b> — it standardises the report, never the reasoning.</div>
+              <div class="gl-k">two skills</div>
+              <div class="gl-v"><code>outcome-brief</code> closes work in seven fixed fields.
+                <code>session-checkpoint</code> re-enters it — orient, teach, or spoken.</div>
+              <div class="gl-k">the gate</div>
+              <div class="gl-v"><code>briefspec validate</code> enforces order and meaning:
+                <b>DONE</b> may not carry a human action or an open gap. Hooks fail open.</div>
+            </div>
+          </div>
+
+          <div class="panel" style="--pk:var(--purple);">
+            <div class="panel-k">Why it belongs in a harness talk</div>
+            <div class="gl-v" style="margin-top:clamp(7px,1.1vh,10px);">
+              A harness bounds what an agent may touch. Nothing in it bounds what comes
+              back. Add an engine and reading cost doubles. BriefSpec is that second
+              bound — as files, so it survives an engine swap like <code>AGENTS.md</code> does.
+            </div>
+          </div>
+
+          <div class="code" data-lang="install" style="font-size:clamp(8.5px,0.8vw,11px);line-height:1.7;margin-top:clamp(9px,1.4vh,14px);padding:clamp(17px,2.2vh,23px) clamp(14px,1.4vw,24px) clamp(10px,1.4vh,14px);">
+<span class="g">uv tool install</span> <span class="s">git+https://github.com/luanmorenommaciel/briefspec.git@v0.2.0</span>
+<span class="g">briefspec setup</span> <span class="n">claude</span> <span class="c">|</span> <span class="n">codex</span> <span class="c">|</span> <span class="n">copilot</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="callout" style="--co-c:var(--cyan);margin-top:clamp(11px,1.8vh,20px);">
+        <div class="co-k">take it home</div>
+        <div class="co-b">Tonight's rails are TransactCo's. This one is yours —
+          <b>MIT, public, one line to install</b>: <b>github.com/luanmorenommaciel/briefspec</b></div>
+      </div>
+
+      <div class="src">BriefSpec v0.2.0 public release (MIT) — github.com/luanmorenommaciel/briefspec. Contract fields, status semantics, checkpoint modes, lifecycle events and fail-open behaviour per the project README and docs/architecture.md. The brief shown is tonight's checkpoint-05 result rendered in the outcome-brief format.</div>
+      <aside class="speaker-notes" hidden>[Sources]
+github.com/luanmorenommaciel/briefspec — README: shared presentation contract across Codex, Claude Code, Copilot; two skills; validator; hooks fail open.
+briefspec docs/architecture.md — adapters, bounded session state, eligibility and one-repair control.
+live/d2/05-bounded-build.md — the run the example brief describes.
+[/Sources]
+Talk track: this is a gift, not a product pitch — say that first. Then make the turn explicit: every slide so far bounded what the agent may DO; nothing yet bounded how it REPORTS. Read the left block top to bottom once, slowly — status, outcome, human action, proof, gaps, next, open — and point out it is tonight's checkpoint 05, not a toy. The line that lands: three engines, three reasoning styles, one shape to read. Give the URL twice, hold it for a photo, and move on. Do not demo the install; Act 6 is next.</aside>
     </div>
   </section>
 

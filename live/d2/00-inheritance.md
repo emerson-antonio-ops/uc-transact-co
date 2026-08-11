@@ -81,6 +81,63 @@ Say:
 - The dbt shell parses and `dbt/models/staging/` does not exist yet.
 - No instructor surface inspected.
 
+## Bridge from Day 1 — the method as a file
+
+**Optional, about three minutes. Cut this first if the night is running late;
+no later checkpoint depends on it.**
+
+**NEW — warm-up session, discarded.** Do not reuse it for checkpoint 01;
+Session A has to start unprimed.
+
+Day 1 ended by packaging the investigation method as a skill, and the room never
+saw it run. Running it now buys two things: yesterday's claim stops being a
+claim, and tonight's premise arrives in the agent's own words — the number is
+still waiting for Finance.
+
+Show the seven steps first:
+
+```bash
+rg -n '^### ' skills/interview-the-system/SKILL.md
+```
+
+Then start the warm-up session:
+
+```text
+Leia `skills/interview-the-system/SKILL.md` e aplique a skill à pergunta:
+"Qual foi a Receita da TransactCo ontem e por que o CFO deveria confiar nesse
+número?"
+
+Use `storage/specs/1-context.md`, `storage/specs/2-ontology.md` e
+`storage/specs/3-technical-brief.md` como contexto aprovado. Pare no contrato
+de investigação: apresente o contrato proposto e as decisões abertas em uma
+única tabela de no máximo 6 linhas e 150 palavras.
+
+Você pode ler esses arquivos. Não escreva nem edite nenhum arquivo, não
+consulte o banco e não gere o pacote de investigação. Responda em português do
+Brasil.
+```
+
+Show only:
+
+1. the contract row that puts `Revenue` out of scope;
+2. the open decision whose owner is Finance.
+
+Say:
+
+> Yesterday this was a method in our heads. Today it is a file that reaches the
+> same stop without me. Tonight we write the other half — what the agent may
+> build while that stop holds.
+
+Bridge gate:
+
+- The skill ran from files alone — no Day 1 chat memory in the session.
+- The proposed contract stopped at `Revenue` and named Finance as its owner.
+- Nothing was written; `git status --short` is still clean.
+
+If the session writes a file, queries the database, or runs past the contract,
+interrupt it, name the boundary out loud, and go to `01`. The overreach lesson
+belongs to checkpoint 01, not here.
+
 ## Recovery
 
 ```bash

@@ -37,7 +37,7 @@ flowchart LR
 
 | Step | Session | Deck cue | Demo evidence | Durable result |
 | ---: | --- | --- | --- | --- |
-| [`00`](00-inheritance.md) | No agent | What survived the night | Three specs, healthy tables, empty shell parses | Baseline only |
+| [`00`](00-inheritance.md) | No agent, then an optional discarded warm-up | What survived the night | Three specs, healthy tables, empty shell parses; optionally the Day 1 skill reaching the same stop | Baseline only |
 | [`01`](01-unbounded.md) | **NEW A** | Authority without rails | The overreaching plan, stopped | None — session discarded |
 | [`02`](02-harness-contract.md) | **NEW B** | The agent proposes, a human confirms | Confirmed contract table | Contract in context |
 | [`03`](03-agent-pair.md) | Continue B (human types) | Two roles, split on purpose | `AGENTS.md` diff | Agent pair in repo |
@@ -60,6 +60,7 @@ DECK: explain why
 
 | Checkpoint | Visible agent response | Artifact budget |
 | ---: | --- | --- |
+| 00 bridge (optional) | One table, 6 rows, 150 words | None — read-only |
 | 01 | The proposed plan only, 8 lines | None — never executed |
 | 02 | One table, 10 rows | None — contract lives in context |
 | 03 | None — the human types | Two entries in `AGENTS.md` |
@@ -90,6 +91,8 @@ developer agent creates it live inside the contract's writable path.
 - The three inherited specs are read-only tonight; no checkpoint may overwrite them.
 - Gold revenue models cannot be built while `Revenue` is `unresolved` — the
   refusal at checkpoint 05 is the success state, never a failure to recover from.
+- The optional Day 1 bridge at checkpoint 00 is read-only and its session is
+  discarded; Session A must not inherit it.
 - Session A demonstrates the overreach and is discarded.
 - Session B carries contract → agent pair → plans, then stops.
 - Session C is the developer: builds only inside `dbt/models/staging/`.
@@ -100,6 +103,7 @@ developer agent creates it live inside the contract's writable path.
 ## Completion gate
 
 - [ ] The inheritance was verified live (specs, tables, empty shell).
+- [ ] Optional: the Day 1 skill ran from files alone and stopped at `Revenue`.
 - [ ] The unbounded overreach was visible and nothing was written.
 - [ ] A human confirmed the harness contract, editing at least one row.
 - [ ] The agent pair was typed by hand and exists in `AGENTS.md`.
