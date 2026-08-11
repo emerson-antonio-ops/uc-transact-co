@@ -1426,6 +1426,9 @@ body.anim-ready .reveal.in > *:nth-child(2) { transition-delay: 130ms; }
 body.anim-ready .reveal.in > *:nth-child(3) { transition-delay: 210ms; }
 body.anim-ready .reveal.in > *:nth-child(4) { transition-delay: 290ms; }
 body.anim-ready .reveal.in > *:nth-child(n+5) { transition-delay: 360ms; }
+/* off-screen reset must be instant — a transitioned un-reveal fades content
+   while the slide is still half visible, which reads as flicker */
+body.anim-ready .reveal.reveal-reset > * { transition: none !important; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
@@ -5857,7 +5860,6 @@ order_id    BIGINT
   paint(0);
 
   function activate(s) { s.classList.add('is-active'); s.querySelectorAll('.reveal').forEach(r => r.classList.add('in')); }
-  function deactivate(s) { s.classList.remove('is-active'); s.querySelectorAll('.reveal').forEach(r => r.classList.remove('in')); }
 
   if (!('IntersectionObserver' in window)) {
     slides.forEach(activate);
@@ -5865,11 +5867,24 @@ order_id    BIGINT
     document.body.classList.add('anim-ready');
     const io = new IntersectionObserver((entries) => {
       entries.forEach((en) => {
-        const on = en.isIntersecting && en.intersectionRatio >= 0.5;
-        if (on && !en.target.classList.contains('is-active')) activate(en.target);
-        else if (!on && en.target.classList.contains('is-active')) deactivate(en.target);
+        const s = en.target;
+        if (en.isIntersecting && en.intersectionRatio >= 0.5) {
+          if (!s.classList.contains('is-active')) activate(s);
+        } else {
+          s.classList.remove('is-active');
+          // rearm the entrance animation only once the slide is fully hidden,
+          // and instantly — never fade content that is still on screen
+          if (!en.isIntersecting) {
+            s.querySelectorAll('.reveal.in').forEach((r) => {
+              r.classList.add('reveal-reset');
+              r.classList.remove('in');
+              void r.offsetWidth;
+              r.classList.remove('reveal-reset');
+            });
+          }
+        }
       });
-    }, { root: deck, threshold: [0, 0.5, 0.85] });
+    }, { root: deck, threshold: [0, 0.5] });
     slides.forEach(s => io.observe(s));
     if (slides[0]) activate(slides[0]);
   }
