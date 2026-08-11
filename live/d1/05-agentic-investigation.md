@@ -43,14 +43,22 @@ Sem executar novas consultas ou ampliar a investigação, resuma a trajetória
 desta Session C em exatamente 6 eventos JSONL em
 `tmp/foundation-investigation/manual/trace.jsonl`.
 
-Cada linha deve conter: timestamp, run_id, phase, action, target,
-evidence_references, outcome e gate. Inclua: contexto carregado, evidência
-física consultada, reconciliação verificada, uma afirmação rejeitada, a
-ontologia consultada e uma questão escalada ao responsável.
+Cada linha deve conter: timestamp, timestamp_basis, run_id, phase, action,
+target, evidence_references, outcome, gate, telemetry e capture_mode. Use
+`telemetry: "self-declared"` e
+`capture_mode: "retrospective_reconstruction"` nos 6 eventos. Em
+timestamp_basis, diga que o horário é aproximado, reconstruído pelo agente e
+não capturado por runtime ou relógio independente.
 
-Não registre dados pessoais, segredos ou linhas completas. Identifique o
-arquivo como telemetria autodeclarada. Responda em português do Brasil com uma
-única frase.
+Use referências resolvíveis no formato `arquivo#identificador-ou-seção`,
+sempre apontando para `storage/specs/1-context.md` ou
+`storage/specs/2-ontology.md`. Inclua: contexto carregado, evidência física
+consultada, reconciliação verificada, uma afirmação rejeitada, a ontologia
+consultada e uma questão escalada ao responsável.
+
+Não registre dados pessoais, segredos ou linhas completas. Não apresente esta
+reconstrução como telemetria capturada automaticamente nem como evidência
+independente. Responda em português do Brasil com uma única frase.
 ```
 
 ## Show the evidence
@@ -69,6 +77,8 @@ Say:
 ## Gate
 
 - The trace has exactly six events.
+- Every event declares `self-declared` telemetry, retrospective capture mode,
+  and the approximate timestamp basis.
 - Evidence references point to `1-context.md` or `2-ontology.md`.
 - One claim was rejected and one question escalated.
 - The room can explain why self-reporting is not independent telemetry.

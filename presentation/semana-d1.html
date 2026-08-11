@@ -69,6 +69,7 @@ body::after {
 @keyframes aur-b { from { transform: translate3d(0,0,0) scale(1.06); } to { transform: translate3d(-5vw,-4vh,0) scale(0.95); } }
 @keyframes aur-c { from { transform: translate3d(0,0,0) scale(0.97); } to { transform: translate3d(4vw,-5vh,0) scale(1.10); } }
 .aurora--cyan { --a1: rgba(34,211,238,0.14); --a2: rgba(74,158,255,0.09); --a3: rgba(63,185,80,0.05); }
+.aurora--green { --a1: rgba(63,185,80,0.13); --a2: rgba(34,211,238,0.08); --a3: rgba(74,158,255,0.06); }
 
 .grid-floor {
   position: absolute; left: 50%; bottom: -16%; width: 150%; height: 58%;
@@ -212,6 +213,7 @@ body::after {
   margin-top: clamp(9px,1.5vh,15px); padding-top: clamp(10px,1.7vh,16px);
   border-top: 1px solid var(--rule);
 }
+.spine-note b { color: var(--text-dim); font-weight: 600; }
 
 /* the CFO question — a pull quote with a hanging rule, NOT a card */
 .pullquote {
@@ -293,7 +295,7 @@ body::after {
 .programme { width: 100%; margin-top: clamp(14px,2.4vh,26px); border-top: 1px solid var(--rule); }
 .prow {
   display: grid;
-  grid-template-columns: clamp(48px,4.2vw,64px) minmax(0,1fr) auto;
+  grid-template-columns: clamp(48px,4.2vw,64px) clamp(78px,6.6vw,104px) minmax(0,1fr) auto;
   align-items: baseline; gap: clamp(12px,1.5vw,26px);
   padding: clamp(8px,1.4vh,15px) 0; border-bottom: 1px solid var(--rule);
   transition: background .35s var(--spring), padding-left .35s var(--spring);
@@ -320,6 +322,10 @@ body::after {
   display: flex; align-items: baseline; gap: clamp(9px,1vw,15px); flex-wrap: wrap;
 }
 .prow-gloss { font-family: var(--font-editorial); font-style: italic; font-size: clamp(11px,1.02vw,14px); color: var(--text-dim); }
+.prow-time {
+  font-family: var(--font-mono); font-size: clamp(8.5px,0.82vw,10.5px); letter-spacing: 0.8px;
+  color: var(--text-mute); white-space: nowrap;
+}
 .prow-live {
   font-family: var(--font-mono); font-size: clamp(8.5px,0.84vw,10.5px); letter-spacing: 0.8px;
   color: var(--text-mute); white-space: nowrap;
@@ -404,6 +410,7 @@ body::after {
 .reg-n { font-family: var(--font-mono); font-size: clamp(9px,0.85vw,11px); color: var(--rc, var(--accent)); }
 .reg-t { font-family: var(--font-editorial); font-size: clamp(12.5px,1.2vw,16.5px); line-height: 1.38; color: var(--text); }
 .reg-t i { font-style: italic; color: var(--text-dim); }
+.reg-t .tag { position: relative; top: -1px; margin-right: 6px; }
 
 /* unit cards — one per table */
 .unit-grid { display: grid; grid-template-columns: repeat(var(--ug, 4), minmax(0,1fr)); gap: clamp(10px,1.1vw,17px); }
@@ -458,6 +465,8 @@ body::after {
 .pf:last-child { border-bottom: 0; padding-bottom: 0; }
 .pf-l { font-family: var(--font-mono); font-size: clamp(9.5px,0.9vw,11.5px); color: var(--text); }
 .pf-r { font-family: var(--font-editorial); font-style: italic; font-size: clamp(11px,1.02vw,13.5px); color: var(--text-dim); text-align: right; }
+.pf-r b { color: var(--text); font-weight: 600; font-style: normal; }
+.pf-r code { font-family: var(--font-mono); font-size: 0.88em; color: var(--cyan); font-style: normal; }
 
 /* the two tokens that silently decide everything */
 .code .tok {
@@ -545,6 +554,7 @@ body::after {
 .fl-k { font-family: var(--font-mono); font-size: clamp(7.5px,0.73vw,9px); font-weight: 700; letter-spacing: 2.2px; text-transform: uppercase; color: var(--fc, var(--accent)); }
 .fl-name { font-family: var(--font-display); font-style: normal; font-size: clamp(18px,1.75vw,26px); line-height: 1; color: var(--text); margin-top: 6px; letter-spacing: -0.2px; }
 .fl-note { font-family: var(--font-editorial); font-style: italic; font-size: clamp(10.5px,1vw,13px); color: var(--text-dim); margin-top: 5px; line-height: 1.35; }
+.fl-note code { font-family: var(--font-mono); font-style: normal; font-size: 0.88em; color: var(--cyan); }
 .fl-arrow {
   position: relative; height: clamp(20px,2.9vh,32px); margin-left: clamp(15px,1.5vw,24px);
   display: grid; place-items: center; justify-items: start;
@@ -587,6 +597,7 @@ body::after {
 .hf-k { font-family: var(--font-mono); font-size: clamp(7.5px,0.72vw,9px); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--hc, var(--accent)); margin-top: clamp(10px,1.6vh,16px); }
 .hf-name { font-family: var(--font-mono); font-size: clamp(13px,1.28vw,18px); font-weight: 700; color: var(--text); margin-top: 7px; letter-spacing: -0.2px; }
 .hf-note { font-family: var(--font-editorial); font-style: italic; font-size: clamp(11px,1.05vw,14px); line-height: 1.38; color: var(--text-dim); margin-top: 8px; }
+.hf-note b { color: var(--text); font-weight: 600; font-style: normal; }
 .hf-tag {
   margin-top: auto; padding-top: clamp(10px,1.6vh,15px); border-top: 1px solid var(--rule);
   font-family: var(--font-mono); font-size: clamp(8px,0.76vw,10px); letter-spacing: 0.6px; color: var(--hc, var(--accent));
@@ -700,6 +711,9 @@ body::after {
 .st-unr { --sv: var(--red); }
 .rtable .ev { color: var(--text-mute); font-family: var(--font-editorial); font-style: italic; font-size: 1.05em; white-space: normal; }
 .rtable tr.is-open td { color: var(--red); }
+.rtable tr.is-key td { color: var(--text); }
+.rtable td.rate { font-weight: 700; color: var(--green); }
+.rtable tr.is-key td.rate { color: var(--gold); font-weight: 700; }
 
 /* graph figures — nodes, typed edges and layer rails drawn as SVG */
 .gsvg { width: 100%; height: auto; display: block; overflow: visible; }
@@ -813,6 +827,594 @@ body::after {
 .source-line a { color: var(--text-dim); text-decoration: none; border-bottom: 1px solid rgba(110,122,140,0.35); }
 .source-line a:hover { color: var(--text); border-color: var(--cyan); }
 
+/* ═══════ ACT 0 components — the zoom-out, ported from act-0.html ═══════ */
+/* facilitator source notes travel with the slide but never render */
+.speaker-notes { display: none !important; }
+.aurora--gold { --a1: rgba(212,175,55,0.15); --a2: rgba(74,158,255,0.07); --a3: rgba(239,144,0,0.06); }
+.aurora--purple { --a1: rgba(167,139,250,0.15); --a2: rgba(74,158,255,0.08); --a3: rgba(34,211,238,0.06); }
+.wrap { position: relative; z-index: 2; width: 100%; max-width: 1800px; margin: 0 auto; }
+.src { font-family: var(--font-mono); font-size: clamp(8px,.72vw,9.5px); line-height: 1.45; letter-spacing: .35px; color: var(--text-mute); border-top: 1px solid var(--rule); padding-top: clamp(7px,1.1vh,11px); margin-top: clamp(10px,1.6vh,16px); }
+.grad { background: linear-gradient(135deg,var(--accent),#fff 56%,var(--cyan)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.grad-gold { background: linear-gradient(135deg,var(--gold),#fff 52%,var(--accent)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.grad-purple { background: linear-gradient(135deg,var(--purple),#fff 52%,var(--accent)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.reality-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; }
+.reality-head .lede { max-width: 37ch; text-align: right; }
+.reality-verdict { display: grid; grid-template-columns: 1fr auto; gap: 22px; align-items: center; margin-top: clamp(16px,2.5vh,26px); border: 1px solid var(--border-bright); border-left: 3px solid var(--accent); border-radius: 12px; padding: clamp(13px,2vh,20px) clamp(16px,1.7vw,28px); background: linear-gradient(100deg,rgba(74,158,255,.09),var(--surface) 70%); }
+.verdict-main { font-family: var(--font-display); font-size: clamp(23px,2.6vw,38px); line-height: 1.05; }
+.verdict-main b { color: var(--accent); font-weight: 400; }
+.bench { text-align: right; padding-left: 22px; border-left: 1px solid var(--rule); }
+.bench strong { display: block; font-family: var(--font-display); font-size: clamp(25px,2.8vw,42px); color: var(--gold); line-height: 1; font-weight: 400; }
+.bench span { display: block; font-family: var(--font-mono); font-size: clamp(8px,.75vw,9.5px); color: var(--text-dim); line-height: 1.4; margin-top: 5px; }
+.hat-grid { display: grid; grid-template-columns: repeat(6,1fr); gap: clamp(8px,.9vw,14px); margin-top: clamp(18px,3vh,30px); }
+.hat { --hc: var(--accent); border: 1px solid var(--border-bright); border-top: 3px solid var(--hc); border-radius: 12px; padding: clamp(13px,2vh,20px) clamp(9px,.9vw,15px); background: linear-gradient(180deg,color-mix(in srgb,var(--hc) 7%,transparent),var(--surface) 62%); text-align: center; transition: transform .45s var(--spring),box-shadow .45s var(--spring); }
+.hat:hover { transform: translateY(-5px); box-shadow: 0 18px 34px -20px color-mix(in srgb,var(--hc) 70%,transparent); }
+.hat-name { font-family: var(--font-display); font-size: clamp(17px,1.65vw,24px); line-height: 1.02; }
+.hat-copy { font-family: var(--font-editorial); font-size: clamp(10.5px,.96vw,13.5px); color: var(--text-dim); line-height: 1.32; margin-top: 8px; }
+.converge-arrow { text-align: center; font-family: var(--font-display); font-size: clamp(26px,3vw,42px); color: var(--gold); letter-spacing: clamp(9px,1.3vw,20px); margin: clamp(4px,.8vh,9px) 0; text-shadow: 0 0 18px rgba(212,175,55,.35); }
+.native { position: relative; max-width: 1280px; margin: 0 auto; text-align: center; border: 1px solid var(--gold); border-radius: 18px; padding: clamp(18px,2.8vh,30px) clamp(24px,2.6vw,46px); background: linear-gradient(135deg,rgba(212,175,55,.13),rgba(212,175,55,.025)); box-shadow: 0 18px 52px -30px rgba(212,175,55,.65),inset 0 1px 0 rgba(255,255,255,.07); }
+.native::before { content: ''; position: absolute; top: 0; left: 12%; right: 12%; height: 2px; background: linear-gradient(90deg,transparent,var(--gold),transparent); }
+.native-k { font-family: var(--font-editorial); font-style: italic; font-size: clamp(13px,1.25vw,17px); color: var(--gold); }
+.native-name { font-family: var(--font-display); font-size: clamp(33px,4vw,58px); line-height: 1; margin-top: 6px; }
+.native-job { font-family: var(--font-editorial); font-size: clamp(14px,1.4vw,19px); line-height: 1.4; color: var(--text); margin-top: 10px; }
+.role-tags { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px 8px; margin-top: 13px; }
+.role-tag { font-family: var(--font-mono); font-size: clamp(8px,.74vw,9.5px); letter-spacing: 1.3px; text-transform: uppercase; color: var(--tc,var(--accent)); border: 1px solid color-mix(in srgb,var(--tc,var(--accent)) 38%,transparent); background: color-mix(in srgb,var(--tc,var(--accent)) 7%,transparent); border-radius: 4px; padding: 4px 10px; }
+.market-grid { display: grid; grid-template-columns: 1.55fr .86fr; gap: clamp(20px,2.6vw,48px); align-items: stretch; margin-top: clamp(18px,3vh,30px); }
+.growth-stage { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(14px,1.5vw,24px); align-items: end; border-bottom: 2px solid var(--border-bright); padding: 0 clamp(8px,1vw,16px); min-height: clamp(350px,49vh,480px); }
+.growth-card { --gc: var(--accent); position: relative; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; height: 100%; }
+.growth-label { width: 100%; border: 1px solid color-mix(in srgb,var(--gc) 54%,transparent); border-radius: 13px; padding: clamp(13px,1.8vh,18px) clamp(12px,1.2vw,20px); background: #09090c; box-shadow: 0 0 30px -12px var(--gc); text-align: center; z-index: 2; }
+.growth-role { font-family: var(--font-mono); font-size: clamp(9px,.86vw,10.5px); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gc); }
+.growth-num { font-family: var(--font-display); font-size: clamp(54px,6.6vw,94px); line-height: .9; color: var(--gc); letter-spacing: -2px; margin-top: 8px; }
+.growth-meta { font-family: var(--font-editorial); font-style: italic; font-size: clamp(11px,1vw,14px); color: var(--text-dim); margin-top: 7px; line-height: 1.35; }
+.growth-bar { width: clamp(110px,10.5vw,180px); height: var(--gh,30%); min-height: 100px; border-radius: 14px 14px 0 0; background: linear-gradient(180deg,color-mix(in srgb,var(--gc) 82%,#fff 2%),color-mix(in srgb,var(--gc) 14%,transparent)); border: 1px solid color-mix(in srgb,var(--gc) 58%,transparent); border-bottom: 0; box-shadow: 0 0 38px -13px var(--gc); margin-top: 13px; }
+.proof-stack { display: flex; flex-direction: column; gap: clamp(12px,1.8vh,18px); justify-content: center; }
+.proof-cell { --pc: var(--gold); border: 1px solid var(--border-bright); border-left: 3px solid var(--pc); border-radius: 12px; background: linear-gradient(100deg,color-mix(in srgb,var(--pc) 8%,transparent),var(--surface) 72%); padding: clamp(15px,2.2vh,23px) clamp(16px,1.5vw,24px); }
+.proof-num { font-family: var(--font-display); font-size: clamp(35px,4vw,58px); color: var(--pc); line-height: .95; letter-spacing: -.7px; }
+.proof-label { font-family: var(--font-editorial); font-size: clamp(13px,1.2vw,17px); line-height: 1.38; color: var(--text); margin-top: 7px; }
+.proof-caveat { font-family: var(--font-mono); font-size: clamp(8px,.72vw,9.5px); color: var(--text-dim); line-height: 1.4; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--rule); }
+.market-meaning { font-family: var(--font-editorial); font-style: italic; font-size: clamp(14px,1.45vw,20px); color: var(--text-dim); text-align: center; margin-top: clamp(14px,2.2vh,24px); }
+.market-meaning b { color: var(--gold); font-style: normal; font-weight: 600; }
+.ladder { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr auto 1.18fr; gap: clamp(8px,1vw,16px); align-items: end; width: 100%; margin-top: clamp(18px,3vh,30px); }
+.rung { --rg: var(--accent); min-height: var(--rh,230px); border: 1px solid color-mix(in srgb,var(--rg) 30%,transparent); border-top: 3px solid var(--rg); border-radius: 15px; padding: clamp(14px,1.9vh,22px) clamp(13px,1.2vw,21px); background: linear-gradient(180deg,color-mix(in srgb,var(--rg) 8%,transparent),var(--surface) 67%); display: flex; flex-direction: column; transition: transform .5s var(--spring),box-shadow .5s var(--spring); }
+.rung:hover { transform: translateY(-6px); box-shadow: 0 20px 42px -25px var(--rg); }
+.rung-n { align-self: flex-start; font-family: var(--font-mono); font-size: clamp(8.5px,.8vw,10px); font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; color: #000; background: var(--rg); border-radius: 4px; padding: 4px 10px; }
+.rung-name { font-family: var(--font-display); font-size: clamp(23px,2.4vw,36px); line-height: 1; margin-top: 14px; }
+.rung-copy { font-family: var(--font-editorial); font-size: clamp(12px,1.08vw,15px); line-height: 1.42; color: var(--text-dim); margin-top: 10px; }
+.rung-copy b { color: var(--text); font-weight: 600; }
+.rung-verdict { font-family: var(--font-editorial); font-style: italic; font-size: clamp(13px,1.2vw,17px); color: var(--rg); margin-top: auto; padding-top: 13px; border-top: 1px solid var(--rule); }
+.lad-arrow { align-self: center; font-family: var(--font-display); font-size: clamp(21px,2.4vw,35px); color: var(--text-dim); opacity: .6; padding-bottom: clamp(34px,8vh,84px); }
+.rung-rule { display: flex; align-items: center; gap: clamp(14px,1.7vw,26px); margin-top: clamp(15px,2.5vh,26px); }
+.rung-rule p { font-family: var(--font-editorial); font-style: italic; font-size: clamp(13px,1.3vw,18px); line-height: 1.4; color: var(--text-dim); }
+.rings-layout { display: grid; grid-template-columns: .68fr 1.32fr; gap: clamp(18px,2.4vw,44px); align-items: center; height: min(88vh,930px); }
+.rings-copy { align-self: center; }
+.rings-copy .h2 { font-size: clamp(34px,4.8vw,68px); margin-top: 12px; }
+.rings-copy .lede { margin-top: 18px; max-width: 34ch; }
+.ring-decision { margin-top: clamp(22px,3.4vh,34px); border-left: 3px solid var(--purple); padding-left: clamp(15px,1.5vw,24px); }
+.ring-decision h3 { font-family: var(--font-display); font-size: clamp(23px,2.5vw,36px); font-weight: 400; line-height: 1; color: var(--purple); }
+.ring-decision p { font-family: var(--font-editorial); font-size: clamp(13px,1.2vw,17px); line-height: 1.45; color: var(--text-dim); margin-top: 9px; }
+.ring-decision p b { color: var(--text); font-weight: 600; }
+.rings-viz { height: 100%; display: grid; place-items: center; min-width: 0; }
+.rings-viz svg { width: 100%; height: min(88vh,930px); display: block; overflow: visible; }
+.slide.is-active .ring-breathe { transform-box: fill-box; transform-origin: center; animation: ring-breathe 9s ease-in-out infinite; }
+.slide.is-active .ring-breathe.r2 { animation-delay: 1.2s; }
+.slide.is-active .ring-breathe.r3 { animation-delay: 2.4s; }
+.slide.is-active .ring-breathe.r4 { animation-delay: 3.6s; }
+.slide.is-active .ring-breathe.r5 { animation-delay: 4.8s; }
+.slide.is-active .ring-breathe.r6 { animation-delay: 6s; }
+.slide.is-active .core-pulse { transform-box: fill-box; transform-origin: center; animation: core-pulse 4s ease-in-out infinite; }
+@keyframes ring-breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.018); } }
+@keyframes core-pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.045); } }
+
+/* ═══════ CLOSE components — the flywheel, the turn, the SDLC ═══════ */
+.aurora--blue { --a1: rgba(74,158,255,0.14); --a2: rgba(34,211,238,0.09); --a3: rgba(167,139,250,0.07); }
+.fly-layout {
+  display: grid;
+  grid-template-columns: minmax(0,0.82fr) minmax(470px,1.18fr);
+  gap: clamp(28px,3.8vw,76px);
+  align-items: center;
+}
+.fly-copy { min-width: 0; }
+.fly-copy .h2 { margin-top: clamp(12px,1.8vh,20px); }
+.fly-copy .lede { max-width: 43ch; margin-top: clamp(14px,2.2vh,24px); }
+.fly-verbs {
+  margin-top: clamp(14px,2.2vh,24px);
+  font-family: var(--font-mono);
+  font-size: clamp(9px,0.86vw,11px);
+  font-weight: 700;
+  letter-spacing: 2.6px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.orbit {
+  position: relative;
+  width: min(100%, clamp(430px,55vh,620px));
+  aspect-ratio: 1;
+  margin: 0 auto;
+}
+.orbit-ring::after {
+  position: absolute;
+  border-radius: 50%;
+  content: '';
+}
+.orbit-ring {
+  inset: 13%;
+  border: 1px dashed rgba(212,175,55,0.34);
+  box-shadow: inset 0 0 64px rgba(212,175,55,0.025), 0 0 60px rgba(212,175,55,0.035);
+  animation: orbit-spin 52s linear infinite;
+}
+.orbit-ring::before {
+  width: 11px;
+  height: 11px;
+  left: 50%;
+  top: -6px;
+  transform: translateX(-50%);
+  background: var(--gold);
+  box-shadow: 0 0 14px var(--gold), 0 0 34px rgba(212,175,55,0.55);
+}
+.orbit-ring::after {
+  inset: 18%;
+  border: 1px solid rgba(63,185,80,0.18);
+}
+.orbit-core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  width: 43%;
+  text-align: center;
+}
+.orbit-core strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(23px,2.1vw,33px);
+  font-weight: 400;
+  line-height: 1.04;
+  color: var(--gold);
+}
+.orbit-core span {
+  display: block;
+  margin-top: 8px;
+  font-family: var(--font-editorial);
+  font-size: clamp(11px,1.02vw,14px);
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--text-dim);
+}
+.orbit-core b { color: var(--purple); font-style: normal; font-weight: 600; }
+.orbit-node {
+  --oc: var(--accent);
+  position: absolute;
+  width: clamp(144px,12.5vw,194px);
+  transform: translate(-50%,-50%);
+  text-align: center;
+  z-index: 2;
+}
+.orbit-node .node-shell {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  white-space: nowrap;
+  border: 1px solid color-mix(in srgb, var(--oc) 58%, transparent);
+  border-radius: 999px;
+  padding: clamp(8px,1.15vh,12px) clamp(13px,1.2vw,20px);
+  background: var(--surface);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.46), 0 0 28px -8px color-mix(in srgb, var(--oc) 52%, transparent), inset 0 1px 0 rgba(255,255,255,0.07);
+}
+.orbit-node .node-n {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  border-radius: 4px;
+  background: var(--oc);
+  color: #000;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 800;
+}
+.orbit-node .node-name {
+  font-family: var(--font-display);
+  font-size: clamp(17px,1.6vw,24px);
+  line-height: 1;
+}
+.orbit-node .node-note {
+  margin-top: 7px;
+  font-family: var(--font-editorial);
+  font-size: clamp(10.5px,1vw,13.5px);
+  font-style: italic;
+  line-height: 1.3;
+  color: var(--text-dim);
+}
+.on-1 { left: 50%; top: 7%; }
+.on-2 { left: 91%; top: 35%; }
+.on-3 { left: 76%; top: 86%; }
+.on-4 { left: 24%; top: 86%; }
+.on-5 { left: 9%; top: 35%; }
+.payoff {
+  position: relative;
+  margin-top: clamp(10px,1.8vh,18px);
+  padding: clamp(13px,1.9vh,20px) clamp(18px,1.8vw,30px);
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: clamp(12px,1.4vw,22px);
+  border-top: 1px solid rgba(63,185,80,0.35);
+  border-bottom: 1px solid rgba(63,185,80,0.18);
+  background: linear-gradient(90deg, transparent, rgba(63,185,80,0.09) 18%, rgba(63,185,80,0.09) 82%, transparent);
+  text-align: center;
+}
+.payoff .tag { --tag-c: var(--green); }
+.payoff p {
+  font-family: var(--font-editorial);
+  font-size: clamp(15px,1.55vw,22px);
+  font-style: italic;
+  color: var(--text);
+}
+.payoff b { color: var(--green); font-style: normal; font-weight: 600; }
+.turn-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: clamp(24px,3vw,64px);
+}
+.turn-head > div { min-width: 0; flex: 1 1 auto; }
+.turn-head .lede { max-width: 34ch; flex: 0 1 34ch; text-align: right; }
+.turn-lane {
+  margin-top: clamp(18px,3vh,32px);
+  display: grid;
+  grid-template-columns: minmax(430px,1.22fr) clamp(48px,5vw,78px) minmax(240px,0.78fr) clamp(48px,5vw,78px) minmax(240px,0.78fr);
+  gap: clamp(8px,1vw,18px);
+  align-items: stretch;
+}
+.cards-sheet {
+  position: relative;
+  border-top: 1px solid rgba(212,175,55,0.4);
+  border-bottom: 1px solid var(--rule);
+  padding: clamp(12px,1.8vh,18px) 0;
+}
+.sheet-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: baseline;
+  margin-bottom: clamp(8px,1.2vh,12px);
+}
+.sheet-head strong {
+  font-family: var(--font-display);
+  font-size: clamp(22px,2.15vw,32px);
+  font-weight: 400;
+}
+.sheet-head span {
+  font-family: var(--font-mono);
+  font-size: clamp(8px,0.74vw,9.5px);
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.skill-lines { list-style: none; }
+.skill-line {
+  --sc: var(--gold);
+  display: grid;
+  grid-template-columns: 35px minmax(0,1fr) auto;
+  gap: clamp(8px,0.9vw,14px);
+  align-items: baseline;
+  padding: clamp(6px,0.85vh,9px) 0;
+  border-bottom: 1px solid rgba(160,190,230,0.08);
+}
+.skill-line:last-child { border-bottom: 0; }
+.skill-id {
+  font-family: var(--font-mono);
+  font-size: clamp(9px,0.82vw,10.5px);
+  font-weight: 800;
+  color: var(--sc);
+}
+.skill-name {
+  font-family: var(--font-editorial);
+  font-size: clamp(12px,1.12vw,15.5px);
+  line-height: 1.24;
+  color: var(--text);
+}
+.skill-proof {
+  font-family: var(--font-editorial);
+  font-size: clamp(10px,0.94vw,12.5px);
+  font-style: italic;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+.lane-arrow {
+  position: relative;
+  min-height: 100%;
+  display: grid;
+  place-items: center;
+}
+.lane-arrow::before {
+  content: '';
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 50%;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(212,175,55,0.18), var(--lac, var(--gold)));
+}
+.lane-arrow::after {
+  content: '';
+  position: absolute;
+  right: 8%;
+  top: calc(50% - 4px);
+  width: 7px;
+  height: 7px;
+  border-top: 1px solid var(--lac, var(--gold));
+  border-right: 1px solid var(--lac, var(--gold));
+  transform: rotate(45deg);
+}
+.lane-arrow span {
+  position: relative;
+  top: -22px;
+  z-index: 1;
+  font-family: var(--font-mono);
+  font-size: clamp(7.5px,0.68vw,8.5px);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  text-align: center;
+}
+.run-step {
+  --rc: var(--green);
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(16px,2.4vh,26px) clamp(16px,1.55vw,26px);
+  border: 1px solid color-mix(in srgb, var(--rc) 40%, transparent);
+  border-left: 3px solid var(--rc);
+  border-radius: 13px;
+  background: linear-gradient(145deg, color-mix(in srgb, var(--rc) 10%, transparent), transparent 58%), var(--surface);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 18px 46px -30px color-mix(in srgb, var(--rc) 52%, transparent);
+}
+.run-step::after {
+  content: attr(data-step);
+  position: absolute;
+  right: -7px;
+  bottom: -23px;
+  font-family: var(--font-display);
+  font-size: clamp(100px,9vw,145px);
+  line-height: 1;
+  color: color-mix(in srgb, var(--rc) 9%, transparent);
+}
+.run-k {
+  font-family: var(--font-mono);
+  font-size: clamp(8px,0.74vw,9.5px);
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--rc);
+}
+.run-name {
+  position: relative;
+  z-index: 1;
+  margin-top: clamp(12px,1.8vh,18px);
+  font-family: var(--font-display);
+  font-size: clamp(25px,2.5vw,38px);
+  line-height: 1.02;
+}
+.run-copy {
+  position: relative;
+  z-index: 1;
+  margin-top: clamp(10px,1.5vh,15px);
+  font-family: var(--font-editorial);
+  font-size: clamp(11.5px,1.1vw,15px);
+  line-height: 1.4;
+  color: var(--text-dim);
+}
+.run-copy b { color: var(--text); font-weight: 600; }
+.run-file {
+  position: relative;
+  z-index: 1;
+  margin-top: clamp(14px,2vh,20px);
+  padding-top: clamp(10px,1.4vh,14px);
+  border-top: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: clamp(8.5px,0.8vw,10.5px);
+  line-height: 1.35;
+  color: var(--rc);
+  overflow-wrap: anywhere;
+}
+.turn-close {
+  margin-top: clamp(16px,2.6vh,28px);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: clamp(14px,1.6vw,26px);
+}
+.turn-number {
+  font-family: var(--font-display);
+  font-size: clamp(44px,5vw,76px);
+  line-height: 0.8;
+  color: var(--gold);
+}
+.turn-rule { height: 1px; background: linear-gradient(90deg, var(--gold), rgba(212,175,55,0.12)); }
+.turn-verdict { max-width: 47ch; font-family: var(--font-editorial); font-size: clamp(13px,1.3vw,18px); font-style: italic; line-height: 1.4; color: var(--text-dim); text-align: right; }
+.turn-verdict b { color: var(--text); font-style: normal; font-weight: 600; }
+.sdlc-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: clamp(28px,3.4vw,70px);
+}
+.sdlc-head > div { flex: 1 1 auto; min-width: 0; }
+.sdlc-head .lede { max-width: 38ch; flex: 0 1 38ch; text-align: right; }
+.transform {
+  margin-top: clamp(18px,2.9vh,31px);
+  display: grid;
+  grid-template-columns: minmax(180px,0.8fr) minmax(240px,1.25fr) minmax(230px,0.95fr);
+  gap: clamp(10px,1.25vw,22px);
+  align-items: center;
+}
+.io-block {
+  --ic: var(--accent);
+  padding: clamp(13px,1.9vh,20px) clamp(16px,1.5vw,25px);
+  border-left: 3px solid var(--ic);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--ic) 12%, transparent), transparent 88%);
+}
+.io-k {
+  font-family: var(--font-mono);
+  font-size: clamp(8px,0.74vw,9.5px);
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ic);
+}
+.io-v {
+  margin-top: 6px;
+  font-family: var(--font-display);
+  font-size: clamp(24px,2.5vw,38px);
+  line-height: 1;
+}
+.io-v small {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--font-editorial);
+  font-size: clamp(11px,1vw,14px);
+  font-style: italic;
+  line-height: 1.35;
+  color: var(--text-dim);
+}
+.sdlc-engine {
+  position: relative;
+  padding: clamp(14px,2vh,21px) clamp(24px,2.2vw,40px);
+  border-top: 1px solid rgba(212,175,55,0.32);
+  border-bottom: 1px solid rgba(212,175,55,0.32);
+  text-align: center;
+}
+.sdlc-engine::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 24px;
+  height: 1px;
+  background: var(--gold);
+}
+.sdlc-engine::before { right: 100%; }
+.sdlc-engine::after { left: 100%; }
+.sdlc-engine .io-k { color: var(--gold); }
+.sdlc-engine .io-v { color: var(--gold); }
+.days-label {
+  margin-top: clamp(18px,2.8vh,30px);
+  display: grid;
+  grid-template-columns: repeat(5,1fr);
+  gap: clamp(10px,1.25vw,21px);
+}
+.days-label span {
+  grid-column: 2 / 6;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  font-family: var(--font-mono);
+  font-size: clamp(8px,0.74vw,9.5px);
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.days-label span::after { content: ''; height: 1px; flex: 1; background: var(--rule); }
+.days {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5,1fr);
+  gap: clamp(10px,1.25vw,21px);
+  margin-top: clamp(8px,1.2vh,12px);
+}
+.days::before {
+  content: '';
+  position: absolute;
+  left: 5%;
+  right: 5%;
+  top: 30px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--green), var(--cyan), var(--purple), var(--gold), var(--green));
+  opacity: 0.38;
+}
+.day {
+  --dc: var(--accent);
+  position: relative;
+  min-width: 0;
+  padding: 0 clamp(5px,0.5vw,9px);
+}
+.day-mark {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 61px;
+  height: 61px;
+  margin: 0 auto;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--dc) 58%, transparent);
+  background: var(--surface);
+  box-shadow: 0 0 28px -8px color-mix(in srgb, var(--dc) 50%, transparent), inset 0 1px 0 rgba(255,255,255,0.06);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--dc);
+}
+.day.current .day-mark { background: var(--green); color: #000; border-color: var(--green); box-shadow: 0 0 34px -4px rgba(63,185,80,0.6); }
+.day-name {
+  margin-top: clamp(10px,1.4vh,14px);
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: clamp(20px,2vw,29px);
+  line-height: 1.02;
+  color: var(--text);
+}
+.day.current .day-name { color: var(--green); }
+.day-concept {
+  margin-top: 7px;
+  text-align: center;
+  font-family: var(--font-editorial);
+  font-size: clamp(10.5px,0.98vw,13.5px);
+  line-height: 1.34;
+  color: var(--text-dim);
+}
+.day-proof {
+  margin-top: 7px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: clamp(7.5px,0.68vw,9px);
+  line-height: 1.35;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--dc);
+}
+.next-hook {
+  margin-top: clamp(18px,2.7vh,30px);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: clamp(16px,1.8vw,28px);
+  align-items: center;
+  padding-top: clamp(13px,2vh,20px);
+  border-top: 1px solid var(--rule);
+}
+.hook-n {
+  font-family: var(--font-mono);
+  font-size: clamp(9px,0.82vw,11px);
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+.hook-copy {
+  font-family: var(--font-editorial);
+  font-size: clamp(15px,1.5vw,21px);
+  font-style: italic;
+  line-height: 1.35;
+  color: var(--text-dim);
+}
+.hook-copy b { color: var(--text); font-style: normal; font-weight: 600; }
+@keyframes orbit-spin { to { transform: rotate(360deg); } }
+
 /* ── motion — 3 primitives only ───────────────────────────────────── */
 body.anim-ready .reveal > * {
   opacity: 0; transform: translateY(20px);
@@ -864,6 +1466,10 @@ body.anim-ready .reveal.in > *:nth-child(n+5) { transition-delay: 360ms; }
   .unit-break { padding-top: clamp(7px,1.1vh,10px); font-size: clamp(10.5px,0.98vw,12.5px); }
   .unit-top + .unit-name { margin-top: clamp(7px,1.1vh,10px); }
   .unit-top .unit-n { font-size: clamp(17px,1.7vw,24px); }
+  .growth-stage { min-height: 340px; }
+  .hat { padding-top: 12px; padding-bottom: 12px; }
+  .native { padding-top: 15px; padding-bottom: 15px; }
+  .rung { min-height: calc(var(--rh,230px) * .86); }
   .rmcard { padding: clamp(10px,1.5vh,15px) clamp(12px,1.25vw,19px) clamp(10px,1.5vh,14px); }
   .rm-num { font-size: clamp(26px,2.5vw,37px); }
   .rm-name { font-size: clamp(16px,1.5vw,21px); }
@@ -873,9 +1479,39 @@ body.anim-ready .reveal.in > *:nth-child(n+5) { transition-delay: 360ms; }
   .pf { padding: clamp(4px,0.7vh,7px) 0; }
   .golive { padding: clamp(16px,2.5vh,28px) clamp(18px,2vw,38px); }
 }
+@media (max-width: 1120px) {
+  .fly-layout { grid-template-columns: minmax(0,0.76fr) minmax(420px,1.24fr); gap: 24px; }
+  .orbit-node { width: 145px; }
+  .turn-lane { grid-template-columns: minmax(360px,1.2fr) 42px minmax(205px,0.8fr) 42px minmax(205px,0.8fr); }
+  .skill-proof { display: none; }
+}
+@media (max-width: 900px) {
+  .fly-layout { grid-template-columns: 1fr 1.15fr; }
+  .orbit { width: min(100%, 410px); }
+  .orbit-node { width: 128px; }
+  .orbit-node .node-shell { padding-inline: 10px; }
+  .orbit-node .node-name { font-size: 16px; }
+  .turn-lane { grid-template-columns: 1fr 34px 0.72fr 34px 0.72fr; }
+  .run-step { padding-inline: 13px; }
+}
+@media (max-height: 820px) {
+  .orbit { width: min(100%, clamp(390px,51vh,510px)); }
+  .fly-copy .lede { font-size: clamp(13px,1.26vw,17px); }
+  .payoff { padding-block: 11px; }
+  .turn-lane { margin-top: 15px; }
+  .skill-line { padding-block: 5px; }
+  .run-step { padding-block: 16px; }
+  .turn-close { margin-top: 15px; }
+  .transform { margin-top: 15px; }
+  .days-label { margin-top: 14px; }
+  .day-mark { width: 54px; height: 54px; }
+  .days::before { top: 27px; }
+  .next-hook { margin-top: 15px; padding-top: 12px; }
+}
 @media (max-width: 1080px) {
   .title-grid { grid-template-columns: 1fr; gap: 26px; }
   .prow { grid-template-columns: clamp(44px,9vw,60px) minmax(0,1fr); row-gap: 3px; }
+  .prow-time { display: none; }
   .prow-live { display: none; }
 }
 </style>
@@ -1031,54 +1667,63 @@ body.anim-ready .reveal.in > *:nth-child(n+5) { transition-delay: 360ms; }
 
         <div class="prow pc-mute">
           <span class="prow-num">00</span>
+          <span class="prow-time">20:00</span>
           <span class="prow-name">Why this discipline exists <span class="prow-gloss">the convergence · the four rungs · the rings</span></span>
           <span class="prow-live">deck only</span>
         </div>
 
         <div class="prow pc-accent">
           <span class="prow-num">01</span>
+          <span class="prow-time">·</span>
           <span class="prow-name">The system we inherit <span class="prow-gloss">one order, three clocks, two amounts</span></span>
           <span class="prow-live">▶ <b>00-setup</b></span>
         </div>
 
         <div class="prow pc-accent is-topic">
           <span class="prow-num">02</span>
+          <span class="prow-time">20:15</span>
           <span class="prow-name">Prompt as a contract <span class="prow-topic">Topic</span> <span class="prow-gloss">learn the structure, then stop polishing</span></span>
           <span class="prow-live">▶ <b>01</b> · <b>02</b></span>
         </div>
 
         <div class="prow pc-cyan is-topic">
           <span class="prow-num">03</span>
+          <span class="prow-time">20:40</span>
           <span class="prow-name">Context is king <span class="prow-topic">Topic</span> <span class="prow-gloss">nine ways to get it · the attention budget</span></span>
           <span class="prow-live">▶ <b>03</b></span>
         </div>
 
         <div class="prow pc-mute is-break">
           <span class="prow-num">—</span>
+          <span class="prow-time">21:15</span>
           <span class="prow-name">Break <span class="prow-gloss">the question stays on screen</span></span>
           <span class="prow-live">—</span>
         </div>
 
         <div class="prow pc-purple">
           <span class="prow-num">04</span>
+          <span class="prow-time">21:25</span>
           <span class="prow-name">The graph <span class="prow-gloss">meaning has to survive the crossing</span></span>
           <span class="prow-live">▶ <b>04</b></span>
         </div>
 
         <div class="prow pc-gold">
           <span class="prow-num">05</span>
+          <span class="prow-time">22:00</span>
           <span class="prow-name">Agentic development &amp; telemetry <span class="prow-gloss">the trace outranks the answer</span></span>
           <span class="prow-live">▶ <b>05</b></span>
         </div>
 
         <div class="prow pc-green">
           <span class="prow-num">06</span>
+          <span class="prow-time">22:35</span>
           <span class="prow-name">Continuous documentation <span class="prow-gloss">your brief, in Google’s Open Knowledge Format</span></span>
           <span class="prow-live">▶ <b>06</b></span>
         </div>
 
         <div class="prow pc-green">
           <span class="prow-num">✦</span>
+          <span class="prow-time">22:55</span>
           <span class="prow-name">The flywheel <span class="prow-gloss">runs become skills, skills become better runs</span></span>
           <span class="prow-live">▶ <b>07</b> · <b>08</b></span>
         </div>
@@ -1091,13 +1736,410 @@ body.anim-ready .reveal.in > *:nth-child(n+5) { transition-delay: 360ms; }
           <b style="color:var(--text);font-style:normal;font-family:var(--font-mono);font-size:0.92em;">live/d1/</b> —
           we open the same file, in the same order, so nobody is watching a screen they cannot follow.
         </p>
-        <span class="eyebrow" style="color:var(--text-mute);">9 movements &nbsp;·&nbsp; 6 checkpoints &nbsp;·&nbsp; 6 skill cards</span>
+        <span class="eyebrow" style="color:var(--text-mute);">20:00–23:00 &nbsp;·&nbsp; 9 checkpoints &nbsp;·&nbsp; 6 skill cards</span>
       </div>
 
     </div>
   </section>
 
-  <!-- ═══════════ S03 · ACT 1 DIVIDER ═══════════ -->
+  <!-- ═══════════ S03 · ACT 0 DIVIDER ═══════════ -->
+  <section class="slide" data-act="ACT 0" data-act-name="Why this discipline exists" data-accent="accent"
+           style="justify-content:center;align-items:flex-start;text-align:left;">
+    <div class="aurora" style="--a1:rgba(176,190,197,0.12);--a2:rgba(212,175,55,0.08);--a3:rgba(167,139,250,0.07);" aria-hidden="true"><b></b></div>
+    <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1780px;margin:0 auto;">
+      <div class="cols" style="--cols:0.9fr 1.1fr;align-items:center;gap:clamp(24px,3vw,64px);">
+
+        <div>
+          <span class="tag" style="--tag-c:var(--silver);">Movement 00 · deck only</span>
+          <div class="act-num" style="--an-c:var(--silver);margin-top:clamp(6px,1.2vh,14px);">00</div>
+          <h2 class="h2" style="font-size:clamp(36px,5.4vw,78px);margin-top:clamp(4px,0.8vh,10px);">
+            Before we enter the company, <span style="color:var(--silver);">zoom out</span>
+          </h2>
+          <p class="lede" style="max-width:52ch;margin-top:clamp(14px,2.4vh,24px);font-size:clamp(14px,1.45vw,20px);">
+            The CFO's question is waiting. Before we open the database, four minutes on why this discipline exists
+            at all — <b>what the field has converged on, what the market is paying for, and what actually
+            separates a demo from a system.</b>
+          </p>
+          <div style="display:flex;gap:clamp(9px,1vw,15px);flex-wrap:wrap;margin-top:clamp(16px,2.6vh,28px);">
+            <span class="tag" style="--tag-c:var(--gold);">6 hats</span>
+            <span class="tag" style="--tag-c:var(--accent);">4 rungs</span>
+            <span class="tag" style="--tag-c:var(--purple);">6 rings</span>
+            <span class="tag" style="--tag-c:var(--silver);">0 checkpoints</span>
+          </div>
+        </div>
+
+        <div>
+          <span class="kick" style="--kc:var(--text-mute);">Four minutes, four claims</span>
+          <div class="flow">
+
+            <div class="fl-node" style="--fc:var(--red);">
+              <div class="fl-k">The reality</div>
+              <div class="fl-name">Capability is not reliability</div>
+              <div class="fl-note">a capable model is necessary — the environment has to be able to answer back</div>
+            </div>
+            <div class="fl-arrow" style="--fa:var(--red);--fb:var(--gold);" aria-hidden="true"></div>
+
+            <div class="fl-node" style="--fc:var(--gold);">
+              <div class="fl-k">The convergence</div>
+              <div class="fl-name">Six hats, one engineer</div>
+              <div class="fl-note">the title changes by company; the line of accountability does not</div>
+            </div>
+            <div class="fl-arrow" style="--fa:var(--gold);--fb:var(--accent);" aria-hidden="true"></div>
+
+            <div class="fl-node" style="--fc:var(--accent);">
+              <div class="fl-k">The market</div>
+              <div class="fl-name">Deployment is what is priced</div>
+              <div class="fl-note">the premium is not on prompt fluency — it is on production impact</div>
+            </div>
+            <div class="fl-arrow" style="--fa:var(--accent);--fb:var(--purple);" aria-hidden="true"></div>
+
+            <div class="fl-node" style="--fc:var(--purple);">
+              <div class="fl-k">The system</div>
+              <div class="fl-name">Rungs, then rings</div>
+              <div class="fl-note">every rung assumes the one below it works — and the model is only the core</div>
+            </div>
+
+          </div>
+          <p class="lede" style="font-size:clamp(11px,1.02vw,13.5px);margin-top:clamp(11px,1.8vh,18px);">
+            No terminal in this act. <b>We open the repository in Act 1.</b>
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ S04 · THE REALITY ═══════════ -->
+  <section class="slide" data-act="ACT 0" data-act-name="The reality" data-accent="red">
+    <div class="aurora" style="--a1:rgba(248,81,73,.13);--a2:rgba(74,158,255,.08);--a3:rgba(212,175,55,.05);" aria-hidden="true"><b></b></div>
+    <div class="wrap reveal">
+      <div class="reality-head">
+        <div>
+          <span class="tag" style="--tag-c:var(--red);">Act 0 · the reality</span>
+          <h2 class="h2" style="font-size:clamp(35px,5vw,70px);margin-top:clamp(10px,1.7vh,18px);">The gap is not the model <span style="color:var(--red);">alone</span></h2>
+        </div>
+        <p class="lede">A capable model is necessary. <b>Reliable work appears only when the environment can answer back.</b></p>
+      </div>
+
+      <div class="rmgrid" style="grid-template-columns:repeat(4,minmax(0,1fr));margin-top:clamp(16px,2.7vh,28px);">
+
+        <div class="rmcard" style="--rmc:var(--green);">
+          <div class="rm-head">
+            <span class="rm-num">I</span>
+            <div class="rm-eyebrow">The task</div>
+          </div>
+          <div class="vs">
+            <div class="vs-a">
+              <span class="vs-k">quietly does not work</span>
+              <span class="vs-v">An open-ended mandate. “Make it better” hides ownership, scope and the definition of done.</span>
+            </div>
+            <div class="vs-b">
+              <span class="vs-k">what actually works</span>
+              <span class="vs-v">A bounded task — objective, authority, evidence and stopping conditions all explicit.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="rmcard" style="--rmc:var(--green);">
+          <div class="rm-head">
+            <span class="rm-num">II</span>
+            <div class="rm-eyebrow">The context</div>
+          </div>
+          <div class="vs">
+            <div class="vs-a">
+              <span class="vs-k">quietly does not work</span>
+              <span class="vs-v">A context dump. Stale instructions and irrelevant detail compete for attention.</span>
+            </div>
+            <div class="vs-b">
+              <span class="vs-k">what actually works</span>
+              <span class="vs-v">Curated and current — the smallest high-signal set, loaded when the work needs it.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="rmcard" style="--rmc:var(--green);">
+          <div class="rm-head">
+            <span class="rm-num">III</span>
+            <div class="rm-eyebrow">The authority</div>
+          </div>
+          <div class="vs">
+            <div class="vs-a">
+              <span class="vs-k">quietly does not work</span>
+              <span class="vs-v">Broad access. One plausible tool call becomes an irreversible side effect.</span>
+            </div>
+            <div class="vs-b">
+              <span class="vs-k">what actually works</span>
+              <span class="vs-v">Narrow tools — least-privilege actions that stay observable and recoverable.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="rmcard" style="--rmc:var(--green);">
+          <div class="rm-head">
+            <span class="rm-num">IV</span>
+            <div class="rm-eyebrow">The proof</div>
+          </div>
+          <div class="vs">
+            <div class="vs-a">
+              <span class="vs-k">quietly does not work</span>
+              <span class="vs-v">Self-declared success. A fluent answer grades the same trajectory that produced it.</span>
+            </div>
+            <div class="vs-b">
+              <span class="vs-k">what actually works</span>
+              <span class="vs-v">Independent proof — evals, telemetry and human checkpoints judge the outcome.</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="reality-verdict">
+        <div class="verdict-main">The model supplies <b>capability.</b> The system supplies <b>reliability.</b></div>
+        <div class="bench"><strong>23.8 pts</strong><span>spread across configurable harnesses<br>same benchmark · Harness-Bench preprint</span></div>
+      </div>
+      <div class="src">Sources: Anthropic · Building effective agents (2024), Effective harnesses for long-running agents (2025), Demystifying evals (2026) · OpenAI · Harness engineering (2026) · Harness-Bench (May 2026 preprint; 5,194 trajectories).</div>
+      <aside class="speaker-notes" hidden>[Sources]
+https://www.anthropic.com/engineering/building-effective-agents
+https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents
+https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents
+https://openai.com/index/harness-engineering/
+https://arxiv.org/html/2605.27922v1
+[/Sources]
+Note: Harness-Bench is a preprint. The 23.8-point spread is 76.2 minus 52.4 across complete configurable-harness conditions, not a causal estimate for one mechanism.</aside>
+    </div>
+  </section>
+
+  <!-- ═══════════ S05 · SIX HATS · THE CONVERGENCE ═══════════ -->
+  <section class="slide" data-act="ACT 0" data-act-name="Six hats, one engineer" data-accent="gold">
+    <div class="aurora aurora--gold" aria-hidden="true"><b></b></div>
+    <div class="wrap reveal" style="max-width:1640px;">
+      <div>
+        <span class="tag" style="--tag-c:var(--gold);">The convergence</span>
+        <h2 class="h2" style="font-size:clamp(34px,4.8vw,66px);margin-top:clamp(10px,1.7vh,18px);">Six hats. <span class="grad-gold">One end-to-end engineer.</span></h2>
+        <p class="lede" style="margin-top:10px;max-width:62ch;">The title changes by company. The accountability does not: understand the problem, build the system, prove the outcome.</p>
+      </div>
+
+      <div class="hat-grid">
+        <div class="hat" style="--hc:var(--accent);"><div class="hat-name">Software<br>Engineer</div><div class="hat-copy">systems · code quality · interfaces</div></div>
+        <div class="hat" style="--hc:var(--purple);"><div class="hat-name">AI<br>Engineer</div><div class="hat-copy">models · prompts · evals</div></div>
+        <div class="hat" style="--hc:var(--cyan);"><div class="hat-name">Data<br>Engineer</div><div class="hat-copy">pipelines · contracts · provenance</div></div>
+        <div class="hat" style="--hc:#ef9000;"><div class="hat-name">Analytics<br>Engineer</div><div class="hat-copy">metrics · semantics · evidence</div></div>
+        <div class="hat" style="--hc:var(--silver);"><div class="hat-name">DevOps /<br>Platform</div><div class="hat-copy">delivery · observability · recovery</div></div>
+        <div class="hat" style="--hc:var(--red);"><div class="hat-name">Solutions<br>Architect</div><div class="hat-copy">integration · trade-offs · adoption</div></div>
+      </div>
+
+      <div class="converge-arrow" aria-hidden="true">↘ ↓ ↙</div>
+
+      <div class="native">
+        <div class="native-k">not six full-time jobs — one line of accountability</div>
+        <div class="native-name grad-gold">AI-Native Engineer</div>
+        <div class="native-job">Owns the path from ambiguous business problem to a production system with evidence.</div>
+        <div class="role-tags">
+          <span class="role-tag" style="--tc:var(--gold);">Forward-Deployed Engineer</span>
+          <span class="role-tag" style="--tc:var(--accent);">Applied AI Engineer</span>
+          <span class="role-tag" style="--tc:var(--green);">Agentic Engineer</span>
+        </div>
+      </div>
+      <div class="src">Synthesis from the supplied template and current role descriptions. “AI-Native Engineer” is used here as a capability profile, not a standardized job taxonomy.</div>
+      <aside class="speaker-notes" hidden>[Sources]
+/Users/luanmorenomaciel/GitHub/uc-northwind-pay-edp/presentation/tmpl-agentic-engineering.html — source slide 5.
+https://openai.com/careers/forward-deployed-engineer-%28fde%29-sf-san-francisco/
+https://news.linkedin.com/2026/2026-Davos-Press-Release
+[/Sources]</aside>
+    </div>
+  </section>
+
+  <!-- ═══════════ S06 · THE WHY, IN NUMBERS ═══════════ -->
+  <section class="slide" data-act="ACT 0" data-act-name="The WHY, in numbers" data-accent="gold">
+    <div class="aurora aurora--gold" aria-hidden="true"><b></b></div>
+    <div class="wrap reveal" style="max-width:1640px;">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:34px;">
+        <div>
+          <span class="tag" style="--tag-c:var(--gold);">The true WHY · in numbers</span>
+          <h2 class="h2" style="font-size:clamp(34px,4.8vw,66px);margin-top:clamp(10px,1.7vh,18px);">The market is pricing <span class="grad-gold">deployment</span></h2>
+        </div>
+        <p class="lede" style="max-width:35ch;text-align:right;">These are posting signals, not a headcount census. <b>The denominator matters.</b></p>
+      </div>
+
+      <div class="market-grid">
+        <div class="growth-stage" aria-label="LinkedIn global job-posting growth from 2023 to 2025: Forward-Deployed Engineer or Product Manager 42 times; AI Engineer 13 times.">
+          <div class="growth-card" style="--gc:var(--gold);--gh:64%;">
+            <div class="growth-label">
+              <div class="growth-role">FDE / Product Manager family</div>
+              <div class="growth-num">≈42×</div>
+              <div class="growth-meta">2023 → 2025 · ≈9K matched global postings</div>
+            </div>
+            <div class="growth-bar" aria-hidden="true"></div>
+          </div>
+          <div class="growth-card" style="--gc:var(--accent);--gh:33%;">
+            <div class="growth-label">
+              <div class="growth-role">AI Engineer</div>
+              <div class="growth-num">≈13×</div>
+              <div class="growth-meta">2023 → 2025 · ≈177K matched global postings</div>
+            </div>
+            <div class="growth-bar" aria-hidden="true"></div>
+          </div>
+        </div>
+
+        <div class="proof-stack">
+          <div class="proof-cell" style="--pc:var(--green);">
+            <div class="proof-num">#1</div>
+            <div class="proof-label">AI Engineer · U.S. Jobs on the Rise · two years running</div>
+            <div class="proof-caveat">LinkedIn Economic Graph · January 2026</div>
+          </div>
+          <div class="proof-cell" style="--pc:var(--gold);">
+            <div class="proof-num">US$135–280K</div>
+            <div class="proof-label">listed U.S. base pay · selected current FDE postings · equity or bonus extra</div>
+            <div class="proof-caveat">Illustrative posted bands · company, role and location vary · accessed 10 Aug 2026</div>
+          </div>
+        </div>
+      </div>
+
+      <p class="market-meaning">The premium is not on prompt fluency. It is on turning frontier capability into <b>measurable production impact.</b></p>
+      <div class="src">Sources: LinkedIn · Building a Future of Work That Works, Jan 2026 (global postings, 2023–2025) · LinkedIn Davos release, 14 Jan 2026 · selected current Palantir and OpenAI FDE postings, accessed 10 Aug 2026.</div>
+      <aside class="speaker-notes" hidden>[Sources]
+https://delivery-p143253-e1476319.adobeaemcloud.com/adobe/assets/urn:aaid:aem:cef0613f-8120-4328-a651-eea88832fcf0/original/as/linkedIn-labor-market-report-building-a-future-of-work-that-works-jan-2026.pdf
+https://news.linkedin.com/2026/2026-Davos-Press-Release
+https://jobs.lever.co/palantir/dab396d4-2f14-4796-aac0-0d82883dccf0
+https://openai.com/careers/forward-deployed-engineer-%28fde%29-sf-san-francisco/
+https://openai.com/careers/forward-deployed-engineer-gov-washington-dc
+[/Sources]
+Note: 42x is the Forward-Deployed Engineer / Product Manager title family, not workers employed. Compensation is posted base pay plus equity, not total compensation or a market median.</aside>
+    </div>
+  </section>
+
+  <!-- ═══════════ S07 · THE FOUR RUNGS ═══════════ -->
+  <section class="slide" data-act="ACT 0" data-act-name="The four rungs" data-accent="accent">
+    <div class="aurora" aria-hidden="true"><b></b></div>
+    <div class="wrap reveal" style="max-width:1760px;">
+      <div>
+        <span class="tag">Prompt → Context → Harness → Agentic</span>
+        <h2 class="h2" style="font-size:clamp(34px,4.8vw,66px);margin-top:clamp(10px,1.7vh,18px);">Every rung assumes the one below <span class="grad">already works</span></h2>
+      </div>
+
+      <div class="ladder">
+        <div class="rung" style="--rg:var(--accent);--rh:220px;">
+          <div class="rung-n">Rung 1</div>
+          <div class="rung-name">Prompt</div>
+          <div class="rung-copy"><b>The right instruction.</b> Objective, constraints, evidence and output shape.</div>
+          <div class="rung-verdict">define the work</div>
+        </div>
+        <div class="lad-arrow" aria-hidden="true">↗</div>
+        <div class="rung" style="--rg:var(--cyan);--rh:270px;">
+          <div class="rung-n">Rung 2</div>
+          <div class="rung-name">Context</div>
+          <div class="rung-copy"><b>The right information.</b> Specs, rules, examples, memory and live evidence — deliberately selected.</div>
+          <div class="rung-verdict">supply the world</div>
+        </div>
+        <div class="lad-arrow" aria-hidden="true">↗</div>
+        <div class="rung" style="--rg:var(--gold);--rh:320px;">
+          <div class="rung-n">Rung 3</div>
+          <div class="rung-name">Harness</div>
+          <div class="rung-copy"><b>The right system around the model.</b> Tools, permissions, sandbox, state, recovery and independent checks.</div>
+          <div class="rung-verdict">give it hands and brakes</div>
+        </div>
+        <div class="lad-arrow" aria-hidden="true">↗</div>
+        <div class="rung" style="--rg:var(--green);--rh:380px;">
+          <div class="rung-n">Rung 4</div>
+          <div class="rung-name">Agentic</div>
+          <div class="rung-copy"><b>All of it inside a controlled loop.</b> The system acts, observes and retries; evals judge; humans retain authority at the gates.</div>
+          <div class="rung-verdict">operate the discipline</div>
+        </div>
+      </div>
+
+      <div class="rung-rule">
+        <span class="tag" style="--tag-c:var(--accent);font-size:clamp(9px,.86vw,10.5px);padding:5px 12px;">You can only skip a rung once</span>
+        <p>A demo can borrow what it forgot. Production pays the debt on every run.</p>
+      </div>
+      <div class="src">Sources: Anthropic · Effective context engineering for AI agents (2025) · OpenAI · Harness engineering (2026) · supplied Dark Factory slide 11, adapted to preserve human authority.</div>
+      <aside class="speaker-notes" hidden>[Sources]
+/Users/luanmorenomaciel/GitHub/uc-northwind-pay-edp/presentation/workshop-dark-factory.html — source slide 11.
+https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents
+https://openai.com/index/harness-engineering/
+https://www.anthropic.com/engineering/building-effective-agents
+[/Sources]</aside>
+    </div>
+  </section>
+
+  <!-- ═══════════ S08 · THE RINGS ═══════════ -->
+  <section class="slide" data-act="ACT 0" data-act-name="The rings" data-accent="purple" style="padding-top:clamp(20px,3vh,40px);padding-bottom:clamp(20px,3vh,40px);">
+    <div class="aurora aurora--purple" aria-hidden="true"><b></b></div>
+    <div class="wrap rings-layout">
+      <div class="rings-copy reveal">
+        <span class="tag" style="--tag-c:var(--purple);">The system · in rings</span>
+        <h2 class="h2">The model is the core. <span class="grad-purple">The engineering is the rings.</span></h2>
+        <p class="lede">Take one away and you lose a guarantee. The outer ring gives every loop a common language.</p>
+
+        <div class="ring-decision">
+          <h3>Graph carries shared meaning.</h3>
+          <p>Entities, relationships, rules, provenance and precedent — <b>the shared meaning and decision lineage every loop resolves against.</b></p>
+          <p><b>Eval + human gates</b> now own acceptance, authority, escalation and accountability.</p>
+        </div>
+        <div class="src">Context graph is an emerging industry term, not a settled standard. Sources: Anthropic evals · AWS Context · W3C Context Graphs Community Group.</div>
+        <aside class="speaker-notes" hidden>[Sources]
+/Users/luanmorenomaciel/GitHub/uc-northwind-pay-edp/presentation/workshop-dark-factory.html — source slide 15.
+https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents
+https://aws.amazon.com/blogs/machine-learning/context-intelligence-for-your-data-and-ai-agents-at-scale/
+https://www.w3.org/community/context-graph/
+https://www.ibm.com/think/topics/context-graph
+[/Sources]
+Definition used here: Graph carries shared meaning, relationships, provenance, policy and precedent. Eval determines whether evidence and behavior pass. A human gate authorizes exceptions, releases and consequential actions.</aside>
+      </div>
+
+      <div class="rings-viz reveal">
+        <svg viewBox="0 0 1000 900" role="img" aria-label="Six engineering rings around the model: Prompt and Spec, Context, Harness, Loop, Eval and human gate, and Graph as the outer ring.">
+          <defs>
+            <radialGradient id="coreG" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#a78bfa" stop-opacity=".56"/><stop offset="100%" stop-color="#a78bfa" stop-opacity=".12"/></radialGradient>
+            <radialGradient id="g1" cx="50%" cy="50%" r="50%"><stop offset="55%" stop-color="#4a9eff" stop-opacity="0"/><stop offset="100%" stop-color="#4a9eff" stop-opacity=".12"/></radialGradient>
+            <radialGradient id="g2" cx="50%" cy="50%" r="50%"><stop offset="62%" stop-color="#22d3ee" stop-opacity="0"/><stop offset="100%" stop-color="#22d3ee" stop-opacity=".10"/></radialGradient>
+            <radialGradient id="g3" cx="50%" cy="50%" r="50%"><stop offset="68%" stop-color="#d4af37" stop-opacity="0"/><stop offset="100%" stop-color="#d4af37" stop-opacity=".10"/></radialGradient>
+            <radialGradient id="g4" cx="50%" cy="50%" r="50%"><stop offset="73%" stop-color="#b0bec5" stop-opacity="0"/><stop offset="100%" stop-color="#b0bec5" stop-opacity=".08"/></radialGradient>
+            <radialGradient id="g5" cx="50%" cy="50%" r="50%"><stop offset="78%" stop-color="#3fb950" stop-opacity="0"/><stop offset="100%" stop-color="#3fb950" stop-opacity=".09"/></radialGradient>
+            <radialGradient id="g6" cx="50%" cy="50%" r="50%"><stop offset="83%" stop-color="#a78bfa" stop-opacity="0"/><stop offset="100%" stop-color="#a78bfa" stop-opacity=".10"/></radialGradient>
+            <filter id="coreGlow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+
+          <circle class="ring-breathe r6" cx="500" cy="452" r="408" fill="url(#g6)" stroke="#a78bfa" stroke-width="1.8" stroke-opacity=".62"/>
+          <circle class="ring-breathe r5" cx="500" cy="452" r="351" fill="url(#g5)" stroke="#3fb950" stroke-width="1.7" stroke-opacity=".55"/>
+          <circle class="ring-breathe r4" cx="500" cy="452" r="297" fill="url(#g4)" stroke="#b0bec5" stroke-width="1.6" stroke-opacity=".42"/>
+          <circle class="ring-breathe r3" cx="500" cy="452" r="244" fill="url(#g3)" stroke="#d4af37" stroke-width="1.6" stroke-opacity=".54"/>
+          <circle class="ring-breathe r2" cx="500" cy="452" r="191" fill="url(#g2)" stroke="#22d3ee" stroke-width="1.6" stroke-opacity=".54"/>
+          <circle class="ring-breathe" cx="500" cy="452" r="139" fill="url(#g1)" stroke="#4a9eff" stroke-width="1.6" stroke-opacity=".6"/>
+          <circle class="core-pulse" cx="500" cy="452" r="86" fill="url(#coreG)" stroke="#a78bfa" stroke-width="2" filter="url(#coreGlow)"/>
+
+          <text x="500" y="66" fill="#c4b5fd" font-family="Instrument Serif" font-size="29" text-anchor="middle">Graph</text>
+          <text x="500" y="86" fill="#9d8bc8" font-family="Fira Code" font-size="11.5" text-anchor="middle">shared meaning · provenance · policy · precedent</text>
+
+          <text x="500" y="123" fill="#72d986" font-family="Instrument Serif" font-size="27" text-anchor="middle">Eval + human gate</text>
+          <text x="500" y="143" fill="#83c98f" font-family="Fira Code" font-size="11.5" text-anchor="middle">acceptance · authority · escalation · accountability</text>
+
+          <text x="500" y="179" fill="#cfd8dc" font-family="Instrument Serif" font-size="27" text-anchor="middle">Loop</text>
+          <text x="500" y="198" fill="#98a8b1" font-family="Fira Code" font-size="11.5" text-anchor="middle">act · observe · decide · repeat</text>
+
+          <text x="500" y="232" fill="#e6cf8a" font-family="Instrument Serif" font-size="27" text-anchor="middle">Harness</text>
+          <text x="500" y="251" fill="#c9b778" font-family="Fira Code" font-size="11.5" text-anchor="middle">tools · permissions · state · recovery</text>
+
+          <text x="500" y="285" fill="#8ae4f2" font-family="Instrument Serif" font-size="27" text-anchor="middle">Context</text>
+          <text x="500" y="304" fill="#74c8d5" font-family="Fira Code" font-size="11.5" text-anchor="middle">evidence · rules · memory · live signals</text>
+
+          <text x="500" y="338" fill="#7dc4ff" font-family="Instrument Serif" font-size="27" text-anchor="middle">Prompt / Spec</text>
+          <text x="500" y="357" fill="#69a8dc" font-family="Fira Code" font-size="11.5" text-anchor="middle">intent · constraints · output · stop</text>
+
+          <text x="500" y="445" fill="#fff" font-family="Instrument Serif" font-size="47" text-anchor="middle">Model</text>
+          <text x="500" y="471" fill="#e6dcff" font-family="Fira Code" font-size="11.5" text-anchor="middle">capability engine</text>
+
+          <text x="500" y="599" fill="#7dc4ff" font-family="Fira Code" font-size="11.5" font-style="italic" text-anchor="middle" opacity=".88">the work</text>
+          <text x="500" y="652" fill="#8ae4f2" font-family="Fira Code" font-size="11.5" font-style="italic" text-anchor="middle" opacity=".88">the world it can see</text>
+          <text x="500" y="705" fill="#e6cf8a" font-family="Fira Code" font-size="11.5" font-style="italic" text-anchor="middle" opacity=".88">the hands and the brakes</text>
+          <text x="500" y="758" fill="#aebbc2" font-family="Fira Code" font-size="11.5" font-style="italic" text-anchor="middle" opacity=".88">the engine of persistence</text>
+          <text x="500" y="811" fill="#9ce0a8" font-family="Fira Code" font-size="11.5" font-style="italic" text-anchor="middle" opacity=".88">the proof and the accountable decision</text>
+          <text x="500" y="864" fill="#c4b5fd" font-family="Fira Code" font-size="11.5" font-style="italic" text-anchor="middle" opacity=".88">the common language across every loop</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ S09 · ACT 1 DIVIDER ═══════════ -->
   <section class="slide" data-act="ACT 1" data-act-name="The system we inherit" data-accent="accent"
            style="justify-content:center;align-items:flex-start;text-align:left;">
     <div class="aurora" aria-hidden="true"><b></b></div>
@@ -1161,7 +2203,7 @@ body.anim-ready .reveal.in > *:nth-child(n+5) { transition-delay: 360ms; }
     </div>
   </section>
 
-  <!-- ═══════════ S04 · PRECISE AND STILL WRONG ═══════════ -->
+  <!-- ═══════════ S10 · PRECISE AND STILL WRONG ═══════════ -->
   <section class="slide" data-act="ACT 1" data-act-name="Precise and still wrong" data-accent="red">
     <div class="aurora" style="--a1:rgba(248,81,73,0.13);--a2:rgba(212,175,55,0.07);--a3:rgba(74,158,255,0.07);" aria-hidden="true"><b></b></div>
     <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1880px;margin:0 auto;">
@@ -1258,7 +2300,7 @@ body.anim-ready .reveal.in > *:nth-child(n+5) { transition-delay: 360ms; }
     </div>
   </section>
 
-  <!-- ═══════════ S05 · THE TOPOLOGY ═══════════ -->
+  <!-- ═══════════ S11 · THE TOPOLOGY ═══════════ -->
   <section class="slide" data-act="ACT 1" data-act-name="The topology" data-accent="accent">
     <div class="aurora" aria-hidden="true"><b></b></div>
     <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1880px;margin:0 auto;">
@@ -1365,7 +2407,7 @@ body.anim-ready .reveal.in > *:nth-child(n+5) { transition-delay: 360ms; }
     </div>
   </section>
 
-  <!-- ═══════════ S06 · FOUR TABLES, FOUR GRAMMARS ═══════════ -->
+  <!-- ═══════════ S12 · FOUR TABLES, FOUR GRAMMARS ═══════════ -->
   <section class="slide" data-act="ACT 1" data-act-name="Four tables, four grammars" data-accent="purple">
     <div class="aurora" style="--a1:rgba(167,139,250,0.15);--a2:rgba(74,158,255,0.08);--a3:rgba(34,211,238,0.06);" aria-hidden="true"><b></b></div>
     <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1880px;margin:0 auto;">
@@ -1454,7 +2496,7 @@ order_id    BIGINT
     </div>
   </section>
 
-  <!-- ═══════════ S07 · THE CRAFT — one row, three clocks, two amounts ═══════════ -->
+  <!-- ═══════════ S13 · THE CRAFT — one row, three clocks, two amounts ═══════════ -->
   <section class="slide" data-act="ACT 1" data-act-name="Three clocks, two amounts" data-accent="gold">
     <div class="aurora" style="--a1:rgba(212,175,55,0.14);--a2:rgba(248,81,73,0.07);--a3:rgba(74,158,255,0.07);" aria-hidden="true"><b></b></div>
     <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1880px;margin:0 auto;">
@@ -1535,7 +2577,7 @@ payment_id order_id <span class="hr">amount</span>   method  status
     </div>
   </section>
 
-  <!-- ═══════════ S08 · GO LIVE — 00-setup · closes ACT 1 ═══════════ -->
+  <!-- ═══════════ S14 · GO LIVE — 00-setup · closes ACT 1 ═══════════ -->
   <section class="slide" data-act="ACT 1" data-act-name="Go live · close of Act 1" data-accent="green">
     <div class="aurora" style="--a1:rgba(63,185,80,0.13);--a2:rgba(34,211,238,0.08);--a3:rgba(74,158,255,0.06);" aria-hidden="true"><b></b></div>
     <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1880px;margin:0 auto;">
@@ -1643,7 +2685,7 @@ payment_id order_id <span class="hr">amount</span>   method  status
     </div>
   </section>
 
-  <!-- ═══════════ S09 · ACT 2 DIVIDER ═══════════ -->
+  <!-- ═══════════ S15 · ACT 2 DIVIDER ═══════════ -->
   <section class="slide" data-act="ACT 2" data-act-name="Prompt as a contract" data-accent="accent"
            style="justify-content:center;align-items:flex-start;text-align:left;">
     <div class="aurora" aria-hidden="true"><b></b></div>
@@ -1707,7 +2749,7 @@ payment_id order_id <span class="hr">amount</span>   method  status
     </div>
   </section>
 
-  <!-- ═══════════ S10 · AMBIGUITY CREATES HIDDEN CHOICES ═══════════ -->
+  <!-- ═══════════ S16 · AMBIGUITY CREATES HIDDEN CHOICES ═══════════ -->
   <section class="slide" data-act="ACT 2" data-act-name="Ambiguity creates hidden choices" data-accent="red">
     <div class="aurora" style="--a1:rgba(248,81,73,0.13);--a2:rgba(167,139,250,0.08);--a3:rgba(74,158,255,0.07);" aria-hidden="true"><b></b></div>
     <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1880px;margin:0 auto;">
@@ -1781,7 +2823,7 @@ Answer in <span class="tok">Brazilian Portuguese</span>, using at most
     </div>
   </section>
 
-  <!-- ═══════════ S11 · GO LIVE — 01-weak-prompt ═══════════ -->
+  <!-- ═══════════ S17 · GO LIVE — 01-weak-prompt ═══════════ -->
   <section class="slide" data-act="ACT 2" data-act-name="Go live · the weak prompt" data-accent="green">
     <div class="aurora" style="--a1:rgba(63,185,80,0.13);--a2:rgba(248,81,73,0.07);--a3:rgba(74,158,255,0.06);" aria-hidden="true"><b></b></div>
     <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1880px;margin:0 auto;">
@@ -1856,7 +2898,7 @@ Answer in <span class="tok">Brazilian Portuguese</span>, using at most
     </div>
   </section>
 
-  <!-- ═══════════ S12 · THE ANATOMY ═══════════ -->
+  <!-- ═══════════ S18 · THE ANATOMY ═══════════ -->
   <section class="slide" data-act="ACT 2" data-act-name="A prompt is a contract" data-accent="accent">
     <div class="aurora" aria-hidden="true"><b></b></div>
     <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1880px;margin:0 auto;">
@@ -1922,7 +2964,7 @@ Answer in <span class="tok">Brazilian Portuguese</span>, using at most
     </div>
   </section>
 
-  <!-- ═══════════ S13 · GO LIVE — 02-investigation-contract ═══════════ -->
+  <!-- ═══════════ S19 · GO LIVE — 02-investigation-contract ═══════════ -->
   <section class="slide" data-act="ACT 2" data-act-name="Go live · the contract" data-accent="green">
     <div class="aurora" style="--a1:rgba(63,185,80,0.13);--a2:rgba(74,158,255,0.08);--a3:rgba(212,175,55,0.06);" aria-hidden="true"><b></b></div>
     <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1880px;margin:0 auto;">
@@ -1998,7 +3040,7 @@ Answer in <span class="tok">Brazilian Portuguese</span>, using at most
     </div>
   </section>
 
-  <!-- ═══════════ S14 · SKILL CARD S1 · closes ACT 2 ═══════════ -->
+  <!-- ═══════════ S20 · SKILL CARD S1 · closes ACT 2 ═══════════ -->
   <section class="slide" data-act="ACT 2" data-act-name="Skill card S1" data-accent="green">
     <div class="aurora" style="--a1:rgba(63,185,80,0.12);--a2:rgba(74,158,255,0.08);--a3:rgba(167,139,250,0.06);" aria-hidden="true"><b></b></div>
     <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1880px;margin:0 auto;">
@@ -2093,7 +3135,7 @@ Answer in <span class="tok">Brazilian Portuguese</span>, using at most
     </div>
   </section>
 
-  <!-- ═══════════ S15 · ACT 3 DIVIDER ═══════════ -->
+  <!-- ═══════════ S21 · ACT 3 DIVIDER ═══════════ -->
   <section class="slide" data-act="ACT 3" data-act-name="Context is king" data-accent="cyan"
            style="justify-content:center;align-items:flex-start;text-align:left;">
     <div class="aurora aurora--cyan" aria-hidden="true"><b></b></div>
@@ -2171,7 +3213,7 @@ Answer in <span class="tok">Brazilian Portuguese</span>, using at most
     </div>
   </section>
 
-  <!-- ═══════════ S16 · PROMPT DEFINES WORK · CONTEXT SUPPLIES WORLD ═══════════ -->
+  <!-- ═══════════ S22 · PROMPT DEFINES WORK · CONTEXT SUPPLIES WORLD ═══════════ -->
   <section class="slide" data-act="ACT 3" data-act-name="Prompt and context" data-accent="cyan">
     <div class="aurora aurora--cyan" aria-hidden="true"><b></b></div>
     <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1880px;margin:0 auto;">
@@ -2231,7 +3273,7 @@ Answer in <span class="tok">Brazilian Portuguese</span>, using at most
     </div>
   </section>
 
-  <!-- ═══════════ S17 · THE ATTENTION BUDGET ═══════════ -->
+  <!-- ═══════════ S23 · THE ATTENTION BUDGET ═══════════ -->
   <section class="slide" data-act="ACT 3" data-act-name="The attention budget" data-accent="cyan">
     <div class="aurora" style="--a1:rgba(34,211,238,0.14);--a2:rgba(248,81,73,0.07);--a3:rgba(167,139,250,0.08);" aria-hidden="true"><b></b></div>
     <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1880px;margin:0 auto;">
@@ -2313,7 +3355,7 @@ Answer in <span class="tok">Brazilian Portuguese</span>, using at most
     </div>
   </section>
 
-  <!-- ═══════════ S18 · NINE WAYS TO GET CONTEXT ═══════════ -->
+  <!-- ═══════════ S24 · NINE WAYS TO GET CONTEXT ═══════════ -->
   <section class="slide" data-act="ACT 3" data-act-name="Nine ways to get context" data-accent="cyan">
     <div class="aurora aurora--cyan" aria-hidden="true"><b></b></div>
     <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1880px;margin:0 auto;">
@@ -2432,7 +3474,7 @@ Answer in <span class="tok">Brazilian Portuguese</span>, using at most
     </div>
   </section>
 
-  <!-- ═══════════ S19 · SECOND BRAIN, MADE AGENT-READABLE ═══════════ -->
+  <!-- ═══════════ S25 · SECOND BRAIN, MADE AGENT-READABLE ═══════════ -->
   <section class="slide" data-act="ACT 3" data-act-name="Second Brain, agent-readable" data-accent="cyan">
     <div class="aurora" style="--a1:rgba(212,175,55,0.08);--a2:rgba(34,211,238,0.12);--a3:rgba(167,139,250,0.08);" aria-hidden="true"><b></b></div>
     <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1880px;margin:0 auto;">
@@ -2525,7 +3567,7 @@ Answer in <span class="tok">Brazilian Portuguese</span>, using at most
     </div>
   </section>
 
-  <!-- ═══════════ S20 · THE SIX CONTEXT LAYERS ═══════════ -->
+  <!-- ═══════════ S26 · THE SIX CONTEXT LAYERS ═══════════ -->
   <section class="slide" data-act="ACT 3" data-act-name="The six context layers" data-accent="cyan">
     <div class="aurora aurora--cyan" aria-hidden="true"><b></b></div>
     <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1880px;margin:0 auto;">
@@ -2629,7 +3671,7 @@ Answer in <span class="tok">Brazilian Portuguese</span>, using at most
     </div>
   </section>
 
-  <!-- ═══════════ S21 · SELECTED, NOT DUMPED ═══════════ -->
+  <!-- ═══════════ S27 · SELECTED, NOT DUMPED ═══════════ -->
   <section class="slide" data-act="ACT 3" data-act-name="Selected, not dumped" data-accent="cyan">
     <div class="aurora" style="--a1:rgba(248,81,73,0.08);--a2:rgba(34,211,238,0.11);--a3:rgba(74,158,255,0.06);" aria-hidden="true"><b></b></div>
     <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1880px;margin:0 auto;">
@@ -2714,7 +3756,7 @@ Answer in <span class="tok">Brazilian Portuguese</span>, using at most
     <div class="source-line">Runbook · <a href="../live/d1/03-context-inventory.md">live/d1/03-context-inventory.md · capture contract</a></div>
   </section>
 
-  <!-- ═══════════ S22 · GO LIVE — 03-context-inventory ═══════════ -->
+  <!-- ═══════════ S28 · GO LIVE — 03-context-inventory ═══════════ -->
   <section class="slide" data-act="ACT 3" data-act-name="Go live · context inventory" data-accent="green">
     <div class="aurora" style="--a1:rgba(63,185,80,0.13);--a2:rgba(34,211,238,0.08);--a3:rgba(74,158,255,0.06);" aria-hidden="true"><b></b></div>
     <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1880px;margin:0 auto;">
@@ -2822,7 +3864,7 @@ Answer in <span class="tok">Brazilian Portuguese</span>, using at most
     </div>
   </section>
 
-  <!-- ═══════════ S23 · SKILL CARD S2 · closes ACT 3 ═══════════ -->
+  <!-- ═══════════ S29 · SKILL CARD S2 · closes ACT 3 ═══════════ -->
   <section class="slide" data-act="ACT 3" data-act-name="Skill card S2" data-accent="purple">
     <div class="aurora" style="--a1:rgba(167,139,250,0.13);--a2:rgba(34,211,238,0.08);--a3:rgba(212,175,55,0.05);" aria-hidden="true"><b></b></div>
     <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1880px;margin:0 auto;">
@@ -2919,7 +3961,7 @@ Answer in <span class="tok">Brazilian Portuguese</span>, using at most
     </div>
   </section>
 
-  <!-- ═══════════ S24 · BREAK ═══════════ -->
+  <!-- ═══════════ S30 · BREAK ═══════════ -->
   <section class="slide" data-act="BREAK" data-act-name="Reflection question" data-accent="cyan"
            style="justify-content:center;">
     <div class="aurora" style="--a1:rgba(34,211,238,0.09);--a2:rgba(74,158,255,0.06);--a3:rgba(167,139,250,0.05);" aria-hidden="true"><b></b></div>
@@ -2934,7 +3976,7 @@ Answer in <span class="tok">Brazilian Portuguese</span>, using at most
     </div>
   </section>
 
-  <!-- ═══════════ S25 · ACT 4 DIVIDER ═══════════ -->
+  <!-- ═══════════ S31 · ACT 4 DIVIDER ═══════════ -->
   <section class="slide" data-act="ACT 4" data-act-name="The graph" data-accent="purple"
            style="justify-content:center;align-items:flex-start;text-align:left;">
     <div class="aurora" aria-hidden="true"><b></b></div>
@@ -2998,7 +4040,7 @@ Answer in <span class="tok">Brazilian Portuguese</span>, using at most
     </div>
   </section>
 
-  <!-- ═══════════ S26 · MEANING SURVIVES THE CROSSING ═══════════ -->
+  <!-- ═══════════ S32 · MEANING SURVIVES THE CROSSING ═══════════ -->
   <section class="slide" data-act="ACT 4" data-act-name="Meaning survives the crossing" data-accent="purple">
     <div class="aurora" aria-hidden="true"><b></b></div>
     <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1880px;margin:0 auto;">
@@ -3092,7 +4134,7 @@ order_id    BIGINT
     </div>
   </section>
 
-  <!-- ═══════════ S27 · THE CANONICAL ONTOLOGY ═══════════ -->
+  <!-- ═══════════ S33 · THE CANONICAL ONTOLOGY ═══════════ -->
   <section class="slide" data-act="ACT 4" data-act-name="The canonical ontology" data-accent="purple">
     <div class="aurora" aria-hidden="true"><b></b></div>
     <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1880px;margin:0 auto;">
@@ -3259,7 +4301,7 @@ order_id    BIGINT
     </div>
   </section>
 
-  <!-- ═══════════ S28 · THE STARTING GRAPH ═══════════ -->
+  <!-- ═══════════ S34 · THE STARTING GRAPH ═══════════ -->
   <section class="slide" data-act="ACT 4" data-act-name="The starting graph" data-accent="purple">
     <div class="aurora" aria-hidden="true"><b></b></div>
     <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1880px;margin:0 auto;">
@@ -3425,7 +4467,7 @@ order_id    BIGINT
     </div>
   </section>
 
-  <!-- ═══════════ S29 · GRAPH ≠ SEMANTIC LAYER ═══════════ -->
+  <!-- ═══════════ S35 · GRAPH ≠ SEMANTIC LAYER ═══════════ -->
   <section class="slide" data-act="ACT 4" data-act-name="Graph is not a semantic layer" data-accent="red">
     <div class="aurora" style="--a1:rgba(248,81,73,0.12);--a2:rgba(167,139,250,0.10);--a3:rgba(212,175,55,0.06);" aria-hidden="true"><b></b></div>
     <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1880px;margin:0 auto;">
@@ -3504,7 +4546,7 @@ order_id    BIGINT
     </div>
   </section>
 
-  <!-- ═══════════ S30 · GO LIVE — 04-ontology ═══════════ -->
+  <!-- ═══════════ S36 · GO LIVE — 04-ontology ═══════════ -->
   <section class="slide" data-act="ACT 4" data-act-name="Go live · ontology" data-accent="green">
     <div class="aurora" style="--a1:rgba(63,185,80,0.13);--a2:rgba(167,139,250,0.09);--a3:rgba(34,211,238,0.06);" aria-hidden="true"><b></b></div>
     <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1880px;margin:0 auto;">
@@ -3613,7 +4655,7 @@ order_id    BIGINT
     </div>
   </section>
 
-  <!-- ═══════════ S31 · SKILL CARD S4 ═══════════ -->
+  <!-- ═══════════ S37 · SKILL CARD S4 ═══════════ -->
   <section class="slide" data-act="ACT 4" data-act-name="Skill card S4" data-accent="purple">
     <div class="aurora" aria-hidden="true"><b></b></div>
     <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1880px;margin:0 auto;">
@@ -3697,7 +4739,7 @@ order_id    BIGINT
     </div>
   </section>
 
-  <!-- ═══════════ S32 · ACT 5 DIVIDER ═══════════ -->
+  <!-- ═══════════ S38 · ACT 5 DIVIDER ═══════════ -->
   <section class="slide" data-act="ACT 5" data-act-name="Agentic development &amp; telemetry" data-accent="gold"
            style="justify-content:center;align-items:flex-start;text-align:left;">
     <div class="aurora" style="--a1:rgba(212,175,55,0.15);--a2:rgba(74,158,255,0.08);--a3:rgba(167,139,250,0.07);" aria-hidden="true"><b></b></div>
@@ -3762,7 +4804,7 @@ order_id    BIGINT
     </div>
   </section>
 
-  <!-- ═══════════ S33 · CONTROLLED WORK, NOT A LONGER CHAT ═══════════ -->
+  <!-- ═══════════ S39 · CONTROLLED WORK, NOT A LONGER CHAT ═══════════ -->
   <section class="slide" data-act="ACT 5" data-act-name="Controlled work" data-accent="gold">
     <div class="aurora" style="--a1:rgba(212,175,55,0.12);--a2:rgba(74,158,255,0.08);--a3:rgba(63,185,80,0.05);" aria-hidden="true"><b></b></div>
     <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1880px;margin:0 auto;">
@@ -3853,7 +4895,7 @@ order_id    BIGINT
     </div>
   </section>
 
-  <!-- ═══════════ S34 · THE LOOP ═══════════ -->
+  <!-- ═══════════ S40 · THE LOOP ═══════════ -->
   <section class="slide" data-act="ACT 5" data-act-name="The loop" data-accent="gold">
     <div class="aurora" style="--a1:rgba(167,139,250,0.12);--a2:rgba(34,211,238,0.09);--a3:rgba(212,175,55,0.08);" aria-hidden="true"><b></b></div>
     <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1780px;margin:0 auto;">
@@ -3933,7 +4975,7 @@ order_id    BIGINT
     </div>
   </section>
 
-  <!-- ═══════════ S35 · TELEMETRY MAKES THE TRAJECTORY INSPECTABLE ═══════════ -->
+  <!-- ═══════════ S41 · TELEMETRY MAKES THE TRAJECTORY INSPECTABLE ═══════════ -->
   <section class="slide" data-act="ACT 5" data-act-name="The telemetry contract" data-accent="gold">
     <div class="aurora" style="--a1:rgba(212,175,55,0.13);--a2:rgba(248,81,73,0.06);--a3:rgba(74,158,255,0.07);" aria-hidden="true"><b></b></div>
     <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1880px;margin:0 auto;">
@@ -4045,7 +5087,7 @@ order_id    BIGINT
     </div>
   </section>
 
-  <!-- ═══════════ S36 · GO LIVE — 05-agentic-investigation ═══════════ -->
+  <!-- ═══════════ S42 · GO LIVE — 05-agentic-investigation ═══════════ -->
   <section class="slide" data-act="ACT 5" data-act-name="Go live · the trajectory" data-accent="green">
     <div class="aurora" style="--a1:rgba(63,185,80,0.13);--a2:rgba(34,211,238,0.08);--a3:rgba(74,158,255,0.06);" aria-hidden="true"><b></b></div>
     <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1880px;margin:0 auto;">
@@ -4153,7 +5195,7 @@ order_id    BIGINT
     </div>
   </section>
 
-  <!-- ═══════════ S37 · SKILL CARDS S3 + S5 ═══════════ -->
+  <!-- ═══════════ S43 · SKILL CARDS S3 + S5 ═══════════ -->
   <section class="slide" data-act="ACT 5" data-act-name="Skill cards S3 + S5" data-accent="gold">
     <div class="aurora" style="--a1:rgba(34,211,238,0.12);--a2:rgba(212,175,55,0.10);--a3:rgba(74,158,255,0.06);" aria-hidden="true"><b></b></div>
     <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1880px;margin:0 auto;">
@@ -4219,6 +5261,523 @@ order_id    BIGINT
         </div>
       </div>
 
+    </div>
+  </section>
+
+  <!-- ═══════════ S44 · EVIDENCE SURVIVES THE SESSION ═══════════ -->
+  <section class="slide" data-act="ACT 6" data-act-name="Continuous documentation" data-accent="green">
+    <div class="aurora aurora--green" aria-hidden="true"><b></b></div>
+    <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1880px;margin:0 auto;">
+
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:clamp(24px,3vw,60px);flex-wrap:wrap;">
+        <div style="flex:1 1 clamp(420px,58%,1160px);min-width:0;">
+          <span class="tag" style="--tag-c:var(--green);">Movement 06 · Continuous documentation</span>
+          <h2 class="h2" style="font-size:clamp(30px,4.3vw,62px);margin-top:clamp(10px,1.7vh,18px);">
+            Evidence becomes valuable when it <span style="color:var(--green);">survives the session</span>
+          </h2>
+        </div>
+        <p class="lede" style="flex:0 1 33ch;max-width:33ch;text-align:right;font-size:clamp(12.5px,1.2vw,17px);">
+          The chat window closes at 23:00. What the room decided has to keep working without it —
+          <b>labeled, reviewable, maintained.</b>
+        </p>
+      </div>
+
+      <div class="cols" style="--cols:1fr 1.08fr;align-items:stretch;margin-top:clamp(14px,2.3vh,26px);gap:clamp(16px,1.9vw,36px);">
+
+        <!-- left: the four labels -->
+        <div style="display:flex;flex-direction:column;min-width:0;">
+          <span class="kick" style="--kc:var(--text-mute);">The brief keeps four kinds of statement apart</span>
+          <div class="reg">
+            <div class="reg-row">
+              <span class="reg-n" style="--rc:var(--green);">01</span>
+              <span class="reg-t"><span class="tag" style="--tag-c:var(--green);">Fact</span> Directly supported by evidence — it cites a path, an object, or a query.</span>
+            </div>
+            <div class="reg-row">
+              <span class="reg-n" style="--rc:var(--gold);">02</span>
+              <span class="reg-t"><span class="tag" style="--tag-c:var(--gold);">Inference</span> Reasonable, but not conclusively established — <i>it travels with its falsifier.</i></span>
+            </div>
+            <div class="reg-row">
+              <span class="reg-n" style="--rc:var(--accent);">03</span>
+              <span class="reg-t"><span class="tag" style="--tag-c:var(--accent);">Decision</span> Chosen by someone with authority — <i>never invented by the agent.</i></span>
+            </div>
+            <div class="reg-row">
+              <span class="reg-n" style="--rc:var(--purple);">04</span>
+              <span class="reg-t"><span class="tag" style="--tag-c:var(--purple);">Question</span> Needs more evidence or an accountable owner — <i>gets a name and a next action.</i></span>
+            </div>
+          </div>
+          <p class="lede" style="font-size:clamp(11.5px,1.08vw,14.5px);margin-top:clamp(10px,1.7vh,16px);">
+            Labels survive summarization. Nothing gets upgraded in the retelling —
+            <b>an inference never becomes a fact by being repeated.</b>
+          </p>
+        </div>
+
+        <!-- right: measured, in production, by GitHub -->
+        <div style="display:flex;flex-direction:column;min-width:0;">
+          <span class="kick" style="--kc:var(--text-mute);">Agents that maintain the docs — measured on real runs</span>
+          <div class="code code--table" data-lang="github agentic workflows · technical preview">
+            <table class="rtable">
+              <thead>
+                <tr><th>docs workflow</th><th class="num">proposed</th><th class="num">merged</th><th class="num">merge rate</th><th></th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Daily Documentation Updater</td><td class="num">59</td><td class="num">57</td><td class="num rate">96%</td><td></td></tr>
+                <tr><td>Documentation Unbloat</td><td class="num">103</td><td class="num">88</td><td class="num rate">85%</td><td></td></tr>
+                <tr class="is-key"><td>Documentation Noob Tester</td><td class="num">21</td><td class="num">9</td><td class="num rate">43%</td><td class="flag" style="color:var(--gold);">the gate says no</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="lede" style="font-size:clamp(11.5px,1.08vw,14.5px);margin-top:clamp(10px,1.7vh,16px);">
+            GitHub Next, <b>13 Jan 2026</b> — merge rates from 43% to 100% across the docs fleet.
+            A 43% merge rate is not the agent failing; <b>it is the human gate working.</b>
+          </p>
+          <p class="eyebrow" style="font-size:clamp(7.5px,0.72vw,9px);margin-top:clamp(7px,1.2vh,11px);color:var(--text-mute);">
+            src · github.github.com/gh-aw · “meet the workflows: continuous documentation” · 13 jan 2026
+          </p>
+        </div>
+
+      </div>
+
+      <!-- the continuous loop -->
+      <div class="hflow" style="margin-top:clamp(14px,2.3vh,26px);">
+
+        <div class="hf-node" style="--hc:var(--accent);">
+          <span class="hf-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6l-5 6 5 6M16 6l5 6-5 6"/></svg></span>
+          <div class="hf-k">Trigger · every change</div>
+          <div class="hf-name">Code lands</div>
+          <div class="hf-note">Merged PRs and code changes are watched continuously — docs start drifting the moment code moves.</div>
+        </div>
+
+        <div class="hf-arrow" style="--af:var(--accent);--ac:var(--cyan);">
+          <span class="hf-al">reads<br>the diff</span>
+          <span class="hf-line" aria-hidden="true"></span>
+        </div>
+
+        <div class="hf-node" style="--hc:var(--cyan);">
+          <span class="hf-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.8h9.2L19 6.6v14.6H6z"/><path d="M9 9.5h7M9 13h7M9 16.5h4.5"/></svg></span>
+          <div class="hf-k">Agent maintains</div>
+          <div class="hf-name">Docs get drafted</div>
+          <div class="hf-note">Terminology, examples, setup steps — updated on every change, not in a quarterly panic.</div>
+        </div>
+
+        <div class="hf-arrow" style="--af:var(--cyan);--ac:var(--gold);">
+          <span class="hf-al">proposes,<br>never pushes</span>
+          <span class="hf-line" aria-hidden="true"></span>
+        </div>
+
+        <div class="hf-node" style="--hc:var(--gold);">
+          <span class="hf-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.6"/><circle cx="6" cy="18" r="2.6"/><circle cx="18" cy="8" r="2.6"/><path d="M6 8.6v6.8M18 10.6c0 3.6-3.2 4.5-6.6 5"/></svg></span>
+          <div class="hf-k">Safe output</div>
+          <div class="hf-name">A draft PR opens</div>
+          <div class="hf-note">Never pushed to main, never auto-merged. <b>The pull request is the unit of review.</b></div>
+        </div>
+
+        <div class="hf-arrow" style="--af:var(--gold);--ac:var(--green);">
+          <span class="hf-al">human<br>decides</span>
+          <span class="hf-line" aria-hidden="true"></span>
+        </div>
+
+        <div class="hf-node" style="--hc:var(--green);">
+          <span class="hf-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.8"/><path d="M4.5 20.5c0-3.6 3.4-6 7.5-6s7.5 2.4 7.5 6"/></svg></span>
+          <div class="hf-k">Human gate</div>
+          <div class="hf-name">Merge — or reject</div>
+          <div class="hf-note">The gate says no every day, on real numbers. <b>That is the design, not a defect.</b></div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════ S45 · GO LIVE — 06-technical-brief ═══════════ -->
+  <section class="slide" data-act="ACT 6" data-act-name="Go live · the technical brief" data-accent="green">
+    <div class="aurora aurora--green" aria-hidden="true"><b></b></div>
+    <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1880px;margin:0 auto;">
+
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:clamp(24px,3vw,60px);flex-wrap:wrap;">
+        <div style="flex:1 1 clamp(420px,58%,1160px);min-width:0;">
+          <span class="tag" style="--tag-c:var(--green);">▶ Go live · Act 6</span>
+          <h2 class="h2" style="font-size:clamp(30px,4.3vw,60px);margin-top:clamp(10px,1.7vh,18px);">
+            Make the evidence <span style="color:var(--green);">outlive the chat</span> that produced it
+          </h2>
+        </div>
+        <p class="lede" style="flex:0 1 33ch;max-width:33ch;text-align:right;font-size:clamp(12.5px,1.2vw,17px);">
+          One paste, one file, one gate. The status <b><code style="font-family:var(--font-mono);font-size:0.85em;color:var(--green);">pending human review</code> is a real engineering state.</b>
+        </p>
+      </div>
+
+      <div class="cols" style="--cols:1.08fr 0.92fr;align-items:stretch;margin-top:clamp(14px,2.3vh,26px);gap:clamp(16px,1.9vw,36px);">
+
+        <div style="display:flex;flex-direction:column;gap:clamp(10px,1.6vh,18px);min-width:0;">
+
+          <div class="golive" style="max-width:none;flex:1;display:flex;flex-direction:column;">
+            <div class="gl-top">
+              <div style="display:flex;align-items:center;gap:clamp(12px,1.3vw,20px);">
+                <span class="tag" style="--tag-c:var(--green);">Checkpoint 06</span>
+                <span class="gl-title" style="font-size:clamp(24px,2.7vw,40px);">Preserve a reviewable brief</span>
+              </div>
+              <span class="gl-file">live/d1/06-technical-brief.md</span>
+            </div>
+
+            <div class="gl-grid" style="flex:1;align-content:space-between;">
+              <span class="gl-k">The question</span>
+              <span class="gl-v">Can tonight's evidence stand on its own — without the chat that produced it?</span>
+
+              <span class="gl-k">Session · authority</span>
+              <span class="gl-v"><b>Continue Session C</b> — write exactly one file, <code>storage/specs/3-technical-brief.md</code>: <b>no new queries, no new claims.</b></span>
+
+              <span class="gl-k">We ask</span>
+              <span class="gl-v">≤800 words · six sections (Status → Human Gate) · <b>3 facts, 2 inferences, 3 owned questions</b> — all labeled</span>
+
+              <span class="gl-k">Proof that counts</span>
+              <span class="gl-v">Brief stands without the chat · revenue stays <b>unresolved</b> · Status = <code>pending human review</code></span>
+
+              <span class="gl-k">If it breaks</span>
+              <span class="gl-v">A smuggled claim fails the gate — <b>rewritten, not explained away.</b></span>
+
+              <span class="gl-k">Come back when</span>
+              <span class="gl-v">Two facts to evidence · one inference to its falsifier · one question with <b>owner + next action</b></span>
+            </div>
+          </div>
+
+        </div>
+
+        <div style="display:flex;flex-direction:column;min-width:0;">
+          <span class="kick" style="--kc:var(--text-mute);">What this file sets in motion</span>
+          <div class="flow">
+
+            <div class="fl-node" style="--fc:var(--accent);">
+              <div class="fl-k">Inputs · nothing else may speak</div>
+              <div class="fl-name">The evidence</div>
+              <div class="fl-note"><code>1-context.md</code> · <code>2-ontology.md</code> · <code>trace.jsonl</code> — summarization adds nothing</div>
+            </div>
+            <div class="fl-arrow" style="--fa:var(--accent);--fb:var(--cyan);" aria-hidden="true"></div>
+
+            <div class="fl-node" style="--fc:var(--cyan);">
+              <div class="fl-k">The artifact</div>
+              <div class="fl-name">3-technical-brief.md</div>
+              <div class="fl-note">a review surface, not a declaration of truth — uncertainty preserved, never upgraded</div>
+            </div>
+            <div class="fl-arrow" style="--fa:var(--cyan);--fb:var(--gold);" aria-hidden="true"></div>
+
+            <div class="fl-node is-end" style="--fc:var(--gold);">
+              <div class="fl-k">The gate</div>
+              <div class="fl-name">Human review</div>
+              <div class="fl-note">revise ↺ or approve meaning → decision recorded — never auto-merged</div>
+            </div>
+
+          </div>
+
+          <div class="code" data-lang="then verify · read aloud by no one" style="margin-top:clamp(11px,1.8vh,18px);"><span class="c"># headings and labels only</span>
+<span class="n">rg</span> -n <span class="s">'pending human review|fact|inference|question'</span> \
+  <span class="w">storage/specs/3-technical-brief.md</span></div>
+
+          <p class="lede" style="font-size:clamp(11px,1.02vw,13.5px);margin-top:clamp(11px,1.8vh,18px);">
+            <code style="font-family:var(--font-mono);font-size:0.9em;color:var(--gold);">pending human review</code> is not a gap in the process. <b>It is the process.</b>
+          </p>
+        </div>
+
+      </div>
+
+      <div class="sealed-lane" style="--slc:var(--green);border-style:solid;margin-top:clamp(14px,2.3vh,24px);">
+        <span class="hf-icon" style="--hc:var(--green);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.8h9.2L19 6.6v14.6H6z"/><path d="M9 9.5h7M9 13h7M9 16.5h4.5"/></svg></span>
+        <div style="flex-shrink:0;">
+          <div style="font-family:var(--font-editorial);font-style:italic;font-size:clamp(11px,1.05vw,14.5px);line-height:1.3;color:var(--green);">act 6 · live</div>
+          <div class="hf-name" style="margin-top:5px;">the chat ends — the record stays</div>
+        </div>
+        <div class="sl-block" aria-hidden="true"></div>
+        <div style="flex-shrink:0;text-align:right;">
+          <div style="font-family:var(--font-editorial);font-style:italic;font-size:clamp(12px,1.15vw,16px);color:var(--text-dim);line-height:1.35;">
+            Documentation preserves what became true — and what did not. <b style="color:var(--green);font-style:normal;">Next: card S6</b>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════ S46 · SKILL CARD S6 ═══════════ -->
+  <section class="slide" data-act="ACT 6" data-act-name="Skill card S6" data-accent="gold">
+    <div class="aurora aurora--gold" aria-hidden="true"><b></b></div>
+    <div class="reveal" style="position:relative;z-index:2;width:100%;max-width:1880px;margin:0 auto;">
+
+      <div class="cols" style="--cols:0.92fr 1.08fr;align-items:center;gap:clamp(24px,3vw,64px);">
+
+        <div>
+          <span class="tag" style="--tag-c:var(--gold);">Skill card · closes Act 6</span>
+          <div class="act-num" style="--an-c:var(--gold);font-size:clamp(88px,8.6vw,150px);letter-spacing:-3px;margin-top:clamp(6px,1.2vh,14px);">S6</div>
+          <h2 class="h2" style="font-size:clamp(28px,3.4vw,50px);margin-top:clamp(4px,0.8vh,10px);">Technical brief for human review</h2>
+          <p class="lede" style="max-width:52ch;margin-top:clamp(10px,1.8vh,18px);font-size:clamp(12.5px,1.2vw,16px);">
+            A card is complete when someone who was not in the room could apply the skill —
+            <b>and know what artifact and evidence it must produce.</b>
+          </p>
+
+          <div style="margin-top:clamp(12px,2vh,22px);">
+            <span class="fnd-label">The d1 set · one card per act</span>
+            <ol class="spine">
+              <li class="sp" style="--c:var(--text-mute);">
+                <span class="sp-dot" aria-hidden="true"></span>
+                <div>
+                  <div class="sp-head"><span class="sp-n">S1</span><span class="sp-name" style="color:var(--text-mute);">Prompt as a work contract</span></div>
+                </div>
+              </li>
+              <li class="sp" style="--c:var(--text-mute);">
+                <span class="sp-dot" aria-hidden="true"></span>
+                <div>
+                  <div class="sp-head"><span class="sp-n">S2</span><span class="sp-name" style="color:var(--text-mute);">Deliberate context selection</span></div>
+                </div>
+              </li>
+              <li class="sp" style="--c:var(--text-mute);">
+                <span class="sp-dot" aria-hidden="true"></span>
+                <div>
+                  <div class="sp-head"><span class="sp-n">S3</span><span class="sp-name" style="color:var(--text-mute);">System interviewing</span></div>
+                </div>
+              </li>
+              <li class="sp" style="--c:var(--text-mute);">
+                <span class="sp-dot" aria-hidden="true"></span>
+                <div>
+                  <div class="sp-head"><span class="sp-n">S4</span><span class="sp-name" style="color:var(--text-mute);">Ontology modeling with evidence</span></div>
+                </div>
+              </li>
+              <li class="sp" style="--c:var(--text-mute);">
+                <span class="sp-dot" aria-hidden="true"></span>
+                <div>
+                  <div class="sp-head"><span class="sp-n">S5</span><span class="sp-name" style="color:var(--text-mute);">Trajectory inspection through telemetry</span></div>
+                </div>
+              </li>
+              <li class="sp" style="--c:var(--gold);">
+                <span class="sp-dot" aria-hidden="true"></span>
+                <div>
+                  <div class="sp-head"><span class="sp-n">S6</span><span class="sp-name" style="color:var(--gold);">Technical brief for human review</span></div>
+                  <div class="sp-job">this card — filled from tonight's artifacts, not from memory</div>
+                </div>
+              </li>
+            </ol>
+          </div>
+        </div>
+
+        <div style="min-width:0;">
+          <div class="panel" style="--pk:var(--gold);">
+            <div class="panel-k">skills/d1/ · S6 — the card</div>
+            <div style="margin-top:clamp(8px,1.4vh,13px);">
+              <div class="pf"><span class="pf-l">Skill</span><span class="pf-r"><b>Technical brief for human review</b></span></div>
+              <div class="pf"><span class="pf-l">When to use</span><span class="pf-r">an investigation closes and someone must act on it next</span></div>
+              <div class="pf"><span class="pf-l">Inputs</span><span class="pf-r">evidence ledger · ontology v1 · telemetry trace</span></div>
+              <div class="pf"><span class="pf-l">Questions to ask</span><span class="pf-r">fact or inference? who owns each decision? what still blocks the design?</span></div>
+              <div class="pf"><span class="pf-l">Method</span><span class="pf-r"><b>compress — never upgrade;</b> labels survive summarization</span></div>
+              <div class="pf"><span class="pf-l">Artifact produced</span><span class="pf-r"><code>3-technical-brief.md</code> · ≤800 words · <code>pending human review</code></span></div>
+              <div class="pf"><span class="pf-l">Evidence required</span><span class="pf-r">facts cite a path, object, or query · inferences carry a falsifier</span></div>
+              <div class="pf"><span class="pf-l">Human decision</span><span class="pf-r">approve meaning · record the decision · <b>merge — or reject</b></span></div>
+              <div class="pf"><span class="pf-l">What remains manual</span><span class="pf-r"><b>business meaning</b> — revenue stays Finance-owned</span></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="margin-top:clamp(12px,2vh,22px);">
+        <hr class="hair">
+        <p class="note" style="font-size:clamp(12px,1.15vw,16px);margin-top:clamp(10px,1.7vh,16px);line-height:1.45;">
+          Six cards, filled from artifacts. <b style="color:var(--gold);font-style:normal;">Two checkpoints still follow</b> —
+          the skill reveal and the reflection — and that is where tonight becomes turn one.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════ S47 · THE FLYWHEEL ═══════════ -->
+  <section class="slide" data-act="CLOSE" data-act-name="The flywheel" data-accent="gold">
+    <div class="aurora" aria-hidden="true"><b></b></div>
+    <div class="wrap reveal">
+
+      <div class="fly-layout">
+        <div class="fly-copy">
+          <span class="tag" style="--tag-c:var(--gold);">The Dark Factory · the learning loop</span>
+          <h2 class="h2">The factory improves when each run <span class="grad-gold">changes the next one</span></h2>
+          <p class="lede">
+            Every execution leaves evidence. Evidence yields a lesson. Lessons persist as memory.
+            Recurring lessons become skills — and <b>better skills make better agents.</b>
+          </p>
+          <div class="fly-verbs">execute · observe · distill · promote · execute better</div>
+        </div>
+
+        <div class="orbit" aria-label="Executions become lessons, lessons become memory, memory becomes skills, and skills create better agents">
+          <div class="orbit-ring" aria-hidden="true"></div>
+          <div class="orbit-core">
+            <strong>the factory learns</strong>
+            <span>runs become skills;<br>skills become better runs —<br><b>the loop compounds</b></span>
+          </div>
+
+          <div class="orbit-node on-1" style="--oc:var(--accent);">
+            <div class="node-shell"><span class="node-n">1</span><span class="node-name">executions</span></div>
+            <div class="node-note">every run leaves a trail</div>
+          </div>
+          <div class="orbit-node on-2" style="--oc:var(--accent);">
+            <div class="node-shell"><span class="node-n">2</span><span class="node-name">lessons</span></div>
+            <div class="node-note">what the run actually taught</div>
+          </div>
+          <div class="orbit-node on-3" style="--oc:var(--green);">
+            <div class="node-shell"><span class="node-n">3</span><span class="node-name">memory</span></div>
+            <div class="node-note">persistent context, on disk</div>
+          </div>
+          <div class="orbit-node on-4" style="--oc:var(--green);">
+            <div class="node-shell"><span class="node-n">4</span><span class="node-name">skills</span></div>
+            <div class="node-note">a recurring lesson becomes method</div>
+          </div>
+          <div class="orbit-node on-5" style="--oc:var(--gold);">
+            <div class="node-shell"><span class="node-n">5</span><span class="node-name">better agents</span></div>
+            <div class="node-note">which run better executions</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="payoff">
+        <span class="tag">Promotion rule</span>
+        <p>A lesson that recurs <b>two or three times</b> gets promoted to a skill.</p>
+      </div>
+
+      <aside class="speaker-notes" hidden>[Sources]
+/Users/luanmorenomaciel/GitHub/uc-northwind-pay-edp/presentation/workshop-dark-factory.html — source slide 24, The factory flywheel.
+[/Sources]</aside>
+    </div>
+  </section>
+
+  <!-- ═══════════ S48 · TONIGHT WAS TURN ONE ═══════════ -->
+  <section class="slide" data-act="CLOSE" data-act-name="Tonight was turn one" data-accent="green">
+    <div class="aurora aurora--green" aria-hidden="true"><b></b></div>
+    <div class="wrap reveal">
+
+      <div class="turn-head">
+        <div>
+          <span class="tag" style="--tag-c:var(--green);">Tonight · first lap</span>
+          <h2 class="h2" style="margin-top:clamp(10px,1.6vh,17px);">The six cards were not homework. <span style="color:var(--green);">They were turn one.</span></h2>
+        </div>
+        <p class="lede">You practiced the method manually, preserved the evidence, encoded the discipline, then named what must carry forward.</p>
+      </div>
+
+      <div class="turn-lane">
+        <div class="cards-sheet">
+          <div class="sheet-head">
+            <strong>Six practices, captured</strong>
+            <span>filled from artifacts · not memory</span>
+          </div>
+          <ol class="skill-lines">
+            <li class="skill-line" style="--sc:var(--accent);"><span class="skill-id">S1</span><span class="skill-name">Prompt as a work contract</span><span class="skill-proof">intent bounded</span></li>
+            <li class="skill-line" style="--sc:var(--cyan);"><span class="skill-id">S2</span><span class="skill-name">Deliberate context selection</span><span class="skill-proof">sources chosen</span></li>
+            <li class="skill-line" style="--sc:var(--gold);"><span class="skill-id">S3</span><span class="skill-name">System interviewing</span><span class="skill-proof">claims tested</span></li>
+            <li class="skill-line" style="--sc:var(--purple);"><span class="skill-id">S4</span><span class="skill-name">Ontology modeling with evidence</span><span class="skill-proof">meaning owned</span></li>
+            <li class="skill-line" style="--sc:var(--gold);"><span class="skill-id">S5</span><span class="skill-name">Trajectory inspection through telemetry</span><span class="skill-proof">path visible</span></li>
+            <li class="skill-line" style="--sc:var(--green);"><span class="skill-id">S6</span><span class="skill-name">Technical brief for human review</span><span class="skill-proof">record survives</span></li>
+          </ol>
+        </div>
+
+        <div class="lane-arrow" style="--lac:var(--green);"><span>encode</span></div>
+
+        <div class="run-step" style="--rc:var(--green);" data-step="07">
+          <div>
+            <div class="run-k">▶ Run 07 · fresh Session D</div>
+            <div class="run-name">Reveal the skill</div>
+            <div class="run-copy">Run the packaged method with no hidden chat memory. The skill automates the discipline; <b>a human still owns the meaning.</b></div>
+          </div>
+          <div class="run-file">live/d1/07-skill-reveal.md</div>
+        </div>
+
+        <div class="lane-arrow" style="--lac:var(--gold);"><span>distill</span></div>
+
+        <div class="run-step" style="--rc:var(--gold);" data-step="08">
+          <div>
+            <div class="run-k">▶ Run 08 · with the room</div>
+            <div class="run-name">Name what carries</div>
+            <div class="run-copy">One reusable practice. One evidence standard. One decision the agent cannot take. <b>Reflection converts the run into behavior.</b></div>
+          </div>
+          <div class="run-file">live/d1/08-reflection.md</div>
+        </div>
+      </div>
+
+      <div class="turn-close">
+        <div class="turn-number">01</div>
+        <div class="turn-rule" aria-hidden="true"></div>
+        <div class="turn-verdict">Tonight did not end with six cards. It ended with <b>the first evidence-backed turn of the flywheel.</b></div>
+      </div>
+
+      <aside class="speaker-notes" hidden>[Sources]
+/Users/luanmorenomaciel/GitHub/uc-transact-co/plan/semana.md — skill-card set and distillation rule.
+/Users/luanmorenomaciel/GitHub/uc-transact-co/live/d1/07-skill-reveal.md — fresh-session skill validation.
+/Users/luanmorenomaciel/GitHub/uc-transact-co/live/d1/08-reflection.md — artifact-based reflection.
+[/Sources]</aside>
+    </div>
+  </section>
+
+  <!-- ═══════════ S49 · THE AI SDLC · THE CLOSE ═══════════ -->
+  <section class="slide" data-act="CLOSE" data-act-name="The AI SDLC" data-accent="cyan">
+    <div class="aurora aurora--blue" aria-hidden="true"><b></b></div>
+    <div class="wrap reveal">
+
+      <div class="sdlc-head">
+        <div>
+          <span class="tag" style="--tag-c:var(--cyan);">The AI SDLC · five days</span>
+          <h2 class="h2" style="margin-top:clamp(10px,1.6vh,17px);">Intent goes in. <span style="color:var(--cyan);">Distilled and verified work</span> comes out.</h2>
+        </div>
+        <p class="lede">The lifecycle is not “prompt, then code.” It is a sequence of contracts, evidence, gates, and reusable learning.</p>
+      </div>
+
+      <div class="transform" aria-label="Intent enters the AI SDLC and distilled, verified work comes out">
+        <div class="io-block" style="--ic:var(--accent);">
+          <div class="io-k">Intent in</div>
+          <div class="io-v">What should change?<small>objective · constraints · authority</small></div>
+        </div>
+        <div class="sdlc-engine">
+          <div class="io-k">the AI software development lifecycle</div>
+          <div class="io-v">understand · control · specify · verify · learn</div>
+        </div>
+        <div class="io-block" style="--ic:var(--green);">
+          <div class="io-k">Work out</div>
+          <div class="io-v">What can we trust?<small>artifacts · evidence · owned decisions</small></div>
+        </div>
+      </div>
+
+      <div class="days-label"><span>The remaining four days build on tonight's gate</span></div>
+      <div class="days" aria-label="The five days of the AI SDLC">
+        <div class="day current" style="--dc:var(--green);">
+          <div class="day-mark">D1 ✓</div>
+          <div class="day-name">Understand</div>
+          <div class="day-concept">Prompt · context · ontology · controlled investigation</div>
+          <div class="day-proof">claims evidenced or unresolved</div>
+        </div>
+        <div class="day" style="--dc:var(--cyan);">
+          <div class="day-mark">D2</div>
+          <div class="day-name">Harness</div>
+          <div class="day-concept">Roles · tools · permissions · authority</div>
+          <div class="day-proof">agents stay inside declared bounds</div>
+        </div>
+        <div class="day" style="--dc:var(--purple);">
+          <div class="day-mark">D3</div>
+          <div class="day-name">Specify</div>
+          <div class="day-concept">Work contracts · decomposition · atomic tasks</div>
+          <div class="day-proof">dependencies become visible</div>
+        </div>
+        <div class="day" style="--dc:var(--gold);">
+          <div class="day-mark">D4</div>
+          <div class="day-name">Verify</div>
+          <div class="day-concept">Evals · detectors · execution loops</div>
+          <div class="day-proof">independent truth judges the result</div>
+        </div>
+        <div class="day" style="--dc:var(--green);">
+          <div class="day-mark">D5</div>
+          <div class="day-name">Learn</div>
+          <div class="day-concept">External authority · synthesis · reviewed memory</div>
+          <div class="day-proof">claims survive expert + human review</div>
+        </div>
+      </div>
+
+      <div class="next-hook">
+        <div class="hook-n">Next module →</div>
+        <div class="hook-copy">The investigation established understanding before execution. <b>Now we build the rails that turn understanding into controlled work.</b></div>
+      </div>
+
+      <aside class="speaker-notes" hidden>[Sources]
+/Users/luanmorenomaciel/GitHub/uc-transact-co/plan/semana.md — daily skill distillation across Semana and the next-module hook.
+[/Sources]</aside>
     </div>
   </section>
 
