@@ -15,9 +15,10 @@ knows what broke. You build the system that proves the numbers deserve trust.*
 [![Postgres → DuckDB](https://img.shields.io/badge/data-Postgres%20%E2%86%92%20DuckDB-F6C344)](#-architecture)
 
 Postgres source · DuckDB warehouse · 14 injectable failure modes · isolated
-answer key · executable verification
+answer key · unresolved Revenue ontology · executable verification
 
 [Quickstart](#-quickstart) ·
+[Guided modules](#-guided-modules) ·
 [Architecture](#-architecture) ·
 [System model](#-system-model) ·
 [Failure lab](#-failure-lab) ·
@@ -40,17 +41,20 @@ resources. The CFO's question sounds simple:
 The first half asks for SQL. The second asks for semantics, evidence, system
 boundaries, and operational safety.
 
-This repository supplies the runnable source system and the controlled failure
-environment. It is the starting point, not the finished analytical product.
+This repository supplies the runnable source system, the controlled failure
+environment, and the first two guided modules of Semana Engenharia Agêntica.
+It is a teaching foundation, not a finished analytical product.
 
 | Ships ready | You construct |
 | --- | --- |
-| Postgres with the source schema applied at boot | Evidence-led investigation and ontology |
+| Postgres with the source schema applied at boot | Baseline-specific context, evidence, and technical brief |
 | Correlated, time-aware business data | dbt `staging` → `intermediate` → `marts` |
 | Postgres → DuckDB read-only landing | Agents that inspect, move, and transform |
 | Fourteen injectable failure modes | The incident detector |
 | Instructor truth isolated in `_control` | The controlled execution and verification loop |
-| Scoring and delivery-verification contracts | Durable documentation, decisions, and learning artifacts |
+| A versioned ontology with `Revenue` explicitly unresolved | The Finance decisions that make Revenue meaningful |
+| Foundation and harness live runbooks | Baseline-specific evidence, plans, models, and learning artifacts |
+| Reusable investigation and harness-scaffold skills | The project-specific content and authority inside those structures |
 
 ## ⚡ Quickstart
 
@@ -65,18 +69,47 @@ make status
 `make bootstrap` creates the environment, installs the dbt adapter, starts and
 checks Postgres, generates a clean source dataset, rebuilds the generated DuckDB
 warehouse, lands the raw tables, runs unit contracts, verifies isolation and row
-parity, and validates the empty dbt shell.
+parity, and validates the current dbt project and DuckDB profile.
 
 > **Reset boundary:** bootstrap replaces `warehouse.duckdb`. Preserve that file
 > before rerunning bootstrap if it contains detector or transformation work you
-> care about.
+> care about. It also invalidates generated evidence under `storage/specs/`;
+> recapture those artifacts against the new baseline before reusing them.
 
 Run `make setup` while network access is reliable. DuckDB downloads its Postgres
 extension during setup.
 
-For the guided foundation investigation, continue with
-[`live/d1/README.md`](live/d1/README.md). Its prompts deliberately stop before
-Finance-owned meaning is invented.
+For the guided experience, start at [`live/README.md`](live/README.md). The
+prompts deliberately stop before Finance-owned meaning is invented or an agent
+receives authority that was not written down.
+
+## ⟲ Guided modules
+
+The modules form one cumulative artifact chain. The harness module inherits the
+foundation evidence; it is not a second, independent quickstart.
+
+| Module | Canonical question | Runbook | Deck | Session result |
+| --- | --- | --- | --- | --- |
+| Foundation investigation | What is true, what is inferred, and what remains a human decision? | [`live/d1/`](live/d1/) | [`presentation/d1.html`](presentation/d1.html) | Context inventory, ontology note, technical brief, investigation skill |
+| Harness and authority | What may the agent do, through which tools, paths, and gates? | [`live/d2/`](live/d2/) | [`presentation/d2.html`](presentation/d2.html) | Harness contract, bounded roles, sketch plans, one controlled dbt build, scaffold skill |
+
+The foundation module writes baseline-specific evidence to `storage/specs/`.
+The harness module reads those artifacts, keeps `Revenue` blocked, and permits
+only the construction named by its confirmed contract. Each numbered checkpoint
+states whether to continue the current agent session, open a new one, or use no
+agent at all.
+
+The semantic boundary is executable:
+
+```bash
+uv run transactco ontology validate
+uv run transactco ontology list
+uv run transactco ontology explain Revenue
+```
+
+Structural validity does not approve business meaning. `Revenue` remains
+`unresolved` until Finance owns the contributing statuses, recognition event,
+adjustments, currency, and business-day decisions.
 
 ## ◇ Architecture
 
@@ -298,7 +331,8 @@ flowchart LR
 | `make test` | Run fast executable contracts |
 | `make skill-check` | Validate the reusable investigation skill and its package contract |
 | `make verify` | Prove clean baseline, read-only source access, parity, manifest, and oracle isolation |
-| `make dbt-check` | Validate the empty dbt project and DuckDB profile |
+| `make dbt-check` | Validate the DuckDB profile and parse the current dbt project |
+| `make defects` | List the fourteen registered failure modes and their scenarios |
 | `make seed` | Regenerate the clean operational dataset |
 | `make land` | Carry `public.*` into `raw.*` through read-only ATTACH |
 | `make psql-ro` | Open Postgres with the analytical read-only role |
@@ -319,17 +353,19 @@ at a non-disposable database.
 | [`src/transactco/operational/`](src/transactco/operational/) | Builders | Postgres access and deterministic source generation |
 | [`src/transactco/analytical/`](src/transactco/analytical/) | Builders | Read-only source crossing and DuckDB landing |
 | [`src/transactco/control/`](src/transactco/control/) | Builders | Verification, controlled evaluation, and scoring |
+| [`AGENTS.md`](AGENTS.md) · [`CLAUDE.md`](CLAUDE.md) | Agents | Cross-engine ground rules and the Day 2 role-definition surface |
 | [`plan/semana.md`](plan/semana.md) | Facilitators | Storytelling, session design, delivery gates, context pack, and runbook |
-| [`presentation/semana-d1.html`](presentation/semana-d1.html) | Facilitators | Day 1 slide deck — open in a browser, navigate with arrow keys or space |
+| [`presentation/d1.html`](presentation/d1.html) · [`presentation/d2.html`](presentation/d2.html) | Facilitators | Foundation and harness decks — open in a browser, navigate with arrow keys or space |
 | [`presentation/about-me.html`](presentation/about-me.html) | Facilitators | Optional presenter introduction deck |
-| [`live/d1/`](live/d1/) | Facilitators | Live follow-along spine — one numbered file per demo checkpoint |
+| [`live/`](live/) | Facilitators | Executable teaching surface — one numbered file per demo checkpoint |
 | [`skills/interview-the-system/`](skills/interview-the-system/) | Participants | Reusable skill, references, validator, and agent metadata |
-| [`storage/specs/`](storage/specs/) | Session workspace | Generated context, ontology, and technical brief; ignored and recaptured per baseline |
+| [`skills/harness-scaffold/`](skills/harness-scaffold/) | Participants | Regenerable harness structure; scaffolding only, never authority or completed content |
+| [`storage/specs/`](storage/specs/) | Session workspace | Generated context, ontology, technical brief, and per-run plans; ignored and recaptured per baseline |
 | [`docs/semana-agentic-uc-transact-co-v2.pdf`](docs/semana-agentic-uc-transact-co-v2.pdf) | Maintainers | Historical source brief; preserved, not the operational runbook |
 
-The Day 1 experience runs from the deck, the numbered live checkpoints, and
-the reusable skill. The checkpoints generate review artifacts under
-`storage/specs/` and temporary traces/packages under `tmp/`; both are local
+The guided experience runs from the decks, numbered live checkpoints, approved
+artifacts, and reusable skills. The checkpoints generate review artifacts under
+`storage/specs/` and temporary traces/scaffolds under `tmp/`; both are local
 session evidence, not canonical repository truth.
 
 The root README spans the complete project and names the failure/scoring
@@ -348,8 +384,12 @@ allowlisted context described in `plan/semana.md`.
 - Generated specs and traces are valid only for the baseline they inspected.
   Rebuild the fixture, then recapture them instead of carrying old numbers
   forward.
-- The dbt directories ship empty intentionally. Transformations, marts, agents,
-  and the detector are participant work—not missing implementation.
+- The dbt directories ship empty intentionally. The harness module adds one
+  bounded staging model live; production transformations, marts, completed role
+  content, and the detector remain participant work—not missing implementation.
+- A scaffold proves that required files and directories exist. It does not grant
+  tool authority, fill the knowledge base, verify behavior, or approve a
+  semantic decision.
 
 ## Troubleshooting
 
@@ -366,7 +406,16 @@ Change `POSTGRES_PORT` in `.env`, then run `make up` again.
 Postgres init scripts run only when the Docker volume is created. Use
 `make reset` only when the local fixture is disposable.
 
-**The warehouse is stale**
+**The analytical copy is behind Postgres**
 
-Run `make land && make verify`. Ordinary re-landing preserves
+If the source is current but Postgres/DuckDB counts or landing metadata differ,
+run `make land && make verify`. Ordinary re-landing preserves
 `analytics.detections`; bootstrap intentionally does not.
+
+**The source fixture is no longer fresh**
+
+`make verify` rejects a clean fixture when no order or payment has arrived in
+the last six hours. For a fresh start, run `make bootstrap`. If a later guided
+module already depends on `storage/specs/`, treat this as a controlled reset:
+rebuild the baseline, then recapture the foundation artifacts before continuing.
+Re-landing alone cannot make an aged source current.
