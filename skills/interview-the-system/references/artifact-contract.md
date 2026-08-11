@@ -80,12 +80,18 @@ Status must remain `draft` or `pending human review` until a named reviewer acce
 The optional trace contains one JSON object per line with:
 
 - `timestamp` in ISO-8601 form;
+- `timestamp_basis`, declaring that the ordering is approximate and reconstructed;
 - `run_id`;
 - `phase`;
 - `action`;
 - `target`;
 - `outcome`;
-- `evidence_references` as an array.
+- `evidence_references` as an array;
+- `gate`;
+- `telemetry`, exactly `self-declared`;
+- `capture_mode`, exactly `retrospective_reconstruction`.
 
-The validator checks shape only. A trace emitted by the investigated agent is self-reported and is not independent proof of what occurred.
-
+When supplied, the trace must contain at least one event. The validator checks
+shape, provenance labels, and whether each evidence reference resolves to a
+context-source or claim ID in `investigation.json`. A trace emitted by the
+investigating agent is not independent proof that the actions occurred.

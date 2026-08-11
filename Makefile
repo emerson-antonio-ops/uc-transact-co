@@ -10,7 +10,7 @@ ANALYTICS_RO_USER ?= analytics_ro
 ANALYTICS_RO_PASSWORD ?= analytics_ro
 
 .DEFAULT_GOAL := help
-.PHONY: help setup bootstrap doctor test verify dbt-check up down seed land inject inject-quiet reveal score status reset psql psql-ro query query-ro clean
+.PHONY: help setup bootstrap doctor test skill-check verify dbt-check up down seed land inject inject-quiet reveal score status reset psql psql-ro query query-ro clean
 
 help: ## Show this help
 	@echo ""
@@ -41,6 +41,9 @@ doctor: ## Check Postgres, the schema, the seal and the DuckDB extension
 
 test: ## Run the fast unit contract checks
 	@$(UV) python -m unittest discover -s tests -v
+
+skill-check: ## Validate the reusable investigation skill and package contract
+	@$(UV) python -m unittest discover -s tests -p 'test_interview_skill.py' -v
 
 verify: ## Verify the clean baseline, landing parity and oracle isolation
 	@$(UV) transactco verify

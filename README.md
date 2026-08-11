@@ -54,7 +54,8 @@ environment. It is the starting point, not the finished analytical product.
 
 ## ⚡ Quickstart
 
-Requirements: Docker and [`uv`](https://docs.astral.sh/uv/).
+Requirements: Docker, [`uv`](https://docs.astral.sh/uv/), and `make`. The live
+runbook also uses Git and [`rg`](https://github.com/BurntSushi/ripgrep).
 
 ```bash
 make bootstrap
@@ -72,6 +73,10 @@ parity, and validates the empty dbt shell.
 
 Run `make setup` while network access is reliable. DuckDB downloads its Postgres
 extension during setup.
+
+For the guided foundation investigation, continue with
+[`live/d1/README.md`](live/d1/README.md). Its prompts deliberately stop before
+Finance-owned meaning is invented.
 
 ## ◇ Architecture
 
@@ -291,7 +296,8 @@ flowchart LR
 | `make doctor` | Check Postgres, schema, oracle seal, and extension |
 | `make status` | Show source/raw counts and UTC freshness without oracle details |
 | `make test` | Run fast executable contracts |
-| `make verify` | Prove clean baseline, parity, manifest, and oracle isolation |
+| `make skill-check` | Validate the reusable investigation skill and its package contract |
+| `make verify` | Prove clean baseline, read-only source access, parity, manifest, and oracle isolation |
 | `make dbt-check` | Validate the empty dbt project and DuckDB profile |
 | `make seed` | Regenerate the clean operational dataset |
 | `make land` | Carry `public.*` into `raw.*` through read-only ATTACH |
@@ -312,16 +318,19 @@ at a non-disposable database.
 | [`src/transactco/domain/`](src/transactco/domain/) | Builders | Package boundary for entities, relationships, and invariants |
 | [`src/transactco/operational/`](src/transactco/operational/) | Builders | Postgres access and deterministic source generation |
 | [`src/transactco/analytical/`](src/transactco/analytical/) | Builders | Read-only source crossing and DuckDB landing |
-| [`src/transactco/control/`](src/transactco/control/) | Builders | Verification, evaluation, scoring, and future telemetry |
+| [`src/transactco/control/`](src/transactco/control/) | Builders | Verification, controlled evaluation, and scoring |
 | [`plan/semana.md`](plan/semana.md) | Facilitators | Storytelling, session design, delivery gates, context pack, and runbook |
-| [`presentation/d1.html`](presentation/d1.html) | Facilitators | Day 1 slide deck — open in a browser, navigate with arrow keys or space |
+| [`presentation/semana-d1.html`](presentation/semana-d1.html) | Facilitators | Day 1 slide deck — open in a browser, navigate with arrow keys or space |
+| [`presentation/about-me.html`](presentation/about-me.html) | Facilitators | Optional presenter introduction deck |
 | [`live/d1/`](live/d1/) | Facilitators | Live follow-along spine — one numbered file per demo checkpoint |
-| [`skills/d1/`](skills/d1/) | Participants | Six skill cards filled during the session, one per practiced skill |
+| [`skills/interview-the-system/`](skills/interview-the-system/) | Participants | Reusable skill, references, validator, and agent metadata |
+| [`storage/specs/`](storage/specs/) | Session workspace | Generated context, ontology, and technical brief; ignored and recaptured per baseline |
+| [`docs/semana-agentic-uc-transact-co-v2.pdf`](docs/semana-agentic-uc-transact-co-v2.pdf) | Maintainers | Historical source brief; preserved, not the operational runbook |
 
-The participant context pack and the readiness gates are consolidated in
-`plan/semana.md` and distributed by the facilitator. The day 1 session runs
-from three surfaces: the deck (`presentation/d1.html`), the checkpoint files
-(`live/d1/`), and the skill cards (`skills/d1/`).
+The Day 1 experience runs from the deck, the numbered live checkpoints, and
+the reusable skill. The checkpoints generate review artifacts under
+`storage/specs/` and temporary traces/packages under `tmp/`; both are local
+session evidence, not canonical repository truth.
 
 The root README spans the complete project and names the failure/scoring
 surfaces. For a spoiler-safe foundation investigation, give the agent only the
@@ -336,6 +345,9 @@ allowlisted context described in `plan/semana.md`.
   for production.
 - Structural checks prove the encoded fixture contracts. They do not decide the
   business meaning of revenue, refunds, timezone, or late-arrival treatment.
+- Generated specs and traces are valid only for the baseline they inspected.
+  Rebuild the fixture, then recapture them instead of carrying old numbers
+  forward.
 - The dbt directories ship empty intentionally. Transformations, marts, agents,
   and the detector are participant work—not missing implementation.
 

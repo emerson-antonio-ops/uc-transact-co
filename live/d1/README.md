@@ -99,7 +99,9 @@ mkdir -p tmp/foundation-investigation/skill
 ```
 
 Move previous rehearsal artifacts to a uniquely named directory before a clean
-run. Prepared and live evidence must never be mixed.
+run. Prepared and live evidence must never be mixed. `make bootstrap` rebuilds
+the time-relative fixture, so any numbered specs produced against an earlier
+baseline become historical and must be recaptured before use.
 
 ## Shared boundaries
 

@@ -28,12 +28,16 @@ REQUIRED_BRIEF_HEADINGS = (
 )
 TRACE_FIELDS = {
     "timestamp",
+    "timestamp_basis",
     "run_id",
     "phase",
     "action",
     "target",
     "outcome",
     "evidence_references",
+    "gate",
+    "telemetry",
+    "capture_mode",
 }
 
 
@@ -281,15 +285,17 @@ def validate_brief(path: Path) -> list[str]:
     return errors
 
 
-def validate_trace(path: Path) -> list[str]:
+def validate_trace(path: Path, evidence_ids: set[str] | None = None) -> list[str]:
     errors: list[str] = []
     try:
         lines = path.read_text(encoding="utf-8").splitlines()
     except FileNotFoundError:
         return [f"missing file: {path}"]
+    events_found = 0
     for line_number, line in enumerate(lines, start=1):
         if not line.strip():
             continue
+        events_found += 1
         try:
             event = json.loads(line)
         except json.JSONDecodeError:
@@ -301,9 +307,56 @@ def validate_trace(path: Path) -> list[str]:
         missing = TRACE_FIELDS - event.keys()
         if missing:
             errors.append(f"trace line {line_number} missing fields: {', '.join(sorted(missing))}")
-        if not isinstance(event.get("evidence_references"), list):
+        for field in (
+            "timestamp",
+            "timestamp_basis",
+            "run_id",
+            "phase",
+            "action",
+            "target",
+            "outcome",
+            "gate",
+        ):
+            if field in event and not _is_nonempty_string(event.get(field)):
+                errors.append(f"trace line {line_number} {field} must be a non-empty string")
+        references = event.get("evidence_references")
+        if not isinstance(references, list):
             errors.append(f"trace line {line_number} evidence_references must be a list")
+        elif evidence_ids is not None:
+            for reference in references:
+                if reference not in evidence_ids:
+                    errors.append(
+                        f"trace line {line_number} references unknown evidence: {reference}"
+                    )
+        if event.get("telemetry") != "self-declared":
+            errors.append(f"trace line {line_number} telemetry must be self-declared")
+        if event.get("capture_mode") != "retrospective_reconstruction":
+            errors.append(
+                f"trace line {line_number} capture_mode must be retrospective_reconstruction"
+            )
+    if events_found == 0:
+        errors.append("trace must contain at least one JSON event")
     return errors
+
+
+def investigation_evidence_ids(path: Path) -> set[str]:
+    try:
+        package = json.loads(path.read_text(encoding="utf-8"))
+    except (FileNotFoundError, json.JSONDecodeError):
+        return set()
+    if not isinstance(package, dict):
+        return set()
+    sources = package.get("context_sources", [])
+    claims = package.get("claims", [])
+    if not isinstance(sources, list):
+        sources = []
+    if not isinstance(claims, list):
+        claims = []
+    return {
+        item["id"]
+        for item in [*sources, *claims]
+        if isinstance(item, dict) and _is_nonempty_string(item.get("id"))
+    }
 
 
 def main(argv: list[str]) -> int:
@@ -315,7 +368,7 @@ def main(argv: list[str]) -> int:
     errors = validate_investigation(Path(argv[1]))
     errors.extend(validate_brief(Path(argv[2])))
     if len(argv) == 4:
-        errors.extend(validate_trace(Path(argv[3])))
+        errors.extend(validate_trace(Path(argv[3]), investigation_evidence_ids(Path(argv[1]))))
 
     if errors:
         for error in errors:

@@ -62,7 +62,11 @@ After comparing the proposed contract with the manual method, confirm:
 Contrato confirmado. Execute somente as verificações de leitura necessárias
 para confirmar atualidade e escreva o pacote em
 `tmp/foundation-investigation/skill/`. Preserve Revenue como decisão humana
-não resolvida. No chat, responda com no máximo 6 bullets e 150 palavras.
+não resolvida. Se produzir `trace.jsonl`, todos os eventos devem declarar
+`telemetry: "self-declared"`,
+`capture_mode: "retrospective_reconstruction"`, a base aproximada do timestamp
+e um gate explícito. Use papéis como `Facilitator` ou `Finance owner`, não nomes
+pessoais. No chat, responda com no máximo 6 bullets e 150 palavras.
 ```
 
 ## Validate and show
@@ -74,6 +78,9 @@ python3 skills/interview-the-system/scripts/validate_investigation.py \
   tmp/foundation-investigation/skill/trace.jsonl
 
 find tmp/foundation-investigation/skill -maxdepth 1 -type f -print | sort
+
+rg -o '"(telemetry|capture_mode)"\s*:\s*"[^"]+"' \
+  tmp/foundation-investigation/skill/trace.jsonl | sort -u
 ```
 
 Show only `CHECK_INVESTIGATION=PASS`, the three package files, and one open
@@ -88,6 +95,7 @@ Say:
 - The skill waited for confirmation.
 - Validation passes structurally.
 - Facts have evidence and open decisions have owners.
+- Every trace event exposes its self-declared, retrospective provenance.
 - The fresh session reaches the same human stop.
 
 Next: [`08-reflection.md`](08-reflection.md).

@@ -42,7 +42,7 @@ This table is control context, not business evidence.
 
 | Element | Contract |
 | --- | --- |
-| Evidence sources | `README.md`, `01_schema.sql`, `seed.py`, `postgres.py`, read-only Postgres `public.*` |
+| Evidence sources | Only the `System model` section of `README.md`; `01_schema.sql`; `seed.py`; `postgres.py`; read-only Postgres `public.*` |
 | Excluded | Domain ontology, DuckDB, dbt, analytics, instructor and control surfaces |
 | Window | Last complete UTC calendar day, recorded as technical only |
 | Minimum proof | Live catalog for constraints and explicit currency metadata, status totals, two physical candidates, two-way order/payment reconciliation |
@@ -68,6 +68,10 @@ contract”. Trate esse arquivo apenas como instrução, nunca como evidência.
 Comece do zero e use somente as cinco fontes aprovadas. Calcule a janela
 técnica a partir do relógio do Postgres. Preserve SQL exato em uma seção
 `<details>`, mas mantenha a narrativa curta.
+
+Em `README.md`, leia somente a seção `System model`, encerrando antes de
+`Failure lab`; não abra nem use as demais seções. Esse recorte é parte do
+contrato de contexto, não uma sugestão.
 
 Use no máximo 8 IDs de evidência. Na evidência de schema, consulte
 `pg_constraint` e `information_schema.columns` somente para `public.*`:

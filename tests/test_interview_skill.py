@@ -11,6 +11,7 @@ from pathlib import Path
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
+SKILL_ROOT = PROJECT_ROOT / "skills/interview-the-system"
 VALIDATOR = PROJECT_ROOT / "skills/interview-the-system/scripts/validate_investigation.py"
 
 
@@ -133,6 +134,24 @@ Pending Finance review.
 
 
 class InterviewSkillTests(unittest.TestCase):
+    def test_skill_metadata_is_discoverable(self) -> None:
+        content = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
+        self.assertTrue(content.startswith("---\n"))
+        frontmatter = content.split("---", 2)[1]
+        fields = {
+            line.split(":", 1)[0].strip()
+            for line in frontmatter.splitlines()
+            if ":" in line
+        }
+        self.assertEqual({"name", "description"}, fields)
+        self.assertIn("name: interview-the-system", frontmatter)
+        self.assertIn("Use when", frontmatter)
+
+        agent_metadata = (SKILL_ROOT / "agents/openai.yaml").read_text(encoding="utf-8")
+        self.assertIn('display_name: "Interview the System"', agent_metadata)
+        self.assertIn("short_description:", agent_metadata)
+        self.assertIn("$interview-the-system", agent_metadata)
+
     def run_validator(self, package: dict) -> subprocess.CompletedProcess[str]:
         with tempfile.TemporaryDirectory() as temp_directory:
             root = Path(temp_directory)
@@ -145,12 +164,19 @@ class InterviewSkillTests(unittest.TestCase):
                 json.dumps(
                     {
                         "timestamp": "2026-08-10T10:00:00Z",
+                        "timestamp_basis": (
+                            "Approximate narrative order reconstructed by the agent; "
+                            "not captured by an independent runtime."
+                        ),
                         "run_id": "example-run",
                         "phase": "physical-inspection",
                         "action": "query",
                         "target": "public.payments",
                         "outcome": "candidate inputs found",
                         "evidence_references": ["schema"],
+                        "gate": "read-only evidence only",
+                        "telemetry": "self-declared",
+                        "capture_mode": "retrospective_reconstruction",
                     }
                 )
                 + "\n",
@@ -186,6 +212,97 @@ class InterviewSkillTests(unittest.TestCase):
 
         self.assertEqual(1, completed.returncode)
         self.assertIn("unknown ontology node", completed.stdout)
+
+    def test_trace_without_provenance_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_directory:
+            root = Path(temp_directory)
+            investigation = root / "investigation.json"
+            brief = root / "technical-brief.md"
+            trace = root / "trace.jsonl"
+            investigation.write_text(json.dumps(valid_package()), encoding="utf-8")
+            brief.write_text(VALID_BRIEF, encoding="utf-8")
+            trace.write_text(
+                json.dumps(
+                    {
+                        "timestamp": "2026-08-10T10:00:00Z",
+                        "run_id": "example-run",
+                        "phase": "physical-inspection",
+                        "action": "query",
+                        "target": "public.payments",
+                        "outcome": "candidate inputs found",
+                        "evidence_references": ["schema"],
+                    }
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+
+            completed = subprocess.run(
+                [sys.executable, str(VALIDATOR), str(investigation), str(brief), str(trace)],
+                capture_output=True,
+                text=True,
+            )
+
+        self.assertEqual(1, completed.returncode)
+        self.assertIn("telemetry must be self-declared", completed.stdout)
+        self.assertIn("capture_mode must be retrospective_reconstruction", completed.stdout)
+        self.assertIn("CHECK_INVESTIGATION=FAIL", completed.stdout)
+
+    def test_empty_trace_fails_when_supplied(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_directory:
+            root = Path(temp_directory)
+            investigation = root / "investigation.json"
+            brief = root / "technical-brief.md"
+            trace = root / "trace.jsonl"
+            investigation.write_text(json.dumps(valid_package()), encoding="utf-8")
+            brief.write_text(VALID_BRIEF, encoding="utf-8")
+            trace.write_text("", encoding="utf-8")
+
+            completed = subprocess.run(
+                [sys.executable, str(VALIDATOR), str(investigation), str(brief), str(trace)],
+                capture_output=True,
+                text=True,
+            )
+
+        self.assertEqual(1, completed.returncode)
+        self.assertIn("trace must contain at least one JSON event", completed.stdout)
+
+    def test_trace_with_unknown_evidence_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_directory:
+            root = Path(temp_directory)
+            investigation = root / "investigation.json"
+            brief = root / "technical-brief.md"
+            trace = root / "trace.jsonl"
+            investigation.write_text(json.dumps(valid_package()), encoding="utf-8")
+            brief.write_text(VALID_BRIEF, encoding="utf-8")
+            trace.write_text(
+                json.dumps(
+                    {
+                        "timestamp": "2026-08-10T10:00:00Z",
+                        "timestamp_basis": "Approximate retrospective reconstruction.",
+                        "run_id": "example-run",
+                        "phase": "physical-inspection",
+                        "action": "query",
+                        "target": "public.payments",
+                        "outcome": "candidate inputs found",
+                        "evidence_references": ["missing-evidence"],
+                        "gate": "read-only evidence only",
+                        "telemetry": "self-declared",
+                        "capture_mode": "retrospective_reconstruction",
+                    }
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+
+            completed = subprocess.run(
+                [sys.executable, str(VALIDATOR), str(investigation), str(brief), str(trace)],
+                capture_output=True,
+                text=True,
+            )
+
+        self.assertEqual(1, completed.returncode)
+        self.assertIn("references unknown evidence: missing-evidence", completed.stdout)
 
 
 if __name__ == "__main__":

@@ -42,7 +42,7 @@ git status --short
 git rev-parse --short HEAD
 make bootstrap
 uv run transactco ontology validate
-python3 /Users/luanmorenomaciel/.codex/skills/.system/skill-creator/scripts/quick_validate.py skills/interview-the-system
+make skill-check
 mkdir -p storage/specs
 mkdir -p tmp/foundation-investigation/manual
 mkdir -p tmp/foundation-investigation/skill

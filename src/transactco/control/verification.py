@@ -8,7 +8,12 @@ import duckdb
 
 from ..analytical.landing import verify_seal
 from ..config import Settings
-from ..operational.postgres import SOURCE_TABLES, admin_connection, fetch_one
+from ..operational.postgres import (
+    SOURCE_TABLES,
+    admin_connection,
+    fetch_one,
+    readonly_connection,
+)
 from ..operational.seed import assert_baseline_is_clean
 
 
@@ -63,6 +68,37 @@ def run_verification(settings: Settings) -> list[Check]:
 
     seal_held, seal_message = verify_seal(settings)
     checks.append(Check("analytics oracle seal", seal_held, seal_message))
+
+    with readonly_connection(settings) as conn:
+        missing_reads = []
+        enabled_writes = []
+        for table in SOURCE_TABLES:
+            qualified = f"public.{table}"
+            can_select = fetch_one(
+                conn,
+                "SELECT has_table_privilege(current_user, %s, 'SELECT')",
+                (qualified,),
+            )[0]
+            if not can_select:
+                missing_reads.append(table)
+            for privilege in ("INSERT", "UPDATE", "DELETE", "TRUNCATE", "REFERENCES", "TRIGGER"):
+                allowed = fetch_one(
+                    conn,
+                    "SELECT has_table_privilege(current_user, %s, %s)",
+                    (qualified, privilege),
+                )[0]
+                if allowed:
+                    enabled_writes.append(f"{table}:{privilege.lower()}")
+    source_access_ok = not missing_reads and not enabled_writes
+    access_detail = "SELECT only on customers, products, orders, payments"
+    if missing_reads or enabled_writes:
+        parts = []
+        if missing_reads:
+            parts.append(f"SELECT missing on {', '.join(missing_reads)}")
+        if enabled_writes:
+            parts.append(f"unexpected privileges: {', '.join(enabled_writes)}")
+        access_detail = "; ".join(parts)
+    checks.append(Check("analytics source access", source_access_ok, access_detail))
 
     if not settings.duckdb_path.exists():
         checks.append(
